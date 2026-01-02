@@ -34,7 +34,7 @@ namespace SceneTodo.ViewModels
 
         private MainWindowModel model;
         /// <summary>
-        /// Model 属性，用于绑定到主窗口的视图模型。
+        /// Model 属性,用于绑定到主窗口的视图模型。
         /// </summary>
         public MainWindowModel Model
         {
@@ -45,6 +45,22 @@ namespace SceneTodo.ViewModels
                 OnPropertyChanged(nameof(Model));
             }
         }
+
+        private object currentContent;
+        /// <summary>
+        /// 当前页面内容
+        /// </summary>
+        public object CurrentContent
+        {
+            get => currentContent;
+            set
+            {
+                currentContent = value;
+                OnPropertyChanged(nameof(CurrentContent));
+            }
+        }
+
+        private object todoListContent;
 
         public ICommand ForceLaunchCommand { get; }
         public ICommand DeleteTodoItemCommand { get; }
@@ -58,6 +74,9 @@ namespace SceneTodo.ViewModels
         public ICommand AboutCommand { get; }
         public ICommand ExecuteLinkedActionCommand { get; }
         public ICommand ShowHistoryCommand { get; }
+        public ICommand ShowHistoryPageCommand { get; }
+        public ICommand ShowTodoListPageCommand { get; }
+        public ICommand ShowCalendarViewCommand { get; }
 
         private readonly DispatcherTimer autoInjectTimer;
         public MainWindowViewModel()
@@ -87,6 +106,13 @@ namespace SceneTodo.ViewModels
             AboutCommand = new RelayCommand(About);
             ExecuteLinkedActionCommand = new RelayCommand(ExecuteLinkedAction);
             ShowHistoryCommand = new RelayCommand(ShowHistory);
+            ShowHistoryPageCommand = new RelayCommand(ShowHistoryPage);
+            ShowTodoListPageCommand = new RelayCommand(ShowTodoListPage);
+            ShowCalendarViewCommand = new RelayCommand(ShowCalendarView);
+
+            // 初始化页面内容
+            InitializePageContent();
+
             //尝试自动注入OverlayWindow
             autoInjectTimer = new DispatcherTimer
             {
@@ -98,6 +124,39 @@ namespace SceneTodo.ViewModels
             // 初始化定时任务服务
             //_schedulerService = new TodoItemSchedulerService();
             //SetupTodoItemsScheduling();
+        }
+
+        /// <summary>
+        /// 初始化页面内容
+        /// </summary>
+        private void InitializePageContent()
+        {
+            // 创建待办列表页面 - 通过加载 XAML
+            todoListContent = Application.LoadComponent(new Uri("/SceneTodo;component/Views/TodoListPage.xaml", UriKind.Relative));
+            CurrentContent = todoListContent;
+        }
+
+        /// <summary>
+        /// TodoInputTextBox KeyDown 事件处理
+        /// </summary>
+        private void TodoInputTextBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                var textBox = sender as HandyControl.Controls.TextBox;
+                if (textBox != null && !string.IsNullOrWhiteSpace(textBox.Text))
+                {
+                    var item = new TodoItemModel() 
+                    { 
+                        Id = Guid.NewGuid().ToString(), 
+                        Content = textBox.Text, 
+                        IsCompleted = false 
+                    };
+                    Model.TodoItems.Add(item);
+                    App.TodoItemRepository.AddAsync(item).ConfigureAwait(false);
+                    textBox.Text = string.Empty;
+                }
+            }
         }
 
         /// <summary>
@@ -128,6 +187,33 @@ namespace SceneTodo.ViewModels
         {
             var historyWindow = new HistoryWindow();
             historyWindow.ShowDialog();
+        }
+
+        /// <summary>
+        /// 显示历史记录页面
+        /// </summary>
+        /// <param name="parameter"></param>
+        private void ShowHistoryPage(object? parameter)
+        {
+            CurrentContent = new HistoryUserControl();
+        }
+
+        /// <summary>
+        /// 显示待办列表页面
+        /// </summary>
+        /// <param name="parameter"></param>
+        private void ShowTodoListPage(object? parameter)
+        {
+            CurrentContent = todoListContent;
+        }
+
+        /// <summary>
+        /// 显示日历视图
+        /// </summary>
+        /// <param name="parameter"></param>
+        private void ShowCalendarView(object? parameter)
+        {
+            CurrentContent = new CalendarViewControl();
         }
 
         /// <summary>

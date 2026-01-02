@@ -1,0 +1,27 @@
+<UserControl
+    x:Class="SceneTodo.Views.TodoListPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:hc="https://handyorg.github.io/handycontrol"
+    xmlns:views="clr-namespace:SceneTodo.Views">
+    <DockPanel>
+        <Grid Margin="5" DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                Grid.Column="0"
+                Margin="5,0"
+                VerticalAlignment="Center"
+                Text="Todo Items" />
+            <hc:TextBox
+                x:Name="TodoInputTextBox"
+                Grid.Column="1"
+                hc:InfoElement.Placeholder="+ Add new todo"
+                Background="{StaticResource TextIconBrush}"
+                KeyDown="TodoInputTextBox_KeyDown" />
+        </Grid>
+        <views:TodoTreeView HorizontalAlignment="Stretch" DockPanel.Dock="Bottom" />
+    </DockPanel>
+</UserControl>

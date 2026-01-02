@@ -38,22 +38,17 @@
                 </Grid.RowDefinitions>
                 <StackPanel>
                     <hc:SideMenu>
-                        <!--<hc:SideMenuItem Command="{Binding AddSubTodoItemCommand}" ToolTip="新建待办项">
-                            <hc:SideMenuItem.Icon>
-                                <iconPacks:PackIconMaterialDesign Kind="AddAlert" />
-                            </hc:SideMenuItem.Icon>
-                        </hc:SideMenuItem>-->
-                        <hc:SideMenuItem ToolTip="常规视图">
+                        <hc:SideMenuItem Command="{Binding ShowTodoListPageCommand}" ToolTip="常规视图">
                             <hc:SideMenuItem.Icon>
                                 <iconPacks:PackIconFontAwesome Kind="FaceSmileRegular" />
                             </hc:SideMenuItem.Icon>
                         </hc:SideMenuItem>
-                        <hc:SideMenuItem ToolTip="日历视图（todo）">
+                        <hc:SideMenuItem Command="{Binding ShowCalendarViewCommand}" ToolTip="日历视图">
                             <hc:SideMenuItem.Icon>
                                 <iconPacks:PackIconCircumIcons Kind="Calendar" />
                             </hc:SideMenuItem.Icon>
                         </hc:SideMenuItem>
-                        <hc:SideMenuItem Command="{Binding ShowHistoryCommand}" ToolTip="历史记录">
+                        <hc:SideMenuItem Command="{Binding ShowHistoryPageCommand}" ToolTip="历史记录">
                             <hc:SideMenuItem.Icon>
                                 <iconPacks:PackIconMaterialDesign Kind="History" />
                             </hc:SideMenuItem.Icon>
@@ -99,27 +94,10 @@
 
 
         </Border>
-        <DockPanel Grid.Column="1">
-            <Grid Margin="5" DockPanel.Dock="Top">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <TextBlock
-                    Grid.Column="0"
-                    Margin="5,0"
-                    VerticalAlignment="Center"
-                    Text="待办事项" />
-                <hc:TextBox
-                    x:Name="TodoInputTextBox"
-                    Grid.Column="1"
-                    hc:InfoElement.Placeholder="＋请输入待办内容"
-                    Background="{StaticResource TextIconBrush}"
-                    KeyDown="TodoInputTextBox_KeyDown" />
-
-            </Grid>
-            <views:TodoTreeView HorizontalAlignment="Stretch" DockPanel.Dock="Bottom" />
-        </DockPanel>
+        <!-- 主内容区 - 使用 ContentControl 实现页面切换 -->
+        <Grid Grid.Column="1">
+            <ContentControl Content="{Binding CurrentContent}" />
+        </Grid>
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
                 <!--  功能区  -->

@@ -1,0 +1,263 @@
+<UserControl
+    x:Class="SceneTodo.Views.CalendarViewControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:hc="https://handyorg.github.io/handycontrol"
+    xmlns:vm="clr-namespace:SceneTodo.ViewModels"
+    xmlns:converters="clr-namespace:SceneTodo.Converters"
+    xmlns:models="clr-namespace:SceneTodo.Models"
+    xmlns:views="clr-namespace:SceneTodo.Views"
+    Background="{DynamicResource RegionBrush}">
+    
+    <UserControl.DataContext>
+        <vm:CalendarViewModel />
+    </UserControl.DataContext>
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converters:WidthMinusIndentConverter x:Key="WidthMinusIndentConverter" />
+        
+        <Style x:Key="CalendarDayCellStyle" TargetType="Border">
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="Background" Value="{DynamicResource RegionBrush}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsToday}" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource PrimaryBrush}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+                    <Setter Property="BorderThickness" Value="2" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- TreeView Template for hierarchical todo items -->
+        <HierarchicalDataTemplate
+            x:Key="TodoItemTemplate"
+            DataType="{x:Type models:TodoItem}"
+            ItemsSource="{Binding SubItems}">
+            <Grid Width="Auto" HorizontalAlignment="Stretch">
+                <views:TodoItemControl Width="{Binding ActualWidth, ElementName=todoTreeView, Converter={StaticResource WidthMinusIndentConverter}, ConverterParameter=40}" HorizontalAlignment="Stretch" />
+            </Grid>
+        </HierarchicalDataTemplate>
+    </UserControl.Resources>
+
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Month Navigation -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
+            <Button 
+                Content="Previous" 
+                Command="{Binding PreviousMonthCommand}"
+                Width="80"
+                Height="30"
+                Style="{StaticResource ButtonPrimary}" />
+            <TextBlock 
+                Text="{Binding CurrentMonthText}" 
+                Margin="20,0"
+                VerticalAlignment="Center"
+                FontSize="16"
+                FontWeight="Bold" />
+            <Button 
+                Content="Next" 
+                Command="{Binding NextMonthCommand}"
+                Width="80"
+                Height="30"
+                Style="{StaticResource ButtonPrimary}" />
+        </StackPanel>
+
+        <!-- Week Days Header -->
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding WeekDays}" Margin="0,0,0,5">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Rows="1" Columns="7" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock 
+                        Text="{Binding}" 
+                        HorizontalAlignment="Center"
+                        FontWeight="Bold"
+                        Margin="2" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <!-- Calendar Grid -->
+        <ItemsControl Grid.Row="2" ItemsSource="{Binding CalendarDays}" x:Name="calendarGrid">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Rows="6" Columns="7" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Style="{StaticResource CalendarDayCellStyle}">
+                        <Button 
+                            x:Name="dateButton"
+                            Command="{Binding DataContext.SelectDateCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                            CommandParameter="{Binding}"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            Padding="0">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                
+                                <!-- Day Number -->
+                                <TextBlock 
+                                    Grid.Row="0"
+                                    Text="{Binding Day}"
+                                    HorizontalAlignment="Right"
+                                    FontSize="14">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsCurrentMonth}" Value="False">
+                                                    <Setter Property="Foreground" Value="{DynamicResource ThirdlyTextBrush}" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsToday}" Value="True">
+                                                    <Setter Property="Foreground" Value="White" />
+                                                    <Setter Property="FontWeight" Value="Bold" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                                
+                                <!-- Todo Count Badge -->
+                                <TextBlock 
+                                    Grid.Row="1"
+                                    Text="{Binding TodoCount, StringFormat='[{0}]'}"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="12"
+                                    FontWeight="Bold"
+                                    Visibility="{Binding HasTodos, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="{DynamicResource DangerBrush}" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsToday}" Value="True">
+                                                    <Setter Property="Foreground" Value="White" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </Button>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <!-- Popup for displaying todos -->
+        <Popup
+            Grid.Row="2"
+            IsOpen="{Binding IsPopupOpen, Mode=TwoWay}"
+            PlacementTarget="{Binding ElementName=calendarGrid}"
+            Placement="Center"
+            AllowsTransparency="True"
+            StaysOpen="False"
+            PopupAnimation="Fade">
+            <Border
+                Background="{DynamicResource RegionBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
+                BorderThickness="1"
+                CornerRadius="5"
+                Padding="10"
+                MinWidth="400"
+                MaxWidth="600"
+                MaxHeight="500">
+                <Border.Effect>
+                    <DropShadowEffect
+                        BlurRadius="10"
+                        ShadowDepth="3"
+                        Opacity="0.3"
+                        Color="Black" />
+                </Border.Effect>
+                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Header -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                        <TextBlock
+                            Text="{Binding SelectedDateText}"
+                            FontSize="16"
+                            FontWeight="Bold"
+                            VerticalAlignment="Center" />
+                        <TextBlock
+                            Text=" Todos"
+                            FontSize="16"
+                            FontWeight="Bold"
+                            VerticalAlignment="Center" />
+                    </StackPanel>
+
+                    <!-- TreeView with hierarchical todos -->
+                    <ScrollViewer 
+                        Grid.Row="1" 
+                        VerticalScrollBarVisibility="Auto"
+                        HorizontalScrollBarVisibility="Disabled"
+                        MaxHeight="400">
+                        <TreeView
+                            x:Name="todoTreeView"
+                            ItemsSource="{Binding SelectedDateTodos}"
+                            Background="Transparent"
+                            BorderThickness="0">
+                            <TreeView.ItemContainerStyle>
+                                <Style TargetType="TreeViewItem">
+                                    <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                                    <Setter Property="Padding" Value="2,5" />
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="BorderThickness" Value="0" />
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="#F0F0F0" />
+                                            <Setter Property="BorderBrush" Value="#E0E0E0" />
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TreeView.ItemContainerStyle>
+                            <TreeView.ItemTemplate>
+                                <StaticResource ResourceKey="TodoItemTemplate" />
+                            </TreeView.ItemTemplate>
+                        </TreeView>
+                    </ScrollViewer>
+
+                    <!-- Close Button -->
+                    <Button
+                        Grid.Row="2"
+                        Content="Close"
+                        Command="{Binding ClosePopupCommand}"
+                        Width="80"
+                        Height="30"
+                        Margin="0,10,0,0"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource ButtonPrimary}" />
+                </Grid>
+            </Border>
+        </Popup>
+    </Grid>
+</UserControl>
