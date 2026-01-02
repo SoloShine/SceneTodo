@@ -12,10 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using TodoOverlayApp.Models;
-using TodoOverlayApp.ViewModels;
+using SceneTodo.Models;
+using SceneTodo.ViewModels;
 
-namespace TodoOverlayApp.Views
+namespace SceneTodo.Views
 {
     /// <summary>
     /// TodoItemControl.xaml 的交互逻辑

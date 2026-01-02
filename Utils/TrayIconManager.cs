@@ -4,9 +4,9 @@ using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using TodoOverlayApp.Views;
+using SceneTodo.Views;
 
-namespace TodoOverlayApp.Utils
+namespace SceneTodo.Utils
 {
     public static class TrayIconManager
     {
@@ -22,7 +22,7 @@ namespace TodoOverlayApp.Utils
             notifyIcon = new NotifyIcon
             {
                 Icon = LoadIcon("ToDoOverlayApp.ico"),
-                Text = "TodoOverlayApp",
+                Text = "SceneTodo",
                 Visibility = Visibility.Visible,
                 // 添加托盘菜单
                 ContextMenu = new System.Windows.Controls.ContextMenu

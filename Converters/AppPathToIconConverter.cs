@@ -4,9 +4,9 @@ using System.IO;
 using System.Windows.Data;
 using System.Windows.Markup;
 using System.Windows.Media;
-using TodoOverlayApp.Utils;
+using SceneTodo.Utils;
 
-namespace TodoOverlayApp.Converters
+namespace SceneTodo.Converters
 {
     /// <summary>
     /// 将应用程序路径转换为应用程序图标的转换器

@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using TodoOverlayApp.Models;
+using SceneTodo.Models;
 
-namespace TodoOverlayApp.Services.Database.Repositories
+namespace SceneTodo.Services.Database.Repositories
 {
     /// <summary>
     /// 待办事项仓储实现，使用 EF Core

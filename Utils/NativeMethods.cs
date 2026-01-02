@@ -3,7 +3,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace TodoOverlayApp.Utils
+namespace SceneTodo.Utils
 {
     internal static class NativeMethods
     {

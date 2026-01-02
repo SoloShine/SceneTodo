@@ -2,9 +2,9 @@
 using Quartz;
 using Quartz.Impl;
 using System.Collections.Specialized;
-using TodoOverlayApp.Models;
+using SceneTodo.Models;
 
-namespace TodoOverlayApp.Services.Scheduler
+namespace SceneTodo.Services.Scheduler
 {
     public class TodoItemSchedulerService
     {

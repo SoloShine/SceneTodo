@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Design;
 using System;
 using System.IO;
 
-namespace TodoOverlayApp.Services.Database
+namespace SceneTodo.Services.Database
 {
     /// <summary>
     /// DbContext 工厂，用于创建数据库上下文实例
@@ -19,7 +19,7 @@ namespace TodoOverlayApp.Services.Database
         {
             var dataDir = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "TodoOverlayApp");
+                "SceneTodo");
                 
             var dbPath = Path.Combine(dataDir, "todo.db");
             connectionString = $"Data Source={dbPath}";
@@ -28,7 +28,7 @@ namespace TodoOverlayApp.Services.Database
         /// <summary>
         /// 带连接字符串的构造函数，用于运行时创建上下文
         /// </summary>
-        public TodoDbContextFactory(string connectionString)
+         public TodoDbContextFactory(string connectionString)
         {
             this.connectionString = connectionString;
         }

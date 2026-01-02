@@ -6,7 +6,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace TodoOverlayApp.Utils
+namespace SceneTodo.Utils
 {
     /// <summary>
     /// 图标辅助类，用于从文件获取程序图标
@@ -105,7 +105,7 @@ namespace TodoOverlayApp.Utils
                 // 创建缓存目录
                 string cacheDir = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                    "TodoOverlayApp", "IconCache");
+                    "SceneTodo", "IconCache");
 
                 if (!Directory.Exists(cacheDir))
                     Directory.CreateDirectory(cacheDir);

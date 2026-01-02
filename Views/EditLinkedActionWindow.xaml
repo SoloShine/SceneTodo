@@ -1,0 +1,74 @@
+<hc:Window
+    x:Class="SceneTodo.Views.EditLinkedActionWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:hc="https://handyorg.github.io/handycontrol"
+    Title="Edit Linked Action"
+    Width="450"
+    Height="300"
+    Background="{DynamicResource RegionBrush}"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen">
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="35" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="Display Name:" Margin="0,0,0,5" />
+            <TextBox x:Name="DisplayNameTextBox" Padding="5" Margin="0,0,0,10" />
+
+            <TextBlock Text="Action Type:" Margin="0,0,0,5" />
+            <ComboBox
+                x:Name="ActionTypeComboBox"
+                Margin="0,0,0,10"
+                Padding="5"
+                SelectionChanged="ActionTypeComboBox_SelectionChanged">
+                <ComboBoxItem Content="Open URL" Tag="OpenUrl" IsSelected="True" />
+                <ComboBoxItem Content="Open File" Tag="OpenFile" />
+                <ComboBoxItem Content="Launch App" Tag="LaunchApp" />
+            </ComboBox>
+
+            <TextBlock x:Name="ActionTargetLabel" Text="URL:" Margin="0,0,0,5" />
+            <Grid Margin="0,0,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="ActionTargetTextBox" Grid.Column="0" Padding="5" />
+                <Button
+                    x:Name="BrowseButton"
+                    Grid.Column="1"
+                    Margin="5,0,0,0"
+                    Padding="10,5"
+                    Content="Browse..."
+                    Click="BrowseButton_Click"
+                    Visibility="Collapsed" />
+            </Grid>
+
+            <TextBlock x:Name="ArgumentsLabel" Text="Arguments:" Margin="0,0,0,5" Visibility="Collapsed" />
+            <TextBox x:Name="ArgumentsTextBox" Padding="5" Visibility="Collapsed" />
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="1"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Orientation="Horizontal">
+            <Button
+                x:Name="SaveButton"
+                Width="80"
+                Margin="0,0,10,0"
+                Background="{DynamicResource PrimaryBrush}"
+                Content="Save"
+                Click="SaveButton_Click"
+                Foreground="{DynamicResource PrimaryTextBrush}" />
+            <Button
+                x:Name="CancelButton"
+                Width="80"
+                Content="Cancel"
+                Click="CancelButton_Click" />
+        </StackPanel>
+    </Grid>
+</hc:Window>

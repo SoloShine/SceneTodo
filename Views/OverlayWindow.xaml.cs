@@ -2,9 +2,9 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using TodoOverlayApp.Models;
+using SceneTodo.Models;
 
-namespace TodoOverlayApp.Views
+namespace SceneTodo.Views
 {
     public partial class OverlayWindow : Window
     {

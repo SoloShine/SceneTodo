@@ -2,7 +2,7 @@
 using System;
 using System.Windows.Input;
 
-namespace TodoOverlayApp.ViewModels
+namespace SceneTodo.ViewModels
 {
     public class RelayCommand(Action<object?> execute, Func<object?, bool>? canExecute = null) : ICommand
     {

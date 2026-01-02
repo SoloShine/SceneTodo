@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TodoOverlayApp.Models;
+using SceneTodo.Models;
 
-namespace TodoOverlayApp.Services.Database.Repositories
+namespace SceneTodo.Services.Database.Repositories
 {
     public class AutoTaskRepository
     {

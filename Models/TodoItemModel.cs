@@ -6,11 +6,12 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using MessageBox = HandyControl.Controls.MessageBox;
 
-namespace TodoOverlayApp.Models
+namespace SceneTodo.Models
 {
     public class TodoItemModel : TodoItem
     {
@@ -33,8 +34,13 @@ namespace TodoOverlayApp.Models
             StartTime = item.StartTime;
             ReminderTime = item.ReminderTime;
             EndTime = item.EndTime;
-            //todo更新任务
+            Priority = item.Priority;
+            LinkedActionsJson = item.LinkedActionsJson;
+            OverlayPosition = item.OverlayPosition;
+            OverlayOffsetX = item.OverlayOffsetX;
+            OverlayOffsetY = item.OverlayOffsetY;
         }
+        
         private ObservableCollection<TodoItemModel> subItems = [];
         /// <summary>
         /// 子待办项集合
@@ -49,6 +55,35 @@ namespace TodoOverlayApp.Models
             }
         }
 
+        private ObservableCollection<LinkedAction>? linkedActions;
+        /// <summary>
+        /// 关联操作集合（从JSON反序列化）
+        /// </summary>
+        public ObservableCollection<LinkedAction> LinkedActions
+        {
+            get
+            {
+                if (linkedActions == null)
+                {
+                    try
+                    {
+                        linkedActions = JsonSerializer.Deserialize<ObservableCollection<LinkedAction>>(LinkedActionsJson)
+                                       ?? new ObservableCollection<LinkedAction>();
+                    }
+                    catch
+                    {
+                        linkedActions = new ObservableCollection<LinkedAction>();
+                    }
+                }
+                return linkedActions;
+            }
+            set
+            {
+                linkedActions = value;
+                LinkedActionsJson = JsonSerializer.Serialize(value);
+                OnPropertyChanged(nameof(LinkedActions));
+            }
+        }
 
         /// <summary>
         /// 选择一个应用，并将其路径设置为选中应用的AppPath。
@@ -108,8 +143,12 @@ namespace TodoOverlayApp.Models
                     item.Name = todoItem.Name;
                     item.AppPath = todoItem.AppPath;
                     item.Content = todoItem.Content;
-                    //item.IsInjected = todoItem.IsInjected;
                     item.TodoItemType = todoItem.TodoItemType;
+                    item.Priority = todoItem.Priority;
+                    item.LinkedActionsJson = todoItem.LinkedActionsJson;
+                    item.OverlayPosition = todoItem.OverlayPosition;
+                    item.OverlayOffsetX = todoItem.OverlayOffsetX;
+                    item.OverlayOffsetY = todoItem.OverlayOffsetY;
 
                     return item;
                 }

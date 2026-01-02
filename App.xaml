@@ -1,9 +1,10 @@
 ﻿<Application
-    x:Class="TodoOverlayApp.App"
+    x:Class="SceneTodo.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:TodoOverlayApp"
-    xmlns:vm="clr-namespace:TodoOverlayApp.ViewModels"
+    xmlns:local="clr-namespace:SceneTodo"
+    xmlns:vm="clr-namespace:SceneTodo.ViewModels"
+    xmlns:converters="clr-namespace:SceneTodo.Converters"
     StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
@@ -13,6 +14,13 @@
             </ResourceDictionary.MergedDictionaries>
             <!--  添加全局ViewModel  -->
             <vm:MainWindowViewModel x:Key="MainViewModel" />
+            
+            <!--  添加全局转换器  -->
+            <converters:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter" />
+            <converters:Int2VisibilityConverter x:Key="Int2VisibilityConverter" />
+            <converters:NullableToVisibilityConverter x:Key="NullableToVisibilityConverter" />
+            <converters:InjectedToTextConverter x:Key="InjectedToTextConverter" />
+            <converters:InjectedToColorConverter x:Key="InjectedToColorConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

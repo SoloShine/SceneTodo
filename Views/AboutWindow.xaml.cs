@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using MessageBox = HandyControl.Controls.MessageBox;
 
-namespace TodoOverlayApp.Views
+namespace SceneTodo.Views
 {
     public partial class AboutWindow : Window
     {

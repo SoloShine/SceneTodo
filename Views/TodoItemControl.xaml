@@ -1,145 +1,303 @@
 <UserControl
-    x:Class="TodoOverlayApp.Views.TodoItemControl"
+    x:Class="SceneTodo.Views.TodoItemControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="clr-namespace:TodoOverlayApp.Converters"
+    xmlns:converters="clr-namespace:SceneTodo.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:hc="https://handyorg.github.io/handycontrol"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="clr-namespace:TodoOverlayApp.Models"
-    xmlns:vm="clr-namespace:TodoOverlayApp.ViewModels"
+    xmlns:models="clr-namespace:SceneTodo.Models"
+    xmlns:vm="clr-namespace:SceneTodo.ViewModels"
     d:DesignHeight="50"
     d:DesignWidth="400"
     mc:Ignorable="d">
     <UserControl.Resources>
         <converters:AppPathToIconConverter x:Key="AppPathToIconConverter" />
         <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
-
-        <!--  为Button定义默认样式，避免重复设置  -->
-        <Style
-            x:Key="DefaultButtonStyle"
-            BasedOn="{StaticResource ButtonIcon}"
-            TargetType="Button">
-            <Setter Property="Margin" Value="5,0,0,0" />
-            <Setter Property="hc:BorderElement.CornerRadius" Value="10" />
-        </Style>
-
-        <!--  添加一个布尔值到可见性的转换器  -->
-        <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+        <converters:PriorityToBorderBrushConverter x:Key="PriorityToBorderBrushConverter" />
     </UserControl.Resources>
 
-    <Grid
-        x:Name="RootGrid"
-        MinHeight="30"
-        HorizontalAlignment="Stretch">
-        <Grid.ColumnDefinitions>
-            <!--  复选框  -->
-            <ColumnDefinition Width="Auto" />
-            <!--  图标  -->
-            <ColumnDefinition Width="Auto" />
-            <!--  文本框  -->
-            <ColumnDefinition Width="*" />
-            <!--  按钮区域  -->
-            <ColumnDefinition Width="Auto" />
-            <!--  按钮区域  -->
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-
-        <!--  复选框  -->
-        <CheckBox
-            Grid.Column="0"
-            VerticalAlignment="Center"
-            BorderBrush="Black"
-            BorderThickness="1"
-            Command="{Binding Source={StaticResource MainViewModel}, Path=ToggleIsCompletedCommand}"
-            CommandParameter="{Binding}"
-            IsChecked="{Binding IsCompleted}" />
-
-        <!--  显示应用程序图标  -->
-        <Image
-            Grid.Column="1"
-            Width="16"
-            Height="16"
-            Margin="5,0"
-            Source="{Binding AppPath, Converter={StaticResource AppPathToIconConverter}}"
-            Visibility="{Binding AppPath, Converter={StaticResource String2VisibilityConverter}}" />
-
-        <!--  文本框  -->
-        <TextBlock
-            x:Name="ContentTextBlock"
-            Grid.Column="2"
-            Margin="5,0,0,0"
-            VerticalAlignment="Center"
-            Foreground="{DynamicResource PrimaryTextBrush}"
-            MouseLeftButtonDown="TextBlock_MouseLeftButtonDown"
-            Text="{Binding Content}" />
-        <TextBlock
-            Grid.Column="3"
-            Margin="5,0,0,0"
-            VerticalAlignment="Center"
-            Foreground="{DynamicResource SecondaryTextBrush}"
-            Text="{Binding StartTime, Converter={StaticResource DateTimeToStringConverter}}" />
-        <!--  按钮区域，只在悬停时可见，overlay窗口直接全部隐藏，以减少交互逻辑  -->
-        <Grid Grid.Column="4" Visibility="{Binding IsOverlay, Converter={StaticResource Boolean2VisibilityReConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}">
-            <StackPanel Orientation="Horizontal" Visibility="{Binding IsMouseOver, ElementName=RootGrid, Converter={StaticResource BoolToVisConverter}}">
-                <Button
-                    hc:IconElement.Geometry="{StaticResource SearchGeometry}"
+    <Border
+        x:Name="ItemBorder"
+        BorderBrush="{Binding Priority, Converter={StaticResource PriorityToBorderBrushConverter}}"
+        BorderThickness="2"
+        CornerRadius="3"
+        Padding="5">
+        
+        <!--  右键菜单  -->
+        <Border.ContextMenu>
+            <ContextMenu>
+                <!--  编辑  -->
+                <MenuItem 
+                    Header="编辑(_E)"
                     Command="{Binding Source={StaticResource MainViewModel}, Path=EditTodoItemCommand}"
-                    CommandParameter="{Binding}"
-                    Style="{StaticResource DefaultButtonStyle}"
-                    ToolTip="编辑当前节点" />
-                <Button
-                    hc:IconElement.Geometry="{StaticResource AddGeometry}"
+                    CommandParameter="{Binding}">
+                    <MenuItem.Icon>
+                        <Path Data="{StaticResource SearchGeometry}" 
+                              Fill="{DynamicResource PrimaryTextBrush}"
+                              Width="14" Height="14"
+                              Stretch="Uniform"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                
+                <!--  添加子项  -->
+                <MenuItem 
+                    Header="添加子项(_A)"
                     Command="{Binding Source={StaticResource MainViewModel}, Path=AddTodoItemCommand}"
-                    CommandParameter="{Binding}"
-                    Style="{StaticResource DefaultButtonStyle}"
-                    ToolTip="添加子节点" />
-
-                <Button
-                    Margin="0,0,0,0"
-                    hc:IconElement.Geometry="{StaticResource EyeOpenGeometry}"
+                    CommandParameter="{Binding}">
+                    <MenuItem.Icon>
+                        <Path Data="{StaticResource AddGeometry}" 
+                              Fill="{DynamicResource PrimaryTextBrush}"
+                              Width="14" Height="14"
+                              Stretch="Uniform"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                
+                <Separator/>
+                
+                <!--  强制唤起软件（仅软件待办）  -->
+                <MenuItem 
+                    Header="强制唤起软件(_L)"
                     Command="{Binding Source={StaticResource MainViewModel}, Path=ForceLaunchCommand}"
                     CommandParameter="{Binding}"
-                    Style="{StaticResource DefaultButtonStyle}"
-                    Tag="{Binding AppPath}"
-                    ToolTip="强制唤起该软件"
-                    Visibility="{Binding AppPath, Converter={StaticResource String2VisibilityConverter}}" />
-
-                <ToggleButton
-                    BorderThickness="0"
+                    Visibility="{Binding AppPath, Converter={StaticResource String2VisibilityConverter}}">
+                    <MenuItem.Icon>
+                        <Path Data="{StaticResource EyeOpenGeometry}" 
+                              Fill="{DynamicResource PrimaryTextBrush}"
+                              Width="14" Height="14"
+                              Stretch="Uniform"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                
+                <!--  注入开关（仅软件待办）  -->
+                <MenuItem 
+                    Header="{Binding IsInjected, Converter={StaticResource InjectedToTextConverter}}"
                     Command="{Binding Source={StaticResource MainViewModel}, Path=ToggleIsInjectedCommand}"
                     CommandParameter="{Binding}"
-                    IsChecked="{Binding IsInjected}"
-                    Style="{StaticResource ToggleButtonFlip}"
-                    Tag="{Binding AppPath}"
                     Visibility="{Binding AppPath, Converter={StaticResource String2VisibilityConverter}}">
-                    <hc:StatusSwitchElement.CheckedElement>
-                        <Border Background="{DynamicResource DangerBrush}">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Foreground="{DynamicResource TextIconBrush}"
-                                Text="开"
-                                ToolTip="点击关闭注入功能" />
-                        </Border>
-                    </hc:StatusSwitchElement.CheckedElement>
-                    <Border Background="{DynamicResource PrimaryBrush}">
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Foreground="{DynamicResource TextIconBrush}"
-                            Text="关"
-                            ToolTip="点击打开注入功能" />
-                    </Border>
-                </ToggleButton>
-
-                <Button
-                    hc:IconElement.Geometry="{StaticResource DeleteFillCircleGeometry}"
+                    <MenuItem.Icon>
+                        <Path Data="{StaticResource SuccessGeometry}" 
+                              Fill="{Binding IsInjected, Converter={StaticResource InjectedToColorConverter}}"
+                              Width="14" Height="14"
+                              Stretch="Uniform"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                
+                <Separator Visibility="{Binding AppPath, Converter={StaticResource String2VisibilityConverter}}"/>
+                
+                <!--  删除  -->
+                <MenuItem 
+                    Header="删除(_D)"
                     Command="{Binding Source={StaticResource MainViewModel}, Path=DeleteTodoItemCommand}"
-                    CommandParameter="{Binding}"
-                    Style="{StaticResource DefaultButtonStyle}"
-                    ToolTip="删除当前节点及子节点" />
+                    CommandParameter="{Binding}">
+                    <MenuItem.Icon>
+                        <Path Data="{StaticResource DeleteFillCircleGeometry}" 
+                              Fill="{DynamicResource DangerBrush}"
+                              Width="14" Height="14"
+                              Stretch="Uniform"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </ContextMenu>
+        </Border.ContextMenu>
+        
+        <Grid
+            x:Name="RootGrid"
+            MinHeight="40"
+            HorizontalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <Grid.ColumnDefinitions>
+                <!--  复选框  -->
+                <ColumnDefinition Width="Auto" />
+                <!--  图标  -->
+                <ColumnDefinition Width="Auto" />
+                <!--  主内容区域  -->
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!--  第一行：主要信息  -->
+            <!--  复选框  -->
+            <CheckBox
+                Grid.Row="0"
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                BorderBrush="Black"
+                BorderThickness="1"
+                Command="{Binding Source={StaticResource MainViewModel}, Path=ToggleIsCompletedCommand}"
+                CommandParameter="{Binding}"
+                IsChecked="{Binding IsCompleted}" />
+
+            <!--  显示应用程序图标  -->
+            <Image
+                Grid.Row="0"
+                Grid.Column="1"
+                Width="20"
+                Height="20"
+                Margin="5,0"
+                VerticalAlignment="Center"
+                Source="{Binding AppPath, Converter={StaticResource AppPathToIconConverter}}"
+                Visibility="{Binding AppPath, Converter={StaticResource String2VisibilityConverter}}" />
+
+            <!--  主内容区域  -->
+            <StackPanel Grid.Row="0" Grid.Column="2" VerticalAlignment="Center">
+                <!--  内容和标签  -->
+                <StackPanel Orientation="Horizontal">
+                    <!--  待办内容  -->
+                    <TextBlock
+                        x:Name="ContentTextBlock"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        FontWeight="Medium"
+                        Foreground="{DynamicResource PrimaryTextBrush}"
+                        MouseLeftButtonDown="TextBlock_MouseLeftButtonDown"
+                        Text="{Binding Content}" />
+                    
+                    <!--  优先级标签  -->
+                    <Border
+                        Margin="10,0,0,0"
+                        Padding="6,2"
+                        Background="{Binding Priority, Converter={StaticResource PriorityToBorderBrushConverter}}"
+                        CornerRadius="3"
+                        VerticalAlignment="Center">
+                        <TextBlock
+                            FontSize="11"
+                            FontWeight="Bold"
+                            Foreground="White"
+                            Text="{Binding Priority, Converter={StaticResource EnumToDescriptionConverter}}" />
+                    </Border>
+                    
+                    <!--  子项数量标签  -->
+                    <Border
+                        Margin="5,0,0,0"
+                        Padding="6,2"
+                        Background="{DynamicResource InfoBrush}"
+                        CornerRadius="3"
+                        VerticalAlignment="Center"
+                        Visibility="{Binding SubItems.Count, Converter={StaticResource Int2VisibilityConverter}}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                FontSize="11"
+                                Foreground="White"
+                                Text="📋 " />
+                            <TextBlock
+                                FontSize="11"
+                                Foreground="White"
+                                Text="{Binding SubItems.Count}" />
+                        </StackPanel>
+                    </Border>
+                    
+                    <!--  注入状态指示器（仅软件待办）  -->
+                    <Border
+                        Margin="5,0,0,0"
+                        Padding="6,2"
+                        Background="{Binding IsInjected, Converter={StaticResource InjectedToColorConverter}}"
+                        CornerRadius="3"
+                        VerticalAlignment="Center"
+                        Visibility="{Binding AppPath, Converter={StaticResource String2VisibilityConverter}}"
+                        ToolTip="{Binding IsInjected, Converter={StaticResource InjectedToTextConverter}}">
+                        <TextBlock
+                            FontSize="11"
+                            FontWeight="Bold"
+                            Foreground="White"
+                            Text="{Binding IsInjected, Converter={StaticResource InjectedToTextConverter}}" />
+                    </Border>
+                </StackPanel>
             </StackPanel>
+            
+            <!--  第二行：时间信息和关联操作  -->
+            <Grid 
+                Grid.Row="1" 
+                Grid.Column="2"
+                Margin="0,5,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <!--  左侧：时间信息  -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <!--  开始时间  -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,15,0" 
+                               Visibility="{Binding StartTime, Converter={StaticResource NullableToVisibilityConverter}}">
+                        <TextBlock
+                            FontSize="11"
+                            Foreground="{DynamicResource SecondaryTextBrush}"
+                            Text="🕐 开始: " />
+                        <TextBlock
+                            FontSize="11"
+                            Foreground="{DynamicResource SecondaryTextBrush}"
+                            Text="{Binding StartTime, Converter={StaticResource DateTimeToStringConverter}}" />
+                    </StackPanel>
+                    
+                    <!--  结束时间  -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,15,0"
+                               Visibility="{Binding EndTime, Converter={StaticResource NullableToVisibilityConverter}}">
+                        <TextBlock
+                            FontSize="11"
+                            Foreground="{DynamicResource SecondaryTextBrush}"
+                            Text="🕐 结束: " />
+                        <TextBlock
+                            FontSize="11"
+                            Foreground="{DynamicResource SecondaryTextBrush}"
+                            Text="{Binding EndTime, Converter={StaticResource DateTimeToStringConverter}}" />
+                    </StackPanel>
+                    
+                    <!--  提醒时间  -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,15,0"
+                               Visibility="{Binding ReminderTime, Converter={StaticResource NullableToVisibilityConverter}}">
+                        <TextBlock
+                            FontSize="11"
+                            Foreground="{DynamicResource WarningBrush}"
+                            Text="⏰ 提醒: " />
+                        <TextBlock
+                            FontSize="11"
+                            Foreground="{DynamicResource WarningBrush}"
+                            Text="{Binding ReminderTime, Converter={StaticResource DateTimeToStringConverter}}" />
+                    </StackPanel>
+                    
+                    <!--  更新时间  -->
+                    <StackPanel Orientation="Horizontal"
+                               Visibility="{Binding UpdatedAt, Converter={StaticResource NullableToVisibilityConverter}}">
+                        <TextBlock
+                            FontSize="11"
+                            Foreground="{DynamicResource ThirdlyTextBrush}"
+                            Text="📝 更新: " />
+                        <TextBlock
+                            FontSize="11"
+                            Foreground="{DynamicResource ThirdlyTextBrush}"
+                            Text="{Binding UpdatedAt, Converter={StaticResource DateTimeToStringConverter}}" />
+                    </StackPanel>
+                </StackPanel>
+                
+                <!--  右侧：关联操作按钮  -->
+                <ItemsControl
+                    Grid.Column="1"
+                    ItemsSource="{Binding LinkedActions}"
+                    VerticalAlignment="Center">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button
+                                Content="{Binding DisplayName}"
+                                Command="{Binding Source={StaticResource MainViewModel}, Path=ExecuteLinkedActionCommand}"
+                                CommandParameter="{Binding}"
+                                Margin="2,0"
+                                Padding="5,2"
+                                FontSize="11"
+                                ToolTip="{Binding ActionTarget}"
+                                Style="{StaticResource ButtonPrimary}"
+                                hc:BorderElement.CornerRadius="3" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
         </Grid>
-    </Grid>
+    </Border>
 </UserControl>

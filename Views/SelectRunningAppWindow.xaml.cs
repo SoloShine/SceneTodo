@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 
-namespace TodoOverlayApp.Views
+namespace SceneTodo.Views
 {
     public partial class SelectRunningAppWindow : HandyControl.Controls.Window
     {

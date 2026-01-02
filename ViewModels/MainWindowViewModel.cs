@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -14,12 +13,12 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using HandyControl.Tools;
 using Microsoft.Win32;
-using TodoOverlayApp.Models;
-using TodoOverlayApp.Services.Scheduler;
-using TodoOverlayApp.Views;
+using SceneTodo.Models;
+using SceneTodo.Services.Scheduler;
+using SceneTodo.Views;
 using MessageBox = HandyControl.Controls.MessageBox;
 
-namespace TodoOverlayApp.ViewModels
+namespace SceneTodo.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
@@ -57,6 +56,8 @@ namespace TodoOverlayApp.ViewModels
         public ICommand ToggleIsCompletedCommand { get; }
         public ICommand ThemeSettingsCommand { get; }
         public ICommand AboutCommand { get; }
+        public ICommand ExecuteLinkedActionCommand { get; }
+        public ICommand ShowHistoryCommand { get; }
 
         private readonly DispatcherTimer autoInjectTimer;
         public MainWindowViewModel()
@@ -84,6 +85,8 @@ namespace TodoOverlayApp.ViewModels
             ToggleIsCompletedCommand = new RelayCommand(ToggleIsCompleted);
             ThemeSettingsCommand = new RelayCommand(ThemeSettings);
             AboutCommand = new RelayCommand(About);
+            ExecuteLinkedActionCommand = new RelayCommand(ExecuteLinkedAction);
+            ShowHistoryCommand = new RelayCommand(ShowHistory);
             //尝试自动注入OverlayWindow
             autoInjectTimer = new DispatcherTimer
             {
@@ -115,6 +118,90 @@ namespace TodoOverlayApp.ViewModels
         {
             var aboutWindow = new AboutWindow();
             aboutWindow.ShowDialog();
+        }
+
+        /// <summary>
+        /// 显示历史记录窗口
+        /// </summary>
+        /// <param name="parameter"></param>
+        private void ShowHistory(object? parameter)
+        {
+            var historyWindow = new HistoryWindow();
+            historyWindow.ShowDialog();
+        }
+
+        /// <summary>
+        /// 执行关联操作
+        /// </summary>
+        /// <param name="parameter"></param>
+        private void ExecuteLinkedAction(object? parameter)
+        {
+            if (parameter is not LinkedAction action) return;
+
+            try
+            {
+                switch (action.ActionType)
+                {
+                    case LinkedActionType.OpenUrl:
+                        if (string.IsNullOrWhiteSpace(action.ActionTarget))
+                        {
+                            MessageBox.Show("URL不能为空！", "错误", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
+                        Process.Start(new ProcessStartInfo(action.ActionTarget)
+                        {
+                            UseShellExecute = true
+                        });
+                        break;
+
+                    case LinkedActionType.OpenFile:
+                        if (string.IsNullOrWhiteSpace(action.ActionTarget))
+                        {
+                            MessageBox.Show("文件路径不能为空！", "错误", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
+                        if (File.Exists(action.ActionTarget))
+                        {
+                            Process.Start(new ProcessStartInfo(action.ActionTarget)
+                            {
+                                UseShellExecute = true
+                            });
+                        }
+                        else
+                        {
+                            MessageBox.Show($"文件不存在: {action.ActionTarget}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        break;
+
+                    case LinkedActionType.LaunchApp:
+                        if (string.IsNullOrWhiteSpace(action.ActionTarget))
+                        {
+                            MessageBox.Show("应用路径不能为空！", "错误", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
+                        if (File.Exists(action.ActionTarget))
+                        {
+                            var startInfo = new ProcessStartInfo(action.ActionTarget)
+                            {
+                                UseShellExecute = true
+                            };
+                            if (!string.IsNullOrWhiteSpace(action.Arguments))
+                            {
+                                startInfo.Arguments = action.Arguments;
+                            }
+                            Process.Start(startInfo);
+                        }
+                        else
+                        {
+                            MessageBox.Show($"应用不存在: {action.ActionTarget}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"执行操作失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         /// <summary>
@@ -187,20 +274,19 @@ namespace TodoOverlayApp.ViewModels
         /// <param name="todo"></param>
         private void EditTodoItemoModel(TodoItemModel? todo, TodoItemModel? editTodo)
         {
-            if (todo == null || editTodo ==null  ) return;
+            if (todo == null || editTodo == null) return;
             todo.Content = editTodo.Content;
             todo.Description = editTodo.Description;
             todo.AppPath = editTodo.AppPath;
             todo.Name = editTodo.Name;
-            //todo.IsCompleted = editTodo.IsCompleted;
-            //todo.IsExpanded = editTodo.IsExpanded;
-            //todo.IsInjected = editTodo.IsInjected;
             todo.TodoItemType = editTodo.TodoItemType;
+            todo.Priority = editTodo.Priority;
+            todo.LinkedActionsJson = editTodo.LinkedActionsJson;
+            todo.OverlayPosition = editTodo.OverlayPosition;
+            todo.OverlayOffsetX = editTodo.OverlayOffsetX;
+            todo.OverlayOffsetY = editTodo.OverlayOffsetY;
             todo.UpdatedAt = DateTime.Now;
             App.TodoItemRepository.UpdateAsync(todo).ConfigureAwait(false);
-
-            // todo更新定时任务
-            
         }
 
         /// <summary>
@@ -424,7 +510,7 @@ namespace TodoOverlayApp.ViewModels
                     };
                     timer.Tick += (s, args) =>
                     {
-                        UpdateOverlayPosition(overlayWindow, targetWindowHandle);
+                        UpdateOverlayPosition(overlayWindow, targetWindowHandle, item);
                         // 获取目标窗口上方的窗口句柄
                         IntPtr hAbove = Utils.NativeMethods.GetWindow(targetWindowHandle, Utils.NativeMethods.GW_HWNDPREV);
                         if (hAbove == IntPtr.Zero)
@@ -456,14 +542,13 @@ namespace TodoOverlayApp.ViewModels
             }
         }
 
-       
-
         /// <summary>
         /// 更新悬浮窗的位置，使其始终位于目标窗口的下方。
         /// </summary>
         /// <param name="overlayWindow"></param>
         /// <param name="targetWindowHandle"></param>
-        private static void UpdateOverlayPosition(OverlayWindow overlayWindow, IntPtr targetWindowHandle)
+        /// <param name="item"></param>
+        private static void UpdateOverlayPosition(OverlayWindow overlayWindow, IntPtr targetWindowHandle, TodoItemModel item)
         {
             if (Utils.NativeMethods.GetWindowRect(targetWindowHandle, out var rect))
             {
@@ -475,28 +560,62 @@ namespace TodoOverlayApp.ViewModels
                     Matrix transformMatrix = source.CompositionTarget.TransformFromDevice;
 
                     // 使用 DPI 转换矩阵转换坐标
-                    double dpiScaledLeft = rect.Left * transformMatrix.M11;
-                    double dpiScaledTop = rect.Bottom * transformMatrix.M22;
+                    double targetLeft = rect.Left * transformMatrix.M11;
+                    double targetTop = rect.Top * transformMatrix.M22;
+                    double targetRight = rect.Right * transformMatrix.M11;
+                    double targetBottom = rect.Bottom * transformMatrix.M22;
+                    double targetWidth = targetRight - targetLeft;
+                    double targetHeight = targetBottom - targetTop;
+
+                    double left = 0, top = 0;
+
+                    // 根据配置的位置计算坐标
+                    switch (item.OverlayPosition)
+                    {
+                        case OverlayPosition.Bottom:
+                            left = targetLeft;
+                            top = targetBottom - overlayWindow.ActualHeight;
+                            break;
+
+                        case OverlayPosition.TopLeft:
+                            left = targetLeft;
+                            top = targetTop;
+                            break;
+
+                        case OverlayPosition.TopRight:
+                            left = targetRight - overlayWindow.ActualWidth;
+                            top = targetTop;
+                            break;
+
+                        case OverlayPosition.BottomLeft:
+                            left = targetLeft;
+                            top = targetBottom - overlayWindow.ActualHeight;
+                            break;
+
+                        case OverlayPosition.BottomRight:
+                            left = targetRight - overlayWindow.ActualWidth;
+                            top = targetBottom - overlayWindow.ActualHeight;
+                            break;
+
+                        case OverlayPosition.Center:
+                            left = targetLeft + (targetWidth - overlayWindow.ActualWidth) / 2;
+                            top = targetTop + (targetHeight - overlayWindow.ActualHeight) / 2;
+                            break;
+                    }
 
                     // 调整悬浮窗位置，确保它不会超出屏幕边界
-                    double adjustedLeft = Math.Max(0, dpiScaledLeft);
-                    double adjustedTop = Math.Max(0, dpiScaledTop - overlayWindow.ActualHeight);
+                    double adjustedLeft = Math.Max(0, left);
+                    double adjustedTop = Math.Max(0, top);
 
-                    // 设置悬浮窗的位置
-                    double offsetX = 0; // 水平偏移量
-                    double offsetY = 0; // 垂直偏移量，给一个小间距
-                    overlayWindow.Left = adjustedLeft + offsetX;
-                    overlayWindow.Top = adjustedTop + offsetY;
-
-                    // 可选：调整悬浮窗大小以匹配目标窗口宽度
-                    //double targetWidth = (rect.Right - rect.Left) * transformMatrix.M11;
-                    //overlayWindow.Width = targetWidth;
+                    // 应用偏移量
+                    overlayWindow.Left = adjustedLeft + item.OverlayOffsetX;
+                    overlayWindow.Top = adjustedTop + item.OverlayOffsetY;
                 }
                 else
                 {
                     // 回退方案，当无法获取 DPI 信息时
-                    overlayWindow.Left = rect.Left;
-                    overlayWindow.Top = rect.Bottom - overlayWindow.ActualHeight;
+                    overlayWindow.Left = rect.Left + item.OverlayOffsetX;
+                    overlayWindow.Top = rect.Bottom - overlayWindow.ActualHeight + item.OverlayOffsetY;
                 }
             }
         }
@@ -736,7 +855,8 @@ namespace TodoOverlayApp.ViewModels
             Model.SaveToFileAsync().ConfigureAwait(false);
             overlayWindows.Clear();
             autoInjectTimer.Stop();
-            _schedulerService.ShutdownAsync().ConfigureAwait(false);
+            if (_schedulerService != null)
+                _schedulerService.ShutdownAsync().ConfigureAwait(false);
         }
     }
 }

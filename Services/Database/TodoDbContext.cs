@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using TodoOverlayApp.Models;
+using SceneTodo.Models;
 
-namespace TodoOverlayApp.Services.Database
+namespace SceneTodo.Services.Database
 {
     /// <summary>
     /// EF Core 数据库上下文

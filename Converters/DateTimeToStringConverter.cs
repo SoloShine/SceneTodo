@@ -3,7 +3,7 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace TodoOverlayApp.Converters
+namespace SceneTodo.Converters
 {
     public class DateTimeToStringConverter : IValueConverter
     {

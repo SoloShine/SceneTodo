@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TodoOverlayApp.Models
+namespace SceneTodo.Models
 {
     public class AutoTask : BaseModel
     {

@@ -10,9 +10,9 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Media;
-using TodoOverlayApp.Services.Database.Repositories;
+using SceneTodo.Services.Database.Repositories;
 
-namespace TodoOverlayApp.Models
+namespace SceneTodo.Models
 {
     public class MainWindowModel : INotifyPropertyChanged
     {

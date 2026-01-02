@@ -3,11 +3,11 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using TodoOverlayApp.Models;
-using TodoOverlayApp.Utils;
+using SceneTodo.Models;
+using SceneTodo.Utils;
 using MessageBox = HandyControl.Controls.MessageBox;
 
-namespace TodoOverlayApp.Views
+namespace SceneTodo.Views
 {
     public partial class ThemeSettingsWindow : HandyControl.Controls.Window
     {

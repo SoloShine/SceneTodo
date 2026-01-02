@@ -4,12 +4,12 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.EntityFrameworkCore;
-using TodoOverlayApp.Services.Database;
-using TodoOverlayApp.Services.Database.Repositories;
-using TodoOverlayApp.Utils;
-using TodoOverlayApp.ViewModels;
+using SceneTodo.Services.Database;
+using SceneTodo.Services.Database.Repositories;
+using SceneTodo.Utils;
+using SceneTodo.ViewModels;
 
-namespace TodoOverlayApp;
+namespace SceneTodo;
 
 /// <summary>  
 /// Interaction logic for App.xaml  
@@ -64,7 +64,7 @@ public partial class App : Application
         // 创建数据目录
         var dataDir = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "TodoOverlayApp");
+            "SceneTodo");
             
         if (!Directory.Exists(dataDir))
         {

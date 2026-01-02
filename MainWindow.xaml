@@ -1,13 +1,13 @@
 <hc:Window
-    x:Class="TodoOverlayApp.MainWindow"
+    x:Class="SceneTodo.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:hc="https://handyorg.github.io/handycontrol"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-    xmlns:views="clr-namespace:TodoOverlayApp.Views"
-    xmlns:vm="clr-namespace:TodoOverlayApp.ViewModels"
-    Title="待办软件配置"
+    xmlns:views="clr-namespace:SceneTodo.Views"
+    xmlns:vm="clr-namespace:SceneTodo.ViewModels"
+    Title="SceneTodo"
     Width="800"
     Height="450"
     Background="{DynamicResource RegionBrush}"
@@ -51,6 +51,11 @@
                         <hc:SideMenuItem ToolTip="日历视图（todo）">
                             <hc:SideMenuItem.Icon>
                                 <iconPacks:PackIconCircumIcons Kind="Calendar" />
+                            </hc:SideMenuItem.Icon>
+                        </hc:SideMenuItem>
+                        <hc:SideMenuItem Command="{Binding ShowHistoryCommand}" ToolTip="历史记录">
+                            <hc:SideMenuItem.Icon>
+                                <iconPacks:PackIconMaterialDesign Kind="History" />
                             </hc:SideMenuItem.Icon>
                         </hc:SideMenuItem>
                     </hc:SideMenu>

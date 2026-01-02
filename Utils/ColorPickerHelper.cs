@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using MessageBox = HandyControl.Controls.MessageBox;
 
-namespace TodoOverlayApp.Utils
+namespace SceneTodo.Utils
 {
     /// <summary>
     /// 颜色选择相关的工具类

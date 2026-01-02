@@ -1,12 +1,12 @@
 ﻿
 using System.Windows;
-using TodoOverlayApp.Models;
-using TodoOverlayApp.Utils;
-using TodoOverlayApp.ViewModels;
-using TodoOverlayApp.Views;
+using SceneTodo.Models;
+using SceneTodo.Utils;
+using SceneTodo.ViewModels;
+using SceneTodo.Views;
 using MessageBox = HandyControl.Controls.MessageBox;
 
-namespace TodoOverlayApp
+namespace SceneTodo
 {
     public partial class MainWindow : HandyControl.Controls.Window
     {
