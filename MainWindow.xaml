@@ -105,12 +105,18 @@
         </Grid>
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
-                <!--  功能区  -->
-                <RowDefinition />
-                <!--  小组件区  -->
-                <RowDefinition />
+                <!--  标签管理面板  -->
+                <RowDefinition Height="*"/>
+                <!--  时钟小组件  -->
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
+            <!-- 标签管理面板 -->
+            <views:TagsPanelControl Grid.Row="0" 
+                                   x:Name="TagsPanel"
+                                   TagFilterRequested="TagsPanel_TagFilterRequested"/>
+
+            <!-- 时钟小组件 -->
             <StackPanel Grid.Row="1" VerticalAlignment="Bottom">
                 <Viewbox MaxWidth="200">
                     <hc:FlipClock Margin="32" />

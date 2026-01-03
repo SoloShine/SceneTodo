@@ -37,6 +37,7 @@ namespace SceneTodo.Models
             DueDate = item.DueDate;
             Priority = item.Priority;
             LinkedActionsJson = item.LinkedActionsJson;
+            TagsJson = item.TagsJson;
             OverlayPosition = item.OverlayPosition;
             OverlayOffsetX = item.OverlayOffsetX;
             OverlayOffsetY = item.OverlayOffsetY;
@@ -83,6 +84,48 @@ namespace SceneTodo.Models
                 linkedActions = value;
                 LinkedActionsJson = JsonSerializer.Serialize(value);
                 OnPropertyChanged(nameof(LinkedActions));
+            }
+        }
+
+        private ObservableCollection<Tag>? tags;
+        /// <summary>
+        /// 标签集合（从JSON反序列化）
+        /// </summary>
+        public ObservableCollection<Tag> Tags
+        {
+            get
+            {
+                if (tags == null)
+                {
+                    try
+                    {
+                        var tagIds = JsonSerializer.Deserialize<List<string>>(TagsJson) ?? new List<string>();
+                        tags = new ObservableCollection<Tag>();
+                        
+                        // 从数据库加载标签实体
+                        foreach (var tagId in tagIds)
+                        {
+                            var tag = App.TagRepository?.GetByIdAsync(tagId).Result;
+                            if (tag != null)
+                            {
+                                tags.Add(tag);
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        tags = new ObservableCollection<Tag>();
+                    }
+                }
+                return tags;
+            }
+            set
+            {
+                tags = value;
+                // 保存标签ID列表到JSON
+                var tagIds = tags.Select(t => t.Id).ToList();
+                TagsJson = JsonSerializer.Serialize(tagIds);
+                OnPropertyChanged(nameof(Tags));
             }
         }
 
@@ -148,6 +191,7 @@ namespace SceneTodo.Models
                     item.DueDate = todoItem.DueDate;
                     item.Priority = todoItem.Priority;
                     item.LinkedActionsJson = todoItem.LinkedActionsJson;
+                    item.TagsJson = todoItem.TagsJson;
                     item.OverlayPosition = todoItem.OverlayPosition;
                     item.OverlayOffsetX = todoItem.OverlayOffsetX;
                     item.OverlayOffsetY = todoItem.OverlayOffsetY;

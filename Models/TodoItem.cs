@@ -367,6 +367,24 @@ namespace SceneTodo.Models
             }
         }
 
+        private string tagsJson = "[]";
+        /// <summary>
+        /// 标签ID列表（JSON格式）
+        /// </summary>
+        public string TagsJson
+        {
+            get => tagsJson;
+            set
+            {
+                if (tagsJson != value)
+                {
+                    tagsJson = value;
+                    UpdatedAt = DateTime.Now;
+                    OnPropertyChanged(nameof(TagsJson));
+                }
+            }
+        }
+
         private OverlayPosition overlayPosition = OverlayPosition.Bottom;
         /// <summary>
         /// 遮盖层位置

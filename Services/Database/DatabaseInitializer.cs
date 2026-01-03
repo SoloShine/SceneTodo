@@ -28,24 +28,111 @@ namespace SceneTodo.Services.Database
         {
             try
             {
-                // 确保确保数据库已创建
+                // 确保数据库已创建
                 await dbContext.Database.EnsureCreatedAsync();
                 
-                // 测试数据库架构是否匹配（通过尝试查询来验证）
-                // 使用 FirstOrDefaultAsync 而不是 AnyAsync，因为它会实际读取列数据，能够检测到缺失的列
-                await dbContext.TodoItems.FirstOrDefaultAsync();
+                // 检查数据库架构是否需要迁移
+                bool needsMigration = await CheckIfMigrationNeededAsync();
                 
-                // 检查是否需要填充初始数据（仅当数据库为空时）
-                if (!await dbContext.TodoItems.AnyAsync())
+                if (needsMigration)
                 {
-                    await SeedTestDataAsync();
+                    System.Diagnostics.Debug.WriteLine("检测到数据库架构需要更新，开始迁移...");
+                    await MigrateDatabaseAsync();
+                }
+                else
+                {
+                    // 检查是否需要填充初始数据（仅当数据库为空时）
+                    if (!await dbContext.TodoItems.AnyAsync())
+                    {
+                        await SeedTestDataAsync();
+                    }
                 }
             }
-            catch (Microsoft.Data.Sqlite.SqliteException ex) when (ex.Message.Contains("no such column"))
+            catch (Exception ex)
             {
-                // 数据库架构不匹配，需要迁移数据库
-                System.Diagnostics.Debug.WriteLine($"检测到数据库架构不匹配: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"数据库初始化失败: {ex.Message}");
+                // 如果出现任何错误，尝试迁移数据库
                 await MigrateDatabaseAsync();
+            }
+        }
+
+        /// <summary>
+        /// 检查是否需要数据库迁移
+        /// </summary>
+        private async Task<bool> CheckIfMigrationNeededAsync()
+        {
+            try
+            {
+                // 获取数据库连接
+                var connection = dbContext.Database.GetDbConnection();
+                await connection.OpenAsync();
+
+                try
+                {
+                    // 检查 TodoItems 表的列
+                    using var command = connection.CreateCommand();
+                    command.CommandText = "PRAGMA table_info(TodoItems)";
+                    
+                    var columns = new HashSet<string>();
+                    using var reader = await command.ExecuteReaderAsync();
+                    while (await reader.ReadAsync())
+                    {
+                        var columnName = reader.GetString(1); // 列名在第2列（索引1）
+                        columns.Add(columnName);
+                    }
+
+                    // 检查必需的列是否存在
+                    var requiredColumns = new[]
+                    {
+                        "Id", "Name", "Description", "Content", "ParentId",
+                        "IsCompleted", "IsExpanded", "AppPath", "IsInjected",
+                        "TodoItemType", "GreadtedAt", "UpdatedAt", "CompletedAt",
+                        "StartTime", "ReminderTime", "EndTime", "DueDate",
+                        "Priority", "LinkedActionsJson", "TagsJson",
+                        "OverlayPosition", "OverlayOffsetX", "OverlayOffsetY"
+                    };
+
+                    foreach (var column in requiredColumns)
+                    {
+                        if (!columns.Contains(column))
+                        {
+                            System.Diagnostics.Debug.WriteLine($"缺少列: {column}");
+                            return true; // 需要迁移
+                        }
+                    }
+
+                    // 检查 Tags 表是否存在
+                    command.CommandText = "SELECT name FROM sqlite_master WHERE type='table' AND name='Tags'";
+                    var tagsTableExists = await command.ExecuteScalarAsync();
+                    
+                    if (tagsTableExists == null)
+                    {
+                        System.Diagnostics.Debug.WriteLine("缺少 Tags 表");
+                        return true; // 需要迁移
+                    }
+
+                    // 检查 TodoItemTags 表是否存在
+                    command.CommandText = "SELECT name FROM sqlite_master WHERE type='table' AND name='TodoItemTags'";
+                    var todoItemTagsTableExists = await command.ExecuteScalarAsync();
+                    
+                    if (todoItemTagsTableExists == null)
+                    {
+                        System.Diagnostics.Debug.WriteLine("缺少 TodoItemTags 表");
+                        return true; // 需要迁移
+                    }
+
+                    System.Diagnostics.Debug.WriteLine("数据库架构检查通过，无需迁移");
+                    return false; // 不需要迁移
+                }
+                finally
+                {
+                    await connection.CloseAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"检查数据库架构时出错: {ex.Message}");
+                return true; // 出错时触发迁移
             }
         }
 
@@ -156,6 +243,7 @@ namespace SceneTodo.Services.Database
                         DueDate = GetDateTimeValue(reader, "DueDate"),
                         Priority = GetIntValue(reader, "Priority", 1),
                         LinkedActionsJson = GetStringValue(reader, "LinkedActionsJson"),
+                        TagsJson = GetStringValue(reader, "TagsJson"),
                         OverlayPosition = GetIntValue(reader, "OverlayPosition", 0),
                         OverlayOffsetX = GetDoubleValue(reader, "OverlayOffsetX", 0),
                         OverlayOffsetY = GetDoubleValue(reader, "OverlayOffsetY", 0)
@@ -204,6 +292,7 @@ namespace SceneTodo.Services.Database
                     DueDate = backup.DueDate,
                     Priority = (Priority)backup.Priority,
                     LinkedActionsJson = backup.LinkedActionsJson ?? "[]",
+                    TagsJson = backup.TagsJson ?? "[]",
                     OverlayPosition = (OverlayPosition)backup.OverlayPosition,
                     OverlayOffsetX = backup.OverlayOffsetX,
                     OverlayOffsetY = backup.OverlayOffsetY
@@ -425,6 +514,7 @@ namespace SceneTodo.Services.Database
             public DateTime? DueDate { get; set; }
             public int Priority { get; set; }
             public string LinkedActionsJson { get; set; }
+            public string TagsJson { get; set; }
             public int OverlayPosition { get; set; }
             public double OverlayOffsetX { get; set; }
             public double OverlayOffsetY { get; set; }

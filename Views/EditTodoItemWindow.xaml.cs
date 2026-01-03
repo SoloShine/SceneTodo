@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Collections.ObjectModel;
+using System.Linq;
 using SceneTodo.Models;
 using SceneTodo.ViewModels;
 using MessageBox = HandyControl.Controls.MessageBox;
@@ -11,6 +12,8 @@ namespace SceneTodo.Views
     {
         public TodoItemModel Todo { get; private set; }
         private ObservableCollection<LinkedAction> linkedActions;
+        private ObservableCollection<Tag> allTags;
+        private List<string> selectedTagIds;
 
         public EditTodoItemWindow(TodoItemModel todo)
         {
@@ -38,6 +41,7 @@ namespace SceneTodo.Views
                 DueDate = todo.DueDate,
                 Priority = todo.Priority,
                 LinkedActionsJson = todo.LinkedActionsJson,
+                TagsJson = todo.TagsJson,
                 OverlayPosition = todo.OverlayPosition,
                 OverlayOffsetX = todo.OverlayOffsetX,
                 OverlayOffsetY = todo.OverlayOffsetY,
@@ -46,6 +50,9 @@ namespace SceneTodo.Views
             // 初始化关联操作列表
             linkedActions = new ObservableCollection<LinkedAction>(Todo.LinkedActions);
             LinkedActionsListBox.ItemsSource = linkedActions;
+
+            // 初始化标签列表
+            InitializeTags();
 
             // 初始化控件值
             ContentTextBox.Text = Todo.Content;
@@ -110,6 +117,58 @@ namespace SceneTodo.Views
             CancelButton.Click += CancelButton_Click;
             AppTypeComboBox.SelectionChanged += AppTypeComboBox_SelectionChanged;
             SelectAppButton.Click += SelectAppButton_Click;
+        }
+
+        /// <summary>
+        /// 初始化标签列表
+        /// </summary>
+        private async void InitializeTags()
+        {
+            try
+            {
+                // 加载所有标签
+                var tags = await App.TagRepository.GetAllAsync();
+                allTags = new ObservableCollection<Tag>(tags);
+                TagsListBox.ItemsSource = allTags;
+
+                // 解析当前待办的标签ID
+                selectedTagIds = new List<string>();
+                try
+                {
+                    selectedTagIds = System.Text.Json.JsonSerializer.Deserialize<List<string>>(Todo.TagsJson) 
+                                    ?? new List<string>();
+                }
+                catch
+                {
+                    selectedTagIds = new List<string>();
+                }
+
+                // 设置已选中的标签
+                foreach (var tag in allTags)
+                {
+                    if (selectedTagIds.Contains(tag.Id))
+                    {
+                        TagsListBox.SelectedItems.Add(tag);
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show($"加载标签失败: {ex.Message}", "错误", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        /// <summary>
+        /// 管理标签按钮点击
+        /// </summary>
+        private void ManageTagsButton_Click(object sender, RoutedEventArgs e)
+        {
+            var tagManagementWindow = new TagManagementWindow();
+            tagManagementWindow.ShowDialog();
+            
+            // 刷新标签列表
+            InitializeTags();
         }
 
         private void SetPriorityComboBox(Priority priority)
@@ -301,6 +360,10 @@ namespace SceneTodo.Views
             Todo.DueDate = DueDatePicker.SelectedDateTime;
             Todo.Priority = GetSelectedPriority();
             Todo.LinkedActions = linkedActions;
+
+            // 保存选中的标签
+            var selectedTags = TagsListBox.SelectedItems.Cast<Tag>().Select(t => t.Id).ToList();
+            Todo.TagsJson = System.Text.Json.JsonSerializer.Serialize(selectedTags);
 
             // 只有根级待办项才能修改应用绑定信息
             if (!isChildItem)

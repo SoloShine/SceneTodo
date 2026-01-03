@@ -30,7 +30,7 @@ namespace SceneTodo.ViewModels
         }
 
         private readonly Dictionary<string, OverlayWindow> overlayWindows = [];
-        private readonly TodoItemSchedulerService _schedulerService;
+        private readonly TodoItemSchedulerService? _schedulerService;
         private readonly DispatcherTimer dueDateCheckTimer;
         private readonly HashSet<string> notifiedDueDateItems = new HashSet<string>();
 
@@ -94,8 +94,8 @@ namespace SceneTodo.ViewModels
                 model = new MainWindowModel();
             }
 
-            //从数据库加载待办事项
-            model.TodoItems = MainWindowModel.LoadFromDatabase();
+            // 不在构造函数中加载数据库数据，等待数据库初始化完成后再加载
+            // model.TodoItems = MainWindowModel.LoadFromDatabase();
 
             ForceLaunchCommand = new RelayCommand(ForceLaunch);
             DeleteTodoItemCommand = new RelayCommand(DeleteTodoItem);
@@ -141,6 +141,14 @@ namespace SceneTodo.ViewModels
             //SetupTodoItemsScheduling();
         }
 
+        /// <summary>
+        /// 初始化数据（在数据库初始化完成后调用）
+        /// </summary>
+        public void InitializeData()
+        {
+            // 从数据库加载待办事项
+            Model.TodoItems = MainWindowModel.LoadFromDatabase();
+        }
         /// <summary>
         /// 初始化页面内容
         /// </summary>
@@ -396,6 +404,7 @@ namespace SceneTodo.ViewModels
             todo.DueDate = editTodo.DueDate;
             todo.Priority = editTodo.Priority;
             todo.LinkedActionsJson = editTodo.LinkedActionsJson;
+            todo.TagsJson = editTodo.TagsJson;
             todo.OverlayPosition = editTodo.OverlayPosition;
             todo.OverlayOffsetX = editTodo.OverlayOffsetX;
             todo.OverlayOffsetY = editTodo.OverlayOffsetY;
@@ -483,7 +492,7 @@ namespace SceneTodo.ViewModels
                 //调用数据库删除操作
                 App.TodoItemRepository.DeleteAsync(itemId).ConfigureAwait(false);
                 // 取消定时任务
-                _schedulerService.UnscheduleTodoItemReminder(itemId).ConfigureAwait(false);
+                _schedulerService?.UnscheduleTodoItemReminder(itemId).ConfigureAwait(false);
                 return true;
             }
 
@@ -1074,8 +1083,101 @@ namespace SceneTodo.ViewModels
             overlayWindows.Clear();
             autoInjectTimer.Stop();
             dueDateCheckTimer?.Stop();
-            if (_schedulerService != null)
-                _schedulerService.ShutdownAsync().ConfigureAwait(false);
+            _schedulerService?.ShutdownAsync().ConfigureAwait(false);
         }
+
+        #region 标签筛选功能
+
+        private ObservableCollection<TodoItemModel>? allTodoItems;
+        private Tag? currentFilterTag;
+
+        /// <summary>
+        /// 按标签筛选待办项
+        /// </summary>
+        /// <param name="tag">要筛选的标签</param>
+        public void FilterByTag(Tag? tag)
+        {
+            // 保存所有待办项（首次筛选时）
+            if (allTodoItems == null)
+            {
+                allTodoItems = new ObservableCollection<TodoItemModel>(Model.TodoItems);
+            }
+
+            // 如果是同一个标签，取消筛选
+            if (currentFilterTag == tag)
+            {
+                ClearTagFilter();
+                return;
+            }
+
+            currentFilterTag = tag;
+
+            if (tag == null)
+            {
+                // 恢复所有待办项
+                Model.TodoItems = allTodoItems;
+                return;
+            }
+
+            // 筛选包含该标签的待办项
+            var filteredItems = new ObservableCollection<TodoItemModel>();
+            FilterByTagRecursive(allTodoItems, tag.Id, filteredItems);
+            Model.TodoItems = filteredItems;
+        }
+
+        /// <summary>
+        /// 递归筛选包含指定标签的待办项
+        /// </summary>
+        private void FilterByTagRecursive(ObservableCollection<TodoItemModel> items, string tagId, ObservableCollection<TodoItemModel> result)
+        {
+            foreach (var item in items)
+            {
+                // 检查该待办项是否包含该标签
+                var itemTagIds = System.Text.Json.JsonSerializer.Deserialize<List<string>>(item.TagsJson) ?? new List<string>();
+                
+                if (itemTagIds.Contains(tagId))
+                {
+                    // 创建一个副本，包含筛选后的子项
+                    var itemCopy = new TodoItemModel(item);
+                    
+                    // 递归筛选子项
+                    if (item.SubItems != null && item.SubItems.Count > 0)
+                    {
+                        FilterByTagRecursive(item.SubItems, tagId, itemCopy.SubItems);
+                    }
+                    
+                    result.Add(itemCopy);
+                }
+                else if (item.SubItems != null && item.SubItems.Count > 0)
+                {
+                    // 即使当前项不匹配，也要检查子项
+                    var tempSubItems = new ObservableCollection<TodoItemModel>();
+                    FilterByTagRecursive(item.SubItems, tagId, tempSubItems);
+                    
+                    if (tempSubItems.Count > 0)
+                    {
+                        // 如果子项有匹配的，也包含父项
+                        var itemCopy = new TodoItemModel(item);
+                        itemCopy.SubItems = tempSubItems;
+                        result.Add(itemCopy);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 清除标签筛选
+        /// </summary>
+        public void ClearTagFilter()
+        {
+            if (allTodoItems != null)
+            {
+                Model.TodoItems = allTodoItems;
+                allTodoItems = null;
+            }
+            currentFilterTag = null;
+        }
+
+        #endregion
     }
 }

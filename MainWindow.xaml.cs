@@ -47,5 +47,16 @@ namespace SceneTodo
                 vm.Cleanup();
             }
         }
+
+        /// <summary>
+        /// 标签筛选请求处理
+        /// </summary>
+        private void TagsPanel_TagFilterRequested(object? sender, Tag tag)
+        {
+            if (DataContext is MainWindowViewModel vm)
+            {
+                vm.FilterByTag(tag);
+            }
+        }
     }
 }

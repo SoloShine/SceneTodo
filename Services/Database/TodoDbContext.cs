@@ -18,6 +18,8 @@ namespace SceneTodo.Services.Database
         public DbSet<TodoItem> TodoItems { get; set; }
 
         public DbSet<AutoTask> AutoTasks { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<TodoItemTag> TodoItemTags { get; set; }
 
         /// <summary>
         /// 配置实体关系和约束
@@ -37,6 +39,21 @@ namespace SceneTodo.Services.Database
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Name).IsRequired();
                 entity.Property(e => e.Cron).IsRequired();
+            });
+
+            // 配置 Tag 实体
+            modelBuilder.Entity<Tag>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Name).IsRequired();
+                entity.Property(e => e.Color).HasDefaultValue("#2196F3");
+            });
+
+            // 配置 TodoItemTag 关联
+            modelBuilder.Entity<TodoItemTag>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.HasIndex(e => new { e.TodoItemId, e.TagId }).IsUnique();
             });
 
             base.OnModelCreating(modelBuilder);

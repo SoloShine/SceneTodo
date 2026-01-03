@@ -266,6 +266,64 @@
                         </ListBox>
                     </StackPanel>
                 </Expander>
+
+                <!--  标签分组  -->
+                <Expander Header="🏷️ 标签" IsExpanded="False" Margin="0,0,0,10">
+                    <StackPanel Margin="10">
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="为待办添加标签:" Grid.Column="0" VerticalAlignment="Center" />
+                            <Button
+                                x:Name="ManageTagsButton"
+                                Grid.Column="1"
+                                Content="🔧 管理标签"
+                                Padding="10,5"
+                                Style="{StaticResource ButtonDefault}"
+                                Click="ManageTagsButton_Click" />
+                        </Grid>
+                        
+                        <!-- 标签选择列表 -->
+                        <ListBox x:Name="TagsListBox"
+                                Height="150"
+                                SelectionMode="Multiple"
+                                Background="{DynamicResource SecondaryRegionBrush}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <!-- 颜色标记 -->
+                                        <Border Grid.Column="0"
+                                               Width="16"
+                                               Height="16"
+                                               Background="{Binding ColorBrush}"
+                                               CornerRadius="8"
+                                               Margin="0,0,8,0"
+                                               BorderBrush="{DynamicResource BorderBrush}"
+                                               BorderThickness="1"/>
+                                        
+                                        <!-- 标签名称 -->
+                                        <TextBlock Grid.Column="1"
+                                                  Text="{Binding Name}"
+                                                  VerticalAlignment="Center"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        
+                        <!-- 提示信息 -->
+                        <TextBlock Text="提示：可以按住 Ctrl 多选标签"
+                                  Foreground="{DynamicResource SecondaryTextBrush}"
+                                  FontSize="11"
+                                  Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Expander>
                 
             </StackPanel>
         </ScrollViewer>

@@ -37,6 +37,7 @@ public partial class App : Application
     //public static GroupRepository GroupRepository { get; private set; }
     public static TodoItemRepository TodoItemRepository { get; private set; }
     public static AutoTaskRepository AutoTaskRepository { get; private set; }
+    public static TagRepository? TagRepository { get; private set; }
     public static DatabaseInitializer DatabaseInitializer { get; private set; }
     public static TodoItemSchedulerService SchedulerService { get; private set; }
 
@@ -53,6 +54,9 @@ public partial class App : Application
 
         // 确保资源中的ViewModel是唯一的  
         mainViewModel = Current.Resources["MainViewModel"] as MainWindowViewModel;
+
+        // 在数据库初始化完成后，加载待办数据
+        mainViewModel?.InitializeData();
 
         // 应用保存的主题设置
         mainViewModel?.Model.ApplyThemeSettings();
@@ -91,6 +95,7 @@ public partial class App : Application
         //GroupRepository = new GroupRepository(DbContext);
         TodoItemRepository = new TodoItemRepository(DbContext);
         AutoTaskRepository = new AutoTaskRepository(DbContext);
+        TagRepository = new TagRepository(DbContext);
         //AppAssociationRepository = new AppAssociationRepository(DbContext);
 
         // 初始化数据库

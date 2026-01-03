@@ -10,7 +10,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
         <Grid Grid.Row="0" Margin="0,0,0,16">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -27,7 +26,7 @@
                     Style="{StaticResource ButtonPrimary}"
                     Margin="8,0,0,0">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconFontAwesome Kind="PlusSolid" 
+                    <iconPacks:PackIconBootstrapIcons Kind="PlusCircle"
                                                   Width="12" 
                                                   Height="12" 
                                                   Margin="0,0,8,0"/>
@@ -36,7 +35,6 @@
             </Button>
         </Grid>
 
-        <!-- Task List -->
         <hc:ScrollViewer Grid.Row="1">
             <ItemsControl ItemsSource="{Binding Tasks}">
                 <ItemsControl.ItemTemplate>
@@ -54,7 +52,6 @@
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 
-                                <!-- Task Header -->
                                 <Grid Grid.Row="0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
@@ -81,24 +78,22 @@
                                                 CommandParameter="{Binding}"
                                                 Style="{StaticResource ButtonIcon}"
                                                 Margin="0,0,4,0">
-                                            <iconPacks:PackIconFontAwesome Kind="EditSolid" Width="14" Height="14"/>
+                                            <iconPacks:PackIconFeatherIcons Kind="Edit" Width="14" Height="14"/>
                                         </Button>
                                         <Button Command="{Binding DataContext.DeleteTaskCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                 CommandParameter="{Binding}"
                                                 Style="{StaticResource ButtonIcon}">
-                                            <iconPacks:PackIconFontAwesome Kind="TrashAltSolid" Width="14" Height="14"/>
+                                            <iconPacks:PackIconRemixIcon Kind="DeleteBin5Line" Width="14" Height="14"/>
                                         </Button>
                                     </StackPanel>
                                 </Grid>
                                 
-                                <!-- Task Description -->
                                 <TextBlock Grid.Row="1"
                                            Text="{Binding Description}"
                                            Foreground="{DynamicResource SecondaryTextBrush}"
                                            TextWrapping="Wrap"
                                            Margin="0,8,0,0"/>
                                 
-                                <!-- Task Info -->
                                 <Grid Grid.Row="2" Margin="0,8,0,0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
@@ -106,7 +101,7 @@
                                     </Grid.ColumnDefinitions>
                                     
                                     <StackPanel Grid.Column="0" Orientation="Horizontal">
-                                        <iconPacks:PackIconFontAwesome Kind="ClockRegular" 
+                                        <iconPacks:PackIconPhosphorIcons Kind="Alarm" 
                                                                       Width="12" 
                                                                       Height="12" 
                                                                       VerticalAlignment="Center"

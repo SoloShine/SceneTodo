@@ -155,6 +155,34 @@
                         MouseLeftButtonDown="TextBlock_MouseLeftButtonDown"
                         Text="{Binding Content}" />
                     
+                    <!--  标签列表  -->
+                    <ItemsControl
+                        ItemsSource="{Binding Tags}"
+                        Margin="10,0,0,0"
+                        VerticalAlignment="Center">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border
+                                    Margin="0,0,5,0"
+                                    Padding="6,2"
+                                    Background="{Binding ColorBrush}"
+                                    CornerRadius="10"
+                                    VerticalAlignment="Center">
+                                    <TextBlock
+                                        FontSize="10"
+                                        FontWeight="Bold"
+                                        Foreground="White"
+                                        Text="{Binding Name}" />
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    
                     <!--  优先级标签  -->
                     <Border
                         Margin="10,0,0,0"
