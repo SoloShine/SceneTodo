@@ -325,7 +325,15 @@ namespace SceneTodo.Views
 
         private void ClearDueDate_Click(object sender, RoutedEventArgs e)
         {
+            // 先清空选中的日期时间
             DueDatePicker.SelectedDateTime = null;
+            
+            // 强制刷新 DateTimePicker 的显示
+            // 这是 HandyControl DateTimePicker 的一个已知问题的解决方案
+            DueDatePicker.Text = string.Empty;
+            
+            // 同时更新 Todo 对象
+            Todo.DueDate = null;
         }
     }
 }
