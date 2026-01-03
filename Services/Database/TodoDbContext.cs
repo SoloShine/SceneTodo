@@ -35,7 +35,8 @@ namespace SceneTodo.Services.Database
             modelBuilder.Entity<AutoTask>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                //ÆäËûtodo
+                entity.Property(e => e.Name).IsRequired();
+                entity.Property(e => e.Cron).IsRequired();
             });
 
             base.OnModelCreating(modelBuilder);

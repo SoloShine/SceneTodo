@@ -77,6 +77,7 @@ namespace SceneTodo.ViewModels
         public ICommand ShowHistoryPageCommand { get; }
         public ICommand ShowTodoListPageCommand { get; }
         public ICommand ShowCalendarViewCommand { get; }
+        public ICommand ShowScheduledTasksCommand { get; }
 
         private readonly DispatcherTimer autoInjectTimer;
         public MainWindowViewModel()
@@ -109,6 +110,7 @@ namespace SceneTodo.ViewModels
             ShowHistoryPageCommand = new RelayCommand(ShowHistoryPage);
             ShowTodoListPageCommand = new RelayCommand(ShowTodoListPage);
             ShowCalendarViewCommand = new RelayCommand(ShowCalendarView);
+            ShowScheduledTasksCommand = new RelayCommand(ShowScheduledTasks);
 
             // 初始化页面内容
             InitializePageContent();
@@ -214,6 +216,15 @@ namespace SceneTodo.ViewModels
         private void ShowCalendarView(object? parameter)
         {
             CurrentContent = new CalendarViewControl();
+        }
+
+        /// <summary>
+        /// 显示定时任务页面
+        /// </summary>
+        /// <param name="parameter"></param>
+        private void ShowScheduledTasks(object? parameter)
+        {
+            CurrentContent = Application.LoadComponent(new Uri("/SceneTodo;component/Views/ScheduledTasksPage.xaml", UriKind.Relative));
         }
 
         /// <summary>
@@ -723,7 +734,7 @@ namespace SceneTodo.ViewModels
 
                     if (processes.Length > 0)
                     {
-                        // 进程已在运行
+                        // 进程正在运行
                         Process targetProcess = processes[0];
                         int targetProcessId = targetProcess.Id;
 

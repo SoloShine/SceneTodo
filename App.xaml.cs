@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using Microsoft.EntityFrameworkCore;
 using SceneTodo.Services.Database;
 using SceneTodo.Services.Database.Repositories;
+using SceneTodo.Services.Scheduler;
 using SceneTodo.Utils;
 using SceneTodo.ViewModels;
 
@@ -37,6 +38,7 @@ public partial class App : Application
     public static TodoItemRepository TodoItemRepository { get; private set; }
     public static AutoTaskRepository AutoTaskRepository { get; private set; }
     public static DatabaseInitializer DatabaseInitializer { get; private set; }
+    public static TodoItemSchedulerService SchedulerService { get; private set; }
 
 
     protected override async void OnStartup(StartupEventArgs e)
@@ -46,6 +48,9 @@ public partial class App : Application
         // 初始化数据库服务
         await InitializeDatabaseAsync();
 
+        // 初始化调度服务
+        SchedulerService = new TodoItemSchedulerService();
+
         // 确保资源中的ViewModel是唯一的  
         mainViewModel = Current.Resources["MainViewModel"] as MainWindowViewModel;
 
@@ -54,6 +59,9 @@ public partial class App : Application
 
         // 初始化托盘图标
         TrayIconManager.Initialize();
+
+        // 加载并启动现有的定时任务
+        await LoadAndStartScheduledTasksAsync();
     }
 
     /// <summary>
@@ -90,8 +98,33 @@ public partial class App : Application
         await DatabaseInitializer.InitializeAsync();
     }
 
-    protected override void OnExit(ExitEventArgs e)
+    private static async Task LoadAndStartScheduledTasksAsync()
     {
+        try
+        {
+            var tasks = await AutoTaskRepository.GetAllAsync();
+            foreach (var task in tasks.Where(t => t.IsEnabled))
+            {
+                task.UpdateNextExecuteTime();
+                await SchedulerService.ScheduleAutoTask(task);
+            }
+            
+            System.Diagnostics.Debug.WriteLine($"Loaded and scheduled {tasks.Count(t => t.IsEnabled)} tasks");
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Failed to load scheduled tasks: {ex.Message}");
+        }
+    }
+
+    protected override async void OnExit(ExitEventArgs e)
+    {
+        // 关闭调度服务
+        if (SchedulerService != null)
+        {
+            await SchedulerService.ShutdownAsync();
+        }
+
         // 释放 DbContext
         DbContext?.Dispose();
         

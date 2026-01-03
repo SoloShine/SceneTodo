@@ -1,0 +1,134 @@
+<UserControl x:Class="SceneTodo.Views.ScheduledTasksPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             Background="{DynamicResource RegionBrush}">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0" Margin="0,0,0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Text="Scheduled Tasks" 
+                       FontSize="24" 
+                       FontWeight="Bold"
+                       VerticalAlignment="Center"/>
+            
+            <Button Grid.Column="1"
+                    Command="{Binding AddTaskCommand}"
+                    Style="{StaticResource ButtonPrimary}"
+                    Margin="8,0,0,0">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconFontAwesome Kind="PlusSolid" 
+                                                  Width="12" 
+                                                  Height="12" 
+                                                  Margin="0,0,8,0"/>
+                    <TextBlock Text="Add Task"/>
+                </StackPanel>
+            </Button>
+        </Grid>
+
+        <!-- Task List -->
+        <hc:ScrollViewer Grid.Row="1">
+            <ItemsControl ItemsSource="{Binding Tasks}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="{DynamicResource SecondaryRegionBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                Padding="16"
+                                Margin="0,0,0,8">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                
+                                <!-- Task Header -->
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <ToggleButton Grid.Column="0"
+                                                  IsChecked="{Binding IsEnabled}"
+                                                  Command="{Binding DataContext.ToggleTaskCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                  CommandParameter="{Binding}"
+                                                  Style="{StaticResource ToggleButtonSwitch}"
+                                                  Margin="0,0,12,0"/>
+                                    
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding Name}"
+                                               FontSize="16"
+                                               FontWeight="SemiBold"
+                                               VerticalAlignment="Center"/>
+                                    
+                                    <StackPanel Grid.Column="2" 
+                                                Orientation="Horizontal">
+                                        <Button Command="{Binding DataContext.EditTaskCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                Style="{StaticResource ButtonIcon}"
+                                                Margin="0,0,4,0">
+                                            <iconPacks:PackIconFontAwesome Kind="EditSolid" Width="14" Height="14"/>
+                                        </Button>
+                                        <Button Command="{Binding DataContext.DeleteTaskCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                Style="{StaticResource ButtonIcon}">
+                                            <iconPacks:PackIconFontAwesome Kind="TrashAltSolid" Width="14" Height="14"/>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                                
+                                <!-- Task Description -->
+                                <TextBlock Grid.Row="1"
+                                           Text="{Binding Description}"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                           TextWrapping="Wrap"
+                                           Margin="0,8,0,0"/>
+                                
+                                <!-- Task Info -->
+                                <Grid Grid.Row="2" Margin="0,8,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                        <iconPacks:PackIconFontAwesome Kind="ClockRegular" 
+                                                                      Width="12" 
+                                                                      Height="12" 
+                                                                      VerticalAlignment="Center"
+                                                                      Margin="0,0,4,0"/>
+                                        <TextBlock Text="{Binding Cron}"
+                                                   FontSize="12"
+                                                   Foreground="{DynamicResource ThirdTextBrush}"
+                                                   VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding NextExecuteTime, StringFormat='Next: {0:yyyy-MM-dd HH:mm:ss}'}"
+                                               FontSize="12"
+                                               Foreground="{DynamicResource ThirdTextBrush}"
+                                               HorizontalAlignment="Right"
+                                               VerticalAlignment="Center"/>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </hc:ScrollViewer>
+    </Grid>
+</UserControl>

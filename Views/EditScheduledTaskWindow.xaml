@@ -1,0 +1,128 @@
+<hc:Window x:Class="SceneTodo.Views.EditScheduledTaskWindow"
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:hc="https://handyorg.github.io/handycontrol"
+           xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+           Title="Edit Scheduled Task"
+           Width="600"
+           Height="500"
+           WindowStartupLocation="CenterScreen"
+           ShowInTaskbar="False"
+           ResizeMode="NoResize">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <hc:ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!-- Task Name -->
+                <TextBlock Text="Task Name:" Margin="0,0,0,4"/>
+                <hc:TextBox x:Name="TaskNameTextBox"
+                           hc:InfoElement.Placeholder="Enter task name"
+                           Margin="0,0,0,16"/>
+
+                <!-- Description -->
+                <TextBlock Text="Description:" Margin="0,0,0,4"/>
+                <hc:TextBox x:Name="DescriptionTextBox"
+                           hc:InfoElement.Placeholder="Enter task description (optional)"
+                           TextWrapping="Wrap"
+                           AcceptsReturn="True"
+                           Height="60"
+                           Margin="0,0,0,16"/>
+
+                <!-- Cron Expression -->
+                <TextBlock Text="Cron Expression:" Margin="0,0,0,4"/>
+                <hc:TextBox x:Name="CronTextBox"
+                           hc:InfoElement.Placeholder="Example: 0 0 9 * * ?"
+                           TextChanged="CronTextBox_TextChanged"
+                           Margin="0,0,0,4"/>
+                <TextBlock x:Name="CronValidationText"
+                           Text="Format: Second Minute Hour Day Month Weekday [Year]"
+                           Foreground="{DynamicResource SecondaryTextBrush}"
+                           FontSize="11"
+                           Margin="0,0,0,4"/>
+                <TextBlock x:Name="CronNextExecutionText"
+                           Text=""
+                           Foreground="{DynamicResource SuccessBrush}"
+                           FontSize="11"
+                           Margin="0,0,0,16"
+                           Visibility="Collapsed"/>
+
+                <!-- Common Cron Patterns -->
+                <Expander Header="Common Patterns" Margin="0,0,0,16">
+                    <StackPanel Margin="0,8,0,0">
+                        <Button Content="Every day at 9:00 AM" 
+                                Tag="0 0 9 * * ?"
+                                Click="CronPattern_Click"
+                                Style="{StaticResource ButtonDefault}"
+                                HorizontalAlignment="Left"
+                                Margin="0,0,0,4"/>
+                        <Button Content="Every 30 minutes" 
+                                Tag="0 0/30 * * * ?"
+                                Click="CronPattern_Click"
+                                Style="{StaticResource ButtonDefault}"
+                                HorizontalAlignment="Left"
+                                Margin="0,0,0,4"/>
+                        <Button Content="Weekdays at 9:00 AM" 
+                                Tag="0 0 9 ? * MON-FRI"
+                                Click="CronPattern_Click"
+                                Style="{StaticResource ButtonDefault}"
+                                HorizontalAlignment="Left"
+                                Margin="0,0,0,4"/>
+                        <Button Content="First day of month at midnight" 
+                                Tag="0 0 0 1 * ?"
+                                Click="CronPattern_Click"
+                                Style="{StaticResource ButtonDefault}"
+                                HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Expander>
+
+                <!-- Task Action Type -->
+                <TextBlock Text="Action Type:" Margin="0,0,0,4"/>
+                <ComboBox x:Name="ActionTypeComboBox"
+                          Margin="0,0,0,16"
+                          SelectionChanged="ActionTypeComboBox_SelectionChanged">
+                    <ComboBoxItem Content="Notification" Tag="0"/>
+                    <ComboBoxItem Content="Execute Linked Action" Tag="1"/>
+                    <ComboBoxItem Content="Open Todo Detail" Tag="2"/>
+                    <ComboBoxItem Content="Mark as Completed" Tag="3"/>
+                </ComboBox>
+
+                <!-- Action Data (Todo Item Selection) -->
+                <StackPanel x:Name="TodoSelectionPanel" Visibility="Collapsed">
+                    <TextBlock Text="Select Todo Item:" Margin="0,0,0,4"/>
+                    <ComboBox x:Name="TodoItemComboBox"
+                             DisplayMemberPath="Content"
+                             SelectedValuePath="Id"
+                             Margin="0,0,0,16"/>
+                </StackPanel>
+
+                <!-- Is Enabled -->
+                <CheckBox x:Name="IsEnabledCheckBox"
+                         Content="Enable this task"
+                         IsChecked="True"
+                         Margin="0,0,0,16"/>
+            </StackPanel>
+        </hc:ScrollViewer>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="1" 
+                   Orientation="Horizontal" 
+                   HorizontalAlignment="Right"
+                   Margin="0,16,0,0">
+            <Button x:Name="SaveButton"
+                   Content="Save"
+                   Style="{StaticResource ButtonPrimary}"
+                   Width="100"
+                   Margin="0,0,8,0"
+                   Click="SaveButton_Click"/>
+            <Button x:Name="CancelButton"
+                   Content="Cancel"
+                   Style="{StaticResource ButtonDefault}"
+                   Width="100"
+                   Click="CancelButton_Click"/>
+        </StackPanel>
+    </Grid>
+</hc:Window>

@@ -48,6 +48,11 @@
                                 <iconPacks:PackIconCircumIcons Kind="Calendar" />
                             </hc:SideMenuItem.Icon>
                         </hc:SideMenuItem>
+                        <hc:SideMenuItem Command="{Binding ShowScheduledTasksCommand}" ToolTip="计划任务">
+                            <hc:SideMenuItem.Icon>
+                                <iconPacks:PackIconFontAwesome Kind="ClockRegular" />
+                            </hc:SideMenuItem.Icon>
+                        </hc:SideMenuItem>
                         <hc:SideMenuItem Command="{Binding ShowHistoryPageCommand}" ToolTip="历史记录">
                             <hc:SideMenuItem.Icon>
                                 <iconPacks:PackIconMaterialDesign Kind="History" />
