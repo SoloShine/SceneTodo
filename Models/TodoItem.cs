@@ -282,6 +282,55 @@ namespace SceneTodo.Models
             } 
         }
 
+        private DateTime? dueDate = null;
+        /// <summary>
+        /// 截止时间
+        /// </summary>
+        public DateTime? DueDate
+        {
+            get => dueDate;
+            set
+            {
+                if (dueDate != value)
+                {
+                    dueDate = value;
+                    UpdatedAt = DateTime.Now;
+                    OnPropertyChanged(nameof(DueDate));
+                    OnPropertyChanged(nameof(IsOverdue));
+                    OnPropertyChanged(nameof(DueDateDisplay));
+                }
+            }
+        }
+
+        /// <summary>
+        /// 是否已过期
+        /// </summary>
+        public bool IsOverdue => DueDate.HasValue && !IsCompleted && DueDate.Value < DateTime.Now;
+
+        /// <summary>
+        /// 截止时间显示文本
+        /// </summary>
+        public string DueDateDisplay
+        {
+            get
+            {
+                if (!DueDate.HasValue) return "无截止时间";
+
+                var days = (DueDate.Value.Date - DateTime.Now.Date).Days;
+
+                if (days < 0)
+                    return $"已过期 {Math.Abs(days)} 天";
+                else if (days == 0)
+                    return "今天截止";
+                else if (days == 1)
+                    return "明天截止";
+                else if (days <= 7)
+                    return $"{days} 天后截止";
+                else
+                    return DueDate.Value.ToString("yyyy-MM-dd");
+            }
+        }
+
         private Priority priority = Priority.Medium;
         /// <summary>
         /// 优先级

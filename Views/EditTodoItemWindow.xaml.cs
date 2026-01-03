@@ -35,6 +35,7 @@ namespace SceneTodo.Views
                 StartTime = todo.StartTime,
                 ReminderTime = todo.ReminderTime,
                 EndTime = todo.EndTime,
+                DueDate = todo.DueDate,
                 Priority = todo.Priority,
                 LinkedActionsJson = todo.LinkedActionsJson,
                 OverlayPosition = todo.OverlayPosition,
@@ -55,6 +56,7 @@ namespace SceneTodo.Views
             StartTimePicker.SelectedDateTime = todo.StartTime;
             EndTimePicker.SelectedDateTime = todo.EndTime;
             ReminderTimePicker.SelectedDateTime = todo.ReminderTime;
+            DueDatePicker.SelectedDateTime = todo.DueDate;
 
             // 初始化优先级
             SetPriorityComboBox(Todo.Priority);
@@ -296,6 +298,7 @@ namespace SceneTodo.Views
             Todo.StartTime = StartTimePicker.SelectedDateTime;
             Todo.EndTime = EndTimePicker.SelectedDateTime;
             Todo.ReminderTime = ReminderTimePicker.SelectedDateTime;
+            Todo.DueDate = DueDatePicker.SelectedDateTime;
             Todo.Priority = GetSelectedPriority();
             Todo.LinkedActions = linkedActions;
 
@@ -318,6 +321,11 @@ namespace SceneTodo.Views
         {
             DialogResult = false;
             Close();
+        }
+
+        private void ClearDueDate_Click(object sender, RoutedEventArgs e)
+        {
+            DueDatePicker.SelectedDateTime = null;
         }
     }
 }

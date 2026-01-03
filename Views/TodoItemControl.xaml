@@ -219,6 +219,20 @@
                 
                 <!--  左侧：时间信息  -->
                 <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <!--  截止时间（新增，优先显示）  -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,15,0" 
+                               Visibility="{Binding DueDate, Converter={StaticResource NullableToVisibilityConverter}}">
+                        <TextBlock
+                            FontSize="11"
+                            Foreground="{Binding IsOverdue, Converter={StaticResource OverdueToBrushConverter}}"
+                            Text="📅 " />
+                        <TextBlock
+                            FontSize="11"
+                            FontWeight="Bold"
+                            Foreground="{Binding IsOverdue, Converter={StaticResource OverdueToBrushConverter}}"
+                            Text="{Binding DueDateDisplay}" />
+                    </StackPanel>
+                    
                     <!--  开始时间  -->
                     <StackPanel Orientation="Horizontal" Margin="0,0,15,0" 
                                Visibility="{Binding StartTime, Converter={StaticResource NullableToVisibilityConverter}}">

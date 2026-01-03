@@ -34,6 +34,7 @@ namespace SceneTodo.Models
             StartTime = item.StartTime;
             ReminderTime = item.ReminderTime;
             EndTime = item.EndTime;
+            DueDate = item.DueDate;
             Priority = item.Priority;
             LinkedActionsJson = item.LinkedActionsJson;
             OverlayPosition = item.OverlayPosition;
@@ -144,6 +145,7 @@ namespace SceneTodo.Models
                     item.AppPath = todoItem.AppPath;
                     item.Content = todoItem.Content;
                     item.TodoItemType = todoItem.TodoItemType;
+                    item.DueDate = todoItem.DueDate;
                     item.Priority = todoItem.Priority;
                     item.LinkedActionsJson = todoItem.LinkedActionsJson;
                     item.OverlayPosition = todoItem.OverlayPosition;

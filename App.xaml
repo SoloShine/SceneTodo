@@ -21,6 +21,7 @@
             <converters:NullableToVisibilityConverter x:Key="NullableToVisibilityConverter" />
             <converters:InjectedToTextConverter x:Key="InjectedToTextConverter" />
             <converters:InjectedToColorConverter x:Key="InjectedToColorConverter" />
+            <converters:OverdueToBrushConverter x:Key="OverdueToBrushConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

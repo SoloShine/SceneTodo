@@ -153,6 +153,7 @@ namespace SceneTodo.Services.Database
                         StartTime = GetDateTimeValue(reader, "StartTime"),
                         ReminderTime = GetDateTimeValue(reader, "ReminderTime"),
                         EndTime = GetDateTimeValue(reader, "EndTime"),
+                        DueDate = GetDateTimeValue(reader, "DueDate"),
                         Priority = GetIntValue(reader, "Priority", 1),
                         LinkedActionsJson = GetStringValue(reader, "LinkedActionsJson"),
                         OverlayPosition = GetIntValue(reader, "OverlayPosition", 0),
@@ -200,6 +201,7 @@ namespace SceneTodo.Services.Database
                     StartTime = backup.StartTime,
                     ReminderTime = backup.ReminderTime,
                     EndTime = backup.EndTime,
+                    DueDate = backup.DueDate,
                     Priority = (Priority)backup.Priority,
                     LinkedActionsJson = backup.LinkedActionsJson ?? "[]",
                     OverlayPosition = (OverlayPosition)backup.OverlayPosition,
@@ -420,6 +422,7 @@ namespace SceneTodo.Services.Database
             public DateTime? StartTime { get; set; }
             public DateTime? ReminderTime { get; set; }
             public DateTime? EndTime { get; set; }
+            public DateTime? DueDate { get; set; }
             public int Priority { get; set; }
             public string LinkedActionsJson { get; set; }
             public int OverlayPosition { get; set; }

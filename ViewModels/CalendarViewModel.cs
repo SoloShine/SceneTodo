@@ -200,6 +200,7 @@ namespace SceneTodo.ViewModels
         private bool IsTodoOnDate(TodoItemModel todo, DateTime date)
         {
             // 检查各个时间字段
+            if (todo.DueDate?.Date == date.Date) return true;
             if (todo.StartTime?.Date == date.Date) return true;
             if (todo.EndTime?.Date == date.Date) return true;
             if (todo.ReminderTime?.Date == date.Date) return true;
