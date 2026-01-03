@@ -377,6 +377,10 @@ namespace SceneTodo.ViewModels
             todo.AppPath = editTodo.AppPath;
             todo.Name = editTodo.Name;
             todo.TodoItemType = editTodo.TodoItemType;
+            todo.StartTime = editTodo.StartTime;
+            todo.EndTime = editTodo.EndTime;
+            todo.ReminderTime = editTodo.ReminderTime;
+            todo.DueDate = editTodo.DueDate;
             todo.Priority = editTodo.Priority;
             todo.LinkedActionsJson = editTodo.LinkedActionsJson;
             todo.OverlayPosition = editTodo.OverlayPosition;
