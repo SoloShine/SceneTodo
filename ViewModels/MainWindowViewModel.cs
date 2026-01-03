@@ -31,6 +31,8 @@ namespace SceneTodo.ViewModels
 
         private readonly Dictionary<string, OverlayWindow> overlayWindows = [];
         private readonly TodoItemSchedulerService _schedulerService;
+        private readonly DispatcherTimer dueDateCheckTimer;
+        private readonly HashSet<string> notifiedDueDateItems = new HashSet<string>();
 
         private MainWindowModel model;
         /// <summary>
@@ -122,6 +124,17 @@ namespace SceneTodo.ViewModels
             };
             autoInjectTimer.Tick += AutoInjectOverlays;
             autoInjectTimer.Start();
+
+            // 初始化截止时间检查定时器（每小时检查一次）
+            dueDateCheckTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromHours(1)
+            };
+            dueDateCheckTimer.Tick += CheckDueDateReminders;
+            dueDateCheckTimer.Start();
+            
+            // 启动时立即检查一次
+            CheckDueDateReminders(null, EventArgs.Empty);
 
             // 初始化定时任务服务
             //_schedulerService = new TodoItemSchedulerService();
@@ -945,6 +958,110 @@ namespace SceneTodo.ViewModels
         }
 
         /// <summary>
+        /// 检查即将到期和已过期的待办项
+        /// </summary>
+        private void CheckDueDateReminders(object? sender, EventArgs e)
+        {
+            var now = DateTime.Now;
+            var tomorrow = now.AddDays(1).Date;
+            var todayEnd = now.Date.AddDays(1).AddSeconds(-1);
+
+            // 递归检查所有待办项
+            CheckDueDateRecursive(Model.TodoItems, now, tomorrow, todayEnd);
+        }
+
+        /// <summary>
+        /// 递归检查待办项的截止时间
+        /// </summary>
+        private void CheckDueDateRecursive(ObservableCollection<TodoItemModel> items, DateTime now, DateTime tomorrow, DateTime todayEnd)
+        {
+            foreach (var item in items)
+            {
+                // 跳过已完成的待办
+                if (item.IsCompleted)
+                    continue;
+
+                // 检查是否有截止时间
+                if (item.DueDate.HasValue)
+                {
+                    var dueDate = item.DueDate.Value;
+                    var notificationKey = $"{item.Id}_{dueDate:yyyyMMddHH}";
+
+                    // 如果这个待办的这个时间点已经提醒过了，跳过
+                    if (notifiedDueDateItems.Contains(notificationKey))
+                    {
+                        // 如果已过期超过1天，清除通知记录，允许再次提醒
+                        if (dueDate.Date < now.Date.AddDays(-1))
+                        {
+                            notifiedDueDateItems.Remove(notificationKey);
+                        }
+                        else
+                        {
+                            goto CheckChildren;
+                        }
+                    }
+
+                    // 已过期
+                    if (dueDate < now)
+                    {
+                        ShowDueDateNotification(item, "已过期", $"待办 '{item.Content}' 已过期！");
+                        notifiedDueDateItems.Add(notificationKey);
+                    }
+                    // 今天到期
+                    else if (dueDate <= todayEnd)
+                    {
+                        var hoursLeft = (dueDate - now).TotalHours;
+                        if (hoursLeft <= 1)
+                        {
+                            ShowDueDateNotification(item, "即将到期", $"待办 '{item.Content}' 将在 {Math.Ceiling(hoursLeft * 60)} 分钟后到期！");
+                            notifiedDueDateItems.Add(notificationKey);
+                        }
+                        else if (hoursLeft <= 3)
+                        {
+                            ShowDueDateNotification(item, "今天到期", $"待办 '{item.Content}' 今天 {dueDate:HH:mm} 到期");
+                            notifiedDueDateItems.Add(notificationKey);
+                        }
+                    }
+                    // 明天到期
+                    else if (dueDate.Date == tomorrow)
+                    {
+                        ShowDueDateNotification(item, "明天到期", $"待办 '{item.Content}' 明天 {dueDate:HH:mm} 到期");
+                        notifiedDueDateItems.Add(notificationKey);
+                    }
+                }
+
+            CheckChildren:
+                // 递归检查子项
+                if (item.SubItems != null && item.SubItems.Count > 0)
+                {
+                    CheckDueDateRecursive(item.SubItems, now, tomorrow, todayEnd);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 显示截止时间通知
+        /// </summary>
+        private static void ShowDueDateNotification(TodoItemModel item, string title, string message)
+        {
+            try
+            {
+                HandyControl.Controls.Growl.Warning(new HandyControl.Data.GrowlInfo
+                {
+                    Message = message,
+                    WaitTime = 5,
+                    ShowDateTime = true
+                });
+
+                Debug.WriteLine($"[截止时间提醒] {title}: {message}");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"显示截止时间通知失败: {ex.Message}");
+            }
+        }
+
+        /// <summary>
         /// 清理所有关联的悬浮窗和定时器
         /// </summary>
         public void Cleanup()
@@ -956,6 +1073,7 @@ namespace SceneTodo.ViewModels
             Model.SaveToFileAsync().ConfigureAwait(false);
             overlayWindows.Clear();
             autoInjectTimer.Stop();
+            dueDateCheckTimer?.Stop();
             if (_schedulerService != null)
                 _schedulerService.ShutdownAsync().ConfigureAwait(false);
         }
