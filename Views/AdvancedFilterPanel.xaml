@@ -1,0 +1,159 @@
+<UserControl x:Class="SceneTodo.Views.AdvancedFilterPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="400" d:DesignWidth="800">
+    <Border Background="{DynamicResource RegionBrush}" 
+            BorderBrush="{DynamicResource BorderBrush}"
+            BorderThickness="1"
+            CornerRadius="4"
+            Padding="16"
+            Margin="0,8,0,0">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock Text="Advanced Filter" 
+                          FontSize="16" 
+                          FontWeight="Bold"
+                          Margin="0,0,0,16"/>
+
+                <Expander Header="Priority" IsExpanded="True" Margin="0,0,0,8">
+                    <WrapPanel Margin="0,8,0,0">
+                        <CheckBox Content="Very High" 
+                                 Tag="VeryHigh"
+                                 Checked="PriorityCheckBox_Changed"
+                                 Unchecked="PriorityCheckBox_Changed"
+                                 Margin="0,0,16,8"/>
+                        <CheckBox Content="High" 
+                                 Tag="High"
+                                 Checked="PriorityCheckBox_Changed"
+                                 Unchecked="PriorityCheckBox_Changed"
+                                 Margin="0,0,16,8"/>
+                        <CheckBox Content="Medium" 
+                                 Tag="Medium"
+                                 Checked="PriorityCheckBox_Changed"
+                                 Unchecked="PriorityCheckBox_Changed"
+                                 Margin="0,0,16,8"/>
+                        <CheckBox Content="Low" 
+                                 Tag="Low"
+                                 Checked="PriorityCheckBox_Changed"
+                                 Unchecked="PriorityCheckBox_Changed"
+                                 Margin="0,0,16,8"/>
+                        <CheckBox Content="Very Low" 
+                                 Tag="VeryLow"
+                                 Checked="PriorityCheckBox_Changed"
+                                 Unchecked="PriorityCheckBox_Changed"
+                                 Margin="0,0,16,8"/>
+                    </WrapPanel>
+                </Expander>
+
+                <Expander Header="Completion Status" IsExpanded="True" Margin="0,0,0,8">
+                    <ComboBox x:Name="CompletionStatusComboBox"
+                             SelectionChanged="CompletionStatusComboBox_SelectionChanged"
+                             Margin="0,8,0,0"
+                             SelectedIndex="0">
+                        <ComboBoxItem Content="All" Tag="All"/>
+                        <ComboBoxItem Content="Completed" Tag="Completed"/>
+                        <ComboBoxItem Content="Incomplete" Tag="Incomplete"/>
+                    </ComboBox>
+                </Expander>
+
+                <Expander Header="Tags" IsExpanded="True" Margin="0,0,0,8">
+                    <ListBox x:Name="TagsListBox"
+                            SelectionMode="Multiple"
+                            SelectionChanged="TagsListBox_SelectionChanged"
+                            MaxHeight="200"
+                            Margin="0,8,0,0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Ellipse Width="12" Height="12" 
+                                            Fill="{Binding ColorBrush}"
+                                            Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Name}"/>
+                                    <TextBlock Text="{Binding UsageCount, StringFormat='({0})'}"
+                                              Foreground="Gray"
+                                              Margin="4,0,0,0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Expander>
+
+                <Expander Header="Due Date" IsExpanded="True" Margin="0,0,0,8">
+                    <StackPanel Margin="0,8,0,0">
+                        <ComboBox x:Name="DueDateFilterComboBox"
+                                 SelectionChanged="DueDateFilterComboBox_SelectionChanged"
+                                 Margin="0,0,0,8"
+                                 SelectedIndex="0">
+                            <ComboBoxItem Content="All" Tag="All"/>
+                            <ComboBoxItem Content="Today" Tag="Today"/>
+                            <ComboBoxItem Content="This Week" Tag="ThisWeek"/>
+                            <ComboBoxItem Content="This Month" Tag="ThisMonth"/>
+                            <ComboBoxItem Content="Overdue" Tag="Overdue"/>
+                            <ComboBoxItem Content="Custom Range" Tag="Custom"/>
+                        </ComboBox>
+                        
+                        <StackPanel x:Name="CustomDateRangePanel" Visibility="Collapsed">
+                            <TextBlock Text="Start Date:" Margin="0,0,0,4"/>
+                            <hc:DatePicker x:Name="StartDatePicker" 
+                                          Margin="0,0,0,8"/>
+                            <TextBlock Text="End Date:" Margin="0,0,0,4"/>
+                            <hc:DatePicker x:Name="EndDatePicker"
+                                          Margin="0,0,0,8"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Expander>
+
+                <Expander Header="Created Date" IsExpanded="False" Margin="0,0,0,8">
+                    <StackPanel Margin="0,8,0,0">
+                        <ComboBox x:Name="CreatedAtFilterComboBox"
+                                 SelectionChanged="CreatedAtFilterComboBox_SelectionChanged"
+                                 Margin="0,0,0,8"
+                                 SelectedIndex="0">
+                            <ComboBoxItem Content="All" Tag="All"/>
+                            <ComboBoxItem Content="Today" Tag="Today"/>
+                            <ComboBoxItem Content="This Week" Tag="ThisWeek"/>
+                            <ComboBoxItem Content="This Month" Tag="ThisMonth"/>
+                        </ComboBox>
+                    </StackPanel>
+                </Expander>
+
+                <Expander Header="Quick Filters" IsExpanded="True" Margin="0,0,0,8">
+                    <WrapPanel Margin="0,8,0,0">
+                        <Button Content="Due Today" 
+                               Click="QuickFilterTodayDue_Click"
+                               Style="{StaticResource ButtonPrimary}"
+                               Margin="0,0,8,8"/>
+                        <Button Content="Overdue" 
+                               Click="QuickFilterOverdue_Click"
+                               Style="{StaticResource ButtonDanger}"
+                               Margin="0,0,8,8"/>
+                        <Button Content="High Priority" 
+                               Click="QuickFilterHighPriority_Click"
+                               Style="{StaticResource ButtonWarning}"
+                               Margin="0,0,8,8"/>
+                        <Button Content="Incomplete" 
+                               Click="QuickFilterIncomplete_Click"
+                               Style="{StaticResource ButtonInfo}"
+                               Margin="0,0,8,8"/>
+                    </WrapPanel>
+                </Expander>
+
+                <StackPanel Orientation="Horizontal" 
+                           HorizontalAlignment="Right"
+                           Margin="0,16,0,0">
+                    <Button Content="Apply Filter" 
+                           Click="ApplyFilter_Click"
+                           Style="{StaticResource ButtonPrimary}"
+                           Margin="0,0,8,0"/>
+                    <Button Content="Reset" 
+                           Click="ResetFilter_Click"
+                           Style="{StaticResource ButtonDefault}"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Border>
+</UserControl>

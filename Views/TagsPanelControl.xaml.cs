@@ -15,6 +15,8 @@ namespace SceneTodo.Views
         // 标签筛选事件
         public event EventHandler<Tag>? TagFilterRequested;
 
+        private Tag? currentFilterTag;
+
         public TagsPanelControl()
         {
             InitializeComponent();
@@ -54,7 +56,7 @@ namespace SceneTodo.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Failed to load tags: {ex.Message}", "Error",
+                MessageBox.Show($"加载标签失败: {ex.Message}", "错误",
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -64,7 +66,27 @@ namespace SceneTodo.Views
         /// </summary>
         private void UpdateTotalText()
         {
-            TotalTagsText.Text = $"Total: {Tags.Count} tags";
+            TotalTagsText.Text = $"总计: {Tags.Count} 个标签";
+        }
+
+        /// <summary>
+        /// 显示筛选状态
+        /// </summary>
+        /// <param name="tag">当前筛选的标签，null表示清除筛选</param>
+        public void SetFilterStatus(Tag? tag)
+        {
+            currentFilterTag = tag;
+            
+            if (tag != null)
+            {
+                FilterStatusBorder.Visibility = Visibility.Visible;
+                FilterStatusText.Text = $"?? 筛选: {tag.Name}";
+            }
+            else
+            {
+                FilterStatusBorder.Visibility = Visibility.Collapsed;
+                FilterStatusText.Text = string.Empty;
+            }
         }
 
         /// <summary>
@@ -120,10 +142,10 @@ namespace SceneTodo.Views
             if (sender is Button button && button.Tag is Tag tag)
             {
                 var result = MessageBox.Show(
-                    $"Are you sure you want to delete tag '{tag.Name}'?\n\n" +
-                    $"This tag is currently used by {tag.UsageCount} todo items.\n" +
-                    "After deletion, the tag associations will be removed.",
-                    "Confirm Delete",
+                    $"确定要删除标签 '{tag.Name}' 吗？\n\n" +
+                    $"此标签当前被 {tag.UsageCount} 个待办项使用。\n" +
+                    "删除后，所有标签关联将被移除。",
+                    "确认删除",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Warning);
 
@@ -131,15 +153,21 @@ namespace SceneTodo.Views
                 {
                     try
                     {
+                        // 如果删除的是当前筛选标签，先清除筛选
+                        if (currentFilterTag?.Id == tag.Id)
+                        {
+                            ClearFilter_Click(null, null);
+                        }
+
                         await App.TagRepository.DeleteAsync(tag.Id);
                         LoadTags();
 
-                        MessageBox.Show("Tag deleted successfully!", "Success",
+                        MessageBox.Show("标签删除成功！", "成功",
                             MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Failed to delete tag: {ex.Message}", "Error",
+                        MessageBox.Show($"删除标签失败: {ex.Message}", "错误",
                             MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
@@ -155,6 +183,20 @@ namespace SceneTodo.Views
             {
                 // 触发筛选事件
                 TagFilterRequested?.Invoke(this, tag);
+            }
+        }
+
+        /// <summary>
+        /// 清除筛选
+        /// </summary>
+        private void ClearFilter_Click(object? sender, RoutedEventArgs? e)
+        {
+            // 通过主窗口的ViewModel清除筛选
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+            if (mainWindow?.DataContext is ViewModels.MainWindowViewModel vm)
+            {
+                vm.ClearTagFilter();
+                SetFilterStatus(null);
             }
         }
     }

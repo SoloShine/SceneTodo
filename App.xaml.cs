@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.EntityFrameworkCore;
+using SceneTodo.Services;
 using SceneTodo.Services.Database;
 using SceneTodo.Services.Database.Repositories;
 using SceneTodo.Services.Scheduler;
@@ -40,6 +41,7 @@ public partial class App : Application
     public static TagRepository? TagRepository { get; private set; }
     public static DatabaseInitializer DatabaseInitializer { get; private set; }
     public static TodoItemSchedulerService SchedulerService { get; private set; }
+    public static BackupService BackupService { get; private set; }
 
 
     protected override async void OnStartup(StartupEventArgs e)
@@ -51,6 +53,9 @@ public partial class App : Application
 
         // 初始化调度服务
         SchedulerService = new TodoItemSchedulerService();
+
+        // 初始化备份服务
+        BackupService = new BackupService(DbContext);
 
         // 确保资源中的ViewModel是唯一的  
         mainViewModel = Current.Resources["MainViewModel"] as MainWindowViewModel;

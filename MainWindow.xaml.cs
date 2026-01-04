@@ -56,6 +56,8 @@ namespace SceneTodo
             if (DataContext is MainWindowViewModel vm)
             {
                 vm.FilterByTag(tag);
+                // 更新标签面板的筛选状态
+                TagsPanel.SetFilterStatus(tag);
             }
         }
     }

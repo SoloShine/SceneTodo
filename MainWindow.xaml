@@ -12,6 +12,9 @@
     Height="450"
     Background="{DynamicResource RegionBrush}"
     WindowStartupLocation="CenterScreen">
+    <hc:Window.InputBindings>
+        <KeyBinding Key="F" Modifiers="Control" Command="{Binding ToggleFilterPanelCommand}"/>
+    </hc:Window.InputBindings>
     <hc:Window.Resources>
         <Style
             x:Key="menuButton"
@@ -67,11 +70,22 @@
                         </hc:ContextMenuButton.Content>
                         <hc:ContextMenuButton.Menu>
                             <ContextMenu>
-                                <MenuItem Command="{Binding ThemeSettingsCommand}" Header="主题设置">
+                                <MenuItem Command="{Binding OpenAppearanceSettingsCommand}" Header="外观设置">
+                                    <MenuItem.Icon>
+                                        <iconPacks:PackIconMaterialDesign Kind="Palette" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Command="{Binding ThemeSettingsCommand}" Header="主题设置 (旧版)">
                                     <MenuItem.Icon>
                                         <iconPacks:PackIconLucide Kind="Palette" />
                                     </MenuItem.Icon>
                                 </MenuItem>
+                                <MenuItem Command="{Binding BackupManagementCommand}" Header="备份管理">
+                                    <MenuItem.Icon>
+                                        <iconPacks:PackIconBootstrapIcons Kind="Database" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <Separator/>
                                 <MenuItem Command="{Binding ResetAppConfigCommand}" Header="重置配置">
                                     <MenuItem.Icon>
                                         <iconPacks:PackIconIonicons Kind="RefreshMD" />
@@ -101,7 +115,66 @@
         </Border>
         <!-- 主内容区 - 使用 ContentControl 实现页面切换 -->
         <Grid Grid.Column="1">
-            <ContentControl Content="{Binding CurrentContent}" />
+            <Grid.RowDefinitions>
+                <!-- 搜索栏 -->
+                <RowDefinition Height="Auto"/>
+                <!-- 筛选面板 -->
+                <RowDefinition Height="Auto"/>
+                <!-- 内容区域 -->
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- 搜索栏 -->
+            <Border Grid.Row="0" 
+                    Background="{DynamicResource RegionBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="0,0,0,1"
+                    Padding="16,8">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 搜索框 -->
+                    <hc:SearchBar Grid.Column="0"
+                                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                                 hc:InfoElement.Placeholder="搜索待办... (Ctrl+F)"
+                                 IsEnabled="{Binding IsSearching, Converter={StaticResource Boolean2BooleanReConverter}}"
+                                 Margin="0,0,8,0"/>
+
+                    <!-- 筛选切换按钮 -->
+                    <Button Grid.Column="1"
+                           Command="{Binding ToggleFilterPanelCommand}"
+                           Content="筛选"
+                           Style="{StaticResource ButtonDefault}"
+                           Margin="0,0,8,0">
+                        <Button.ContentTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterialDesign Kind="Filter" Margin="0,0,4,0"/>
+                                    <TextBlock Text="筛选"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Button.ContentTemplate>
+                    </Button>
+
+                    <!-- 清除搜索按钮 -->
+                    <Button Grid.Column="2"
+                           Command="{Binding ClearSearchCommand}"
+                           Content="清除"
+                           Style="{StaticResource ButtonDefault}"/>
+                </Grid>
+            </Border>
+
+            <!-- 筛选面板 -->
+            <views:AdvancedFilterPanel Grid.Row="1"
+                                       DataContext="{Binding}"
+                                       Visibility="{Binding IsFilterPanelVisible, Converter={StaticResource Boolean2VisibilityConverter}}"/>
+
+            <!-- 内容 -->
+            <ContentControl Grid.Row="2" Content="{Binding CurrentContent}" />
         </Grid>
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>

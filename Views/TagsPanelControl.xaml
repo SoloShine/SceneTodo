@@ -10,6 +10,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -57,9 +58,40 @@
             </Grid>
         </Border>
 
-        <ScrollViewer Grid.Row="1" 
+        <!-- Current filter status display -->
+        <Border Grid.Row="1"
+               x:Name="FilterStatusBorder"
+               Visibility="Collapsed"
+               Background="{DynamicResource InfoBrush}"
+               Padding="8,6"
+               Margin="8,8,8,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Grid.Column="0"
+                          x:Name="FilterStatusText"
+                          FontSize="11"
+                          Foreground="White"
+                          VerticalAlignment="Center"/>
+                
+                <Button Grid.Column="1"
+                       Click="ClearFilter_Click"
+                       ToolTip="Clear Filter"
+                       Style="{StaticResource ButtonDefault}"
+                       Padding="4,2"
+                       Margin="4,0,0,0">
+                    <iconPacks:PackIconMaterialDesign Kind="Close" Width="10" Height="10"/>
+                </Button>
+            </Grid>
+        </Border>
+
+        <ScrollViewer Grid.Row="2" 
                      VerticalScrollBarVisibility="Auto"
-                     Padding="8">
+                     Padding="8"
+                     Margin="0,8,0,0">
             <ItemsControl x:Name="TagsItemsControl">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
@@ -145,7 +177,7 @@
             </ItemsControl>
         </ScrollViewer>
 
-        <Border Grid.Row="2"
+        <Border Grid.Row="3"
                BorderThickness="0,1,0,0"
                BorderBrush="{DynamicResource BorderBrush}"
                Padding="8"
