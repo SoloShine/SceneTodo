@@ -1,9 +1,7 @@
-using System;
+using SceneTodo.Models;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using SceneTodo.Models;
 using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace SceneTodo.Views
@@ -28,9 +26,9 @@ namespace SceneTodo.Views
             try
             {
                 Tags.Clear();
-                
+
                 var tags = await App.TagRepository.GetAllAsync();
-                
+
                 // 加载使用次数
                 foreach (var tag in tags)
                 {
@@ -48,13 +46,13 @@ namespace SceneTodo.Views
 
                 // 更新行号
                 UpdateRowNumbers();
-                
+
                 // 更新统计文本
                 UpdateTotalText();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Failed to load tags: {ex.Message}", "Error", 
+                MessageBox.Show($"Failed to load tags: {ex.Message}", "Error",
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -130,13 +128,13 @@ namespace SceneTodo.Views
                     {
                         await App.TagRepository.DeleteAsync(tag.Id);
                         LoadTags(); // 重新加载标签列表
-                        
-                        MessageBox.Show("Tag deleted successfully!", "Success", 
+
+                        MessageBox.Show("Tag deleted successfully!", "Success",
                             MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Failed to delete tag: {ex.Message}", "Error", 
+                        MessageBox.Show($"Failed to delete tag: {ex.Message}", "Error",
                             MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }

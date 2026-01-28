@@ -5,52 +5,59 @@
     xmlns:hc="https://handyorg.github.io/handycontrol"
     xmlns:converters="clr-namespace:SceneTodo.Converters"
     xmlns:vm="clr-namespace:SceneTodo.ViewModels"
-    Title="History Records"
+    xmlns:services="clr-namespace:SceneTodo.Services"
+    Title="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[History_Title]}"
     Width="900"
     Height="600"
     Background="{DynamicResource RegionBrush}"
     WindowStartupLocation="CenterScreen">
-    
-    <Window.DataContext>
-        <vm:HistoryWindowViewModel />
-    </Window.DataContext>
-    
-    <Window.Resources>
-        <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
-        <converters:PriorityToBorderBrushConverter x:Key="PriorityToBorderBrushConverter" />
-    </Window.Resources>
 
-    <Grid Margin="15">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+	<Window.DataContext>
+		<vm:HistoryWindowViewModel />
+	</Window.DataContext>
 
-        <!-- Filter Panel -->
-        <GroupBox Grid.Row="0" Header="Filter" Margin="0,0,0,10">
-            <StackPanel Orientation="Horizontal" Margin="10">
-                <TextBlock Text="Start Date:" VerticalAlignment="Center" Margin="0,0,10,0" />
-                <hc:DatePicker 
-                    Width="150" 
+	<Window.Resources>
+		<converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
+		<converters:PriorityToBorderBrushConverter x:Key="PriorityToBorderBrushConverter" />
+	</Window.Resources>
+
+	<Grid Margin="15">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+
+		<!-- Filter Panel -->
+		<GroupBox Grid.Row="0"
+                 Header="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[History_Filter]}"
+                 Margin="0,0,0,10">
+			<StackPanel Orientation="Horizontal" Margin="10">
+				<TextBlock Text="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[History_StartDate]}"
+                          VerticalAlignment="Center"
+                          Margin="0,0,10,0" />
+				<hc:DatePicker
+                    Width="150"
                     Margin="0,0,20,0"
                     SelectedDate="{Binding StartDate}" />
 
-                <TextBlock Text="End Date:" VerticalAlignment="Center" Margin="0,0,10,0" />
-                <hc:DatePicker 
-                    Width="150" 
+				<TextBlock Text="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[History_EndDate]}"
+                          VerticalAlignment="Center"
+                          Margin="0,0,10,0" />
+				<hc:DatePicker
+                    Width="150"
                     Margin="0,0,20,0"
                     SelectedDate="{Binding EndDate}" />
 
-                <Button 
-                    Content="Filter" 
+				<Button
+                    Content="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[History_Filter]}"
                     Command="{Binding FilterCommand}"
                     Padding="15,5"
                     Style="{StaticResource ButtonPrimary}" />
-            </StackPanel>
-        </GroupBox>
+			</StackPanel>
+		</GroupBox>
 
-        <!-- History List -->
-        <DataGrid 
+		<!-- History List -->
+		<DataGrid
             x:Name="HistoryDataGrid"
             Grid.Row="1"
             ItemsSource="{Binding HistoryItems}"
@@ -61,66 +68,68 @@
             GridLinesVisibility="Horizontal"
             HeadersVisibility="Column"
             Background="{DynamicResource RegionBrush}">
-            
-            <DataGrid.Columns>
-                <!-- Priority Indicator -->
-                <DataGridTemplateColumn Header="Priority" Width="80">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Border 
+
+			<DataGrid.Columns>
+				<!-- Priority Indicator -->
+				<DataGridTemplateColumn Header="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[History_Priority]}"
+                                       Width="80">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<Border
                                 BorderBrush="{Binding Priority, Converter={StaticResource PriorityToBorderBrushConverter}}"
                                 BorderThickness="3"
                                 CornerRadius="2"
                                 Width="50"
                                 Height="20" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
 
-                <!-- Content -->
-                <DataGridTextColumn 
-                    Header="Content" 
-                    Binding="{Binding Content}" 
+				<!-- Content -->
+				<DataGridTextColumn
+                    Header="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[History_Content]}"
+                    Binding="{Binding Content}"
                     Width="*"
                     IsReadOnly="True" />
 
-                <!-- Description -->
-                <DataGridTextColumn 
-                    Header="Description" 
-                    Binding="{Binding Description}" 
+				<!-- Description -->
+				<DataGridTextColumn
+                    Header="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[History_Description]}"
+                    Binding="{Binding Description}"
                     Width="200"
                     IsReadOnly="True" />
 
-                <!-- Completed Time -->
-                <DataGridTextColumn 
-                    Header="Completed Time" 
-                    Binding="{Binding CompletedAt, Converter={StaticResource DateTimeToStringConverter}}" 
+				<!-- Completed Time -->
+				<DataGridTextColumn
+                    Header="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[History_CompletedTime]}"
+                    Binding="{Binding CompletedAt, Converter={StaticResource DateTimeToStringConverter}}"
                     Width="150"
                     IsReadOnly="True" />
 
-                <!-- Actions -->
-                <DataGridTemplateColumn Header="Actions" Width="180">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Button
-                                    Content="Restore"
+				<!-- Actions -->
+				<DataGridTemplateColumn Header="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[History_Actions]}"
+                                       Width="180">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<StackPanel Orientation="Horizontal">
+								<Button
+                                    Content="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[History_Restore]}"
                                     Command="{Binding DataContext.RestoreTodoCommand, ElementName=HistoryDataGrid}"
                                     CommandParameter="{Binding}"
                                     Margin="0,0,5,0"
                                     Padding="10,3"
                                     Style="{StaticResource ButtonSuccess}" />
-                                <Button
-                                    Content="Delete"
+								<Button
+                                    Content="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Common_Delete]}"
                                     Command="{Binding DataContext.DeleteHistoryCommand, ElementName=HistoryDataGrid}"
                                     CommandParameter="{Binding}"
                                     Padding="10,3"
                                     Style="{StaticResource ButtonDanger}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-    </Grid>
+							</StackPanel>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+			</DataGrid.Columns>
+		</DataGrid>
+	</Grid>
 </hc:Window>

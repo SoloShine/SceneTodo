@@ -1,9 +1,7 @@
-using System;
-using System.Linq;
+using SceneTodo.Models;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
-using System.Text.Json;
-using SceneTodo.Models;
 using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace SceneTodo.Views
@@ -66,8 +64,8 @@ namespace SceneTodo.Views
             if (TodoSelectionPanel == null) return;
 
             var selectedIndex = ActionTypeComboBox.SelectedIndex;
-            TodoSelectionPanel.Visibility = (selectedIndex == 1 || selectedIndex == 2 || selectedIndex == 3) 
-                ? Visibility.Visible 
+            TodoSelectionPanel.Visibility = (selectedIndex == 1 || selectedIndex == 2 || selectedIndex == 3)
+                ? Visibility.Visible
                 : Visibility.Collapsed;
         }
 
@@ -90,7 +88,7 @@ namespace SceneTodo.Views
                 return;
 
             var cronText = CronTextBox.Text?.Trim();
-            
+
             if (string.IsNullOrWhiteSpace(cronText))
             {
                 CronValidationText.Text = "Format: Second Minute Hour Day Month Weekday [Year]";

@@ -1,15 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Threading;
 using SceneTodo.Models;
 using SceneTodo.Utils;
 using SceneTodo.Views;
+using System.Diagnostics;
+using System.IO;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Threading;
 using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace SceneTodo.ViewModels
@@ -29,13 +25,13 @@ namespace SceneTodo.ViewModels
 
             foreach (var item in Model.TodoItems)
             {
-                if (!item.IsInjected || item.TodoItemType != TodoItemType.App || 
+                if (!item.IsInjected || item.TodoItemType != TodoItemType.App ||
                     string.IsNullOrEmpty(item.AppPath) || !File.Exists(item.AppPath))
                     continue;
 
                 string processName = Path.GetFileNameWithoutExtension(item.AppPath);
                 var processes = Process.GetProcessesByName(processName);
-                
+
                 if (processes.Length == 0)
                 {
                     if (overlayWindows.TryGetValue(item.AppPath, out OverlayWindow? value))
@@ -48,7 +44,7 @@ namespace SceneTodo.ViewModels
 
                 Process targetProcess = processes[0];
                 IntPtr targetWindowHandle = targetProcess.MainWindowHandle;
-                
+
                 if (!NativeMethods.IsWindow(targetWindowHandle))
                     continue;
 
@@ -63,7 +59,7 @@ namespace SceneTodo.ViewModels
         {
             if (parameter is not TodoItemModel item) return;
             if (item.TodoItemType != TodoItemType.App) return;
-            
+
             if (!File.Exists(item.AppPath))
             {
                 MessageBox.Show("关联软件未安装，请检查路径。");
@@ -130,7 +126,7 @@ namespace SceneTodo.ViewModels
                         UpdateOverlayPosition(overlayWindow, targetWindowHandle, item);
                         IntPtr hAbove = NativeMethods.GetWindow(targetWindowHandle, NativeMethods.GW_HWNDPREV);
                         if (hAbove == IntPtr.Zero) hAbove = targetWindowHandle;
-                        
+
                         NativeMethods.SetWindowPos(
                             overlayWindow.GetHandle(), hAbove, 0, 0, 0, 0,
                             NativeMethods.SWP_NOMOVE | NativeMethods.SWP_NOSIZE | NativeMethods.SWP_NOACTIVATE);
@@ -143,8 +139,8 @@ namespace SceneTodo.ViewModels
             }
             else
             {
-                if (NativeMethods.IsIconic(targetWindowHandle) || 
-                    !NativeMethods.IsWindowVisible(targetWindowHandle) || 
+                if (NativeMethods.IsIconic(targetWindowHandle) ||
+                    !NativeMethods.IsWindowVisible(targetWindowHandle) ||
                     !item.IsInjected)
                 {
                     if (overlayWindows.TryGetValue(appKey, out OverlayWindow? value))
@@ -226,7 +222,7 @@ namespace SceneTodo.ViewModels
         {
             if (parameter is not TodoItemModel item) return;
             if (item.TodoItemType != TodoItemType.App) return;
-            
+
             if (!File.Exists(item.AppPath))
             {
                 MessageBox.Show("关联软件未安装，请检查路径。");

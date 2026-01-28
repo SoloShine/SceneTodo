@@ -1,5 +1,3 @@
-using System.Windows;
-
 namespace SceneTodo.Views
 {
     /// <summary>

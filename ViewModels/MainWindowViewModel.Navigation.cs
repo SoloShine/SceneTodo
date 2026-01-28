@@ -1,6 +1,5 @@
-using System;
-using System.Windows;
 using SceneTodo.Views;
+using System.Windows;
 using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace SceneTodo.ViewModels

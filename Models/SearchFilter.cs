@@ -9,42 +9,42 @@ public class SearchFilter
     /// 搜索关键词
     /// </summary>
     public string? SearchText { get; set; }
-    
+
     /// <summary>
     /// 优先级筛选
     /// </summary>
     public List<Priority>? Priorities { get; set; }
-    
+
     /// <summary>
     /// 完成状态筛选
     /// </summary>
     public CompletionStatus? CompletionStatus { get; set; }
-    
+
     /// <summary>
     /// 标签筛选
     /// </summary>
     public List<string>? TagIds { get; set; }
-    
+
     /// <summary>
     /// 截止时间筛选
     /// </summary>
     public DateTimeFilter? DueDateFilter { get; set; }
-    
+
     /// <summary>
     /// 创建时间筛选
     /// </summary>
     public DateTimeFilter? CreatedAtFilter { get; set; }
-    
+
     /// <summary>
     /// 关联应用筛选
     /// </summary>
     public List<string>? AppNames { get; set; }
-    
+
     /// <summary>
     /// 是否使用正则表达式
     /// </summary>
     public bool UseRegex { get; set; }
-    
+
     /// <summary>
     /// 检查筛选条件是否为空
     /// </summary>

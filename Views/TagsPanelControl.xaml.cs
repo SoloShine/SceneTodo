@@ -1,9 +1,7 @@
-using System;
+using SceneTodo.Models;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using SceneTodo.Models;
 using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace SceneTodo.Views
@@ -16,13 +14,27 @@ namespace SceneTodo.Views
         public event EventHandler<Tag>? TagFilterRequested;
 
         private Tag? currentFilterTag;
+        private bool isLoaded = false;
 
         public TagsPanelControl()
         {
             InitializeComponent();
             Tags = new ObservableCollection<Tag>();
             TagsItemsControl.ItemsSource = Tags;
+
+            Loaded += TagsPanelControl_Loaded;
+            Unloaded += TagsPanelControl_Unloaded;
+        }
+
+        private void TagsPanelControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            isLoaded = true;
             LoadTags();
+        }
+
+        private void TagsPanelControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            isLoaded = false;
         }
 
         /// <summary>
@@ -30,15 +42,30 @@ namespace SceneTodo.Views
         /// </summary>
         public async void LoadTags()
         {
+            // 防止在控件未加载或已卸载时执行
+            if (!isLoaded)
+                return;
+
             try
             {
+                // 检查必要的对象是否存在
+                if (App.TagRepository == null)
+                    return;
+
                 Tags.Clear();
 
                 var tags = await App.TagRepository.GetAllAsync();
 
+                // 再次检查控件是否仍然加载
+                if (!isLoaded)
+                    return;
+
                 // 加载使用次数
                 foreach (var tag in tags)
                 {
+                    if (!isLoaded)
+                        return;
+
                     tag.UsageCount = await App.TagRepository.GetTagUsageCountAsync(tag.Id);
                     Tags.Add(tag);
                 }
@@ -56,8 +83,12 @@ namespace SceneTodo.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"加载标签失败: {ex.Message}", "错误",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                // 只在控件仍然加载时显示错误消息
+                if (isLoaded)
+                {
+                    MessageBox.Show($"加载标签失败: {ex.Message}", "错误",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
@@ -66,7 +97,17 @@ namespace SceneTodo.Views
         /// </summary>
         private void UpdateTotalText()
         {
-            TotalTagsText.Text = $"总计: {Tags.Count} 个标签";
+            // 确保在UI线程上执行，且控件已加载
+            if (!isLoaded || TotalTagsText == null)
+                return;
+
+            Dispatcher.Invoke(() =>
+            {
+                if (isLoaded && TotalTagsText != null)
+                {
+                    TotalTagsText.Text = $"总计: {Tags.Count} 个标签";
+                }
+            });
         }
 
         /// <summary>
@@ -76,7 +117,7 @@ namespace SceneTodo.Views
         public void SetFilterStatus(Tag? tag)
         {
             currentFilterTag = tag;
-            
+
             if (tag != null)
             {
                 FilterStatusBorder.Visibility = Visibility.Visible;

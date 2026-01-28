@@ -1,13 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using SceneTodo.Models;
 using SceneTodo.Services.Database;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace SceneTodo.Services
 {
@@ -66,7 +62,7 @@ namespace SceneTodo.Services
                 // 4. 复制数据库文件
                 var dbPath = Path.Combine(dataDir, "todo.db");
                 var tempDbPath = Path.Combine(tempDir, "todo.db");
-                
+
                 if (File.Exists(dbPath))
                 {
                     File.Copy(dbPath, tempDbPath, true);
@@ -309,7 +305,7 @@ namespace SceneTodo.Services
                         FilePath = filePath,
                         FileSize = fileInfo.Length,
                         CreatedAt = fileInfo.CreationTime,
-                        Type = filePath.Contains("Snapshot") ? BackupType.Snapshot : 
+                        Type = filePath.Contains("Snapshot") ? BackupType.Snapshot :
                                filePath.Contains("Auto") ? BackupType.Automatic : BackupType.Manual
                     };
 

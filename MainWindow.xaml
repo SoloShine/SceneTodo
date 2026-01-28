@@ -1,17 +1,18 @@
 <hc:Window
-    x:Class="SceneTodo.MainWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:hc="https://handyorg.github.io/handycontrol"
-    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-    xmlns:views="clr-namespace:SceneTodo.Views"
-    xmlns:vm="clr-namespace:SceneTodo.ViewModels"
-    Title="SceneTodo"
-    Width="800"
-    Height="450"
-    Background="{DynamicResource RegionBrush}"
-    WindowStartupLocation="CenterScreen">
+x:Class="SceneTodo.MainWindow"
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+xmlns:hc="https://handyorg.github.io/handycontrol"
+xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+xmlns:views="clr-namespace:SceneTodo.Views"
+xmlns:vm="clr-namespace:SceneTodo.ViewModels"
+xmlns:services="clr-namespace:SceneTodo.Services"
+Title="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[App_Title]}"
+Width="800"
+Height="450"
+Background="{DynamicResource RegionBrush}"
+WindowStartupLocation="CenterScreen">
     <hc:Window.InputBindings>
         <KeyBinding Key="F" Modifiers="Control" Command="{Binding ToggleFilterPanelCommand}"/>
     </hc:Window.InputBindings>
@@ -41,22 +42,22 @@
                 </Grid.RowDefinitions>
                 <StackPanel>
                     <hc:SideMenu>
-                        <hc:SideMenuItem Command="{Binding ShowTodoListPageCommand}" ToolTip="常规视图">
+                        <hc:SideMenuItem Command="{Binding ShowTodoListPageCommand}" ToolTip="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Menu_TodoListView]}">
                             <hc:SideMenuItem.Icon>
                                 <iconPacks:PackIconFontAwesome Kind="FaceSmileRegular" />
                             </hc:SideMenuItem.Icon>
                         </hc:SideMenuItem>
-                        <hc:SideMenuItem Command="{Binding ShowCalendarViewCommand}" ToolTip="日历视图">
+                        <hc:SideMenuItem Command="{Binding ShowCalendarViewCommand}" ToolTip="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Menu_CalendarView]}">
                             <hc:SideMenuItem.Icon>
                                 <iconPacks:PackIconCircumIcons Kind="Calendar" />
                             </hc:SideMenuItem.Icon>
                         </hc:SideMenuItem>
-                        <hc:SideMenuItem Command="{Binding ShowScheduledTasksCommand}" ToolTip="计划任务">
+                        <hc:SideMenuItem Command="{Binding ShowScheduledTasksCommand}" ToolTip="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Menu_ScheduledTasks]}">
                             <hc:SideMenuItem.Icon>
                                 <iconPacks:PackIconFontAwesome Kind="ClockRegular" />
                             </hc:SideMenuItem.Icon>
                         </hc:SideMenuItem>
-                        <hc:SideMenuItem Command="{Binding ShowHistoryPageCommand}" ToolTip="历史记录">
+                        <hc:SideMenuItem Command="{Binding ShowHistoryPageCommand}" ToolTip="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Menu_History]}">
                             <hc:SideMenuItem.Icon>
                                 <iconPacks:PackIconMaterialDesign Kind="History" />
                             </hc:SideMenuItem.Icon>
@@ -64,34 +65,39 @@
                     </hc:SideMenu>
                 </StackPanel>
                 <StackPanel Grid.Row="1" VerticalAlignment="Bottom">
-                    <hc:ContextMenuButton Style="{StaticResource menuButton}" ToolTip="设置">
+                    <hc:ContextMenuButton Style="{StaticResource menuButton}" ToolTip="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Menu_Settings]}">
                         <hc:ContextMenuButton.Content>
                             <iconPacks:PackIconVaadinIcons Kind="Cog" />
                         </hc:ContextMenuButton.Content>
                         <hc:ContextMenuButton.Menu>
                             <ContextMenu>
-                                <MenuItem Command="{Binding OpenAppearanceSettingsCommand}" Header="外观设置">
+                                <MenuItem Command="{Binding OpenAppearanceSettingsCommand}" Header="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Settings_Appearance]}">
                                     <MenuItem.Icon>
                                         <iconPacks:PackIconMaterialDesign Kind="Palette" />
                                     </MenuItem.Icon>
                                 </MenuItem>
-                                <MenuItem Command="{Binding ThemeSettingsCommand}" Header="主题设置 (旧版)">
+                                <MenuItem Command="{Binding OpenLanguageSettingsCommand}" Header="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Settings_Language]}">
+                                    <MenuItem.Icon>
+                                        <iconPacks:PackIconMaterialDesign Kind="Translate" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Command="{Binding ThemeSettingsCommand}" Header="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Settings_Theme_Old]}">
                                     <MenuItem.Icon>
                                         <iconPacks:PackIconLucide Kind="Palette" />
                                     </MenuItem.Icon>
                                 </MenuItem>
-                                <MenuItem Command="{Binding BackupManagementCommand}" Header="备份管理">
+                                <MenuItem Command="{Binding BackupManagementCommand}" Header="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Settings_Backup]}">
                                     <MenuItem.Icon>
                                         <iconPacks:PackIconBootstrapIcons Kind="Database" />
                                     </MenuItem.Icon>
                                 </MenuItem>
                                 <Separator/>
-                                <MenuItem Command="{Binding ResetAppConfigCommand}" Header="重置配置">
+                                <MenuItem Command="{Binding ResetAppConfigCommand}" Header="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Settings_ResetConfig]}">
                                     <MenuItem.Icon>
                                         <iconPacks:PackIconIonicons Kind="RefreshMD" />
                                     </MenuItem.Icon>
                                 </MenuItem>
-                                <MenuItem Command="{Binding ResetTodoCommand}" Header="重置数据">
+                                <MenuItem Command="{Binding ResetTodoCommand}" Header="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Settings_ResetData]}">
                                     <MenuItem.Icon>
                                         <iconPacks:PackIconBoxIcons Kind="RegularReset" />
                                     </MenuItem.Icon>
@@ -102,7 +108,7 @@
                     <Button
                         Command="{Binding AboutCommand}"
                         Style="{StaticResource menuButton}"
-                        ToolTip="帮助">
+                        ToolTip="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Menu_Help]}">
                         <Button.Content>
                             <iconPacks:PackIconLucide Kind="CircleHelp" />
                         </Button.Content>
@@ -140,21 +146,21 @@
                     <!-- 搜索框 -->
                     <hc:SearchBar Grid.Column="0"
                                  Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                                 hc:InfoElement.Placeholder="搜索待办... (Ctrl+F)"
+                                 hc:InfoElement.Placeholder="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Search_Placeholder]}"
                                  IsEnabled="{Binding IsSearching, Converter={StaticResource Boolean2BooleanReConverter}}"
                                  Margin="0,0,8,0"/>
 
                     <!-- 筛选切换按钮 -->
                     <Button Grid.Column="1"
                            Command="{Binding ToggleFilterPanelCommand}"
-                           Content="筛选"
+                           Content="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Filter_Button]}"
                            Style="{StaticResource ButtonDefault}"
                            Margin="0,0,8,0">
                         <Button.ContentTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <iconPacks:PackIconMaterialDesign Kind="Filter" Margin="0,0,4,0"/>
-                                    <TextBlock Text="筛选"/>
+                                    <TextBlock Text="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Filter_Button]}"/>
                                 </StackPanel>
                             </DataTemplate>
                         </Button.ContentTemplate>
@@ -163,7 +169,7 @@
                     <!-- 清除搜索按钮 -->
                     <Button Grid.Column="2"
                            Command="{Binding ClearSearchCommand}"
-                           Content="清除"
+                           Content="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Common_Clear]}"
                            Style="{StaticResource ButtonDefault}"/>
                 </Grid>
             </Border>

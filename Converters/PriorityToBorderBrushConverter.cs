@@ -1,8 +1,7 @@
-using System;
+using SceneTodo.Models;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
-using SceneTodo.Models;
 
 namespace SceneTodo.Converters
 {

@@ -1,8 +1,6 @@
-using System;
-using System.Windows;
+using SceneTodo.Models;
 using System.Windows.Controls;
 using System.Windows.Input;
-using SceneTodo.Models;
 
 namespace SceneTodo.Views
 {

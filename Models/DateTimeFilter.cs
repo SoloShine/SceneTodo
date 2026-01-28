@@ -9,12 +9,12 @@ public class DateTimeFilter
     /// 筛选类型
     /// </summary>
     public DateTimeFilterType Type { get; set; } = DateTimeFilterType.All;
-    
+
     /// <summary>
     /// 开始日期（用于自定义范围）
     /// </summary>
     public DateTime? StartDate { get; set; }
-    
+
     /// <summary>
     /// 结束日期（用于自定义范围）
     /// </summary>

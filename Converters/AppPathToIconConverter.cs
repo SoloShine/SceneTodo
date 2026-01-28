@@ -1,10 +1,9 @@
-﻿using System;
+﻿using SceneTodo.Utils;
 using System.Globalization;
 using System.IO;
 using System.Windows.Data;
 using System.Windows.Markup;
 using System.Windows.Media;
-using SceneTodo.Utils;
 
 namespace SceneTodo.Converters
 {

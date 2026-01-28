@@ -1,9 +1,8 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Collections.ObjectModel;
-using System.Linq;
-using SceneTodo.Models;
+﻿using SceneTodo.Models;
 using SceneTodo.ViewModels;
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Controls;
 using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace SceneTodo.Views
@@ -18,10 +17,10 @@ namespace SceneTodo.Views
         public EditTodoItemWindow(TodoItemModel todo)
         {
             InitializeComponent();
-            
+
             // 检查是否为子级待办项
             bool isChildItem = !string.IsNullOrEmpty(todo.ParentId);
-            
+
             Todo = new TodoItemModel
             {
                 Id = todo.Id,
@@ -90,7 +89,7 @@ namespace SceneTodo.Views
                     break;
                 }
             }
-            
+
             // 如果是子级待办项，禁用应用绑定相关控件
             if (isChildItem)
             {
@@ -101,15 +100,15 @@ namespace SceneTodo.Views
                 OverlayPositionComboBox.IsEnabled = false;
                 OverlayOffsetXNumericUpDown.IsEnabled = false;
                 OverlayOffsetYNumericUpDown.IsEnabled = false;
-                
+
                 // 添加提示文本
                 AppPathTextBlock.Text = "应用路径 (继承自父级):";
-                
+
                 // 显示灰色背景表示不可编辑
                 AppPathTextBox.Background = System.Windows.Media.Brushes.LightGray;
                 AppNameTextBox.Background = System.Windows.Media.Brushes.LightGray;
             }
-            
+
             TypeChange();
 
             // 事件绑定
@@ -135,7 +134,7 @@ namespace SceneTodo.Views
                 selectedTagIds = new List<string>();
                 try
                 {
-                    selectedTagIds = System.Text.Json.JsonSerializer.Deserialize<List<string>>(Todo.TagsJson) 
+                    selectedTagIds = System.Text.Json.JsonSerializer.Deserialize<List<string>>(Todo.TagsJson)
                                     ?? new List<string>();
                 }
                 catch
@@ -154,7 +153,7 @@ namespace SceneTodo.Views
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show($"加载标签失败: {ex.Message}", "错误", 
+                MessageBox.Show($"加载标签失败: {ex.Message}", "错误",
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -166,7 +165,7 @@ namespace SceneTodo.Views
         {
             var tagManagementWindow = new TagManagementWindow();
             tagManagementWindow.ShowDialog();
-            
+
             // 刷新标签列表
             InitializeTags();
         }
@@ -390,11 +389,11 @@ namespace SceneTodo.Views
         {
             // 先清空选中的日期时间
             DueDatePicker.SelectedDateTime = null;
-            
+
             // 强制刷新 DateTimePicker 的显示
             // 这是 HandyControl DateTimePicker 的一个已知问题的解决方案
             DueDatePicker.Text = string.Empty;
-            
+
             // 同时更新 Todo 对象
             Todo.DueDate = null;
         }

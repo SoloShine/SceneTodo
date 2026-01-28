@@ -1,0 +1,436 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" msdata:Ordinal="5" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="App_Title" xml:space="preserve">
+    <value>SceneTodo</value>
+  </data>
+  <data name="Common_OK" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Common_Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="Common_Delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="Common_Edit" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="Common_Add" xml:space="preserve">
+    <value>添加</value>
+  </data>
+  <data name="Common_Search" xml:space="preserve">
+    <value>搜索</value>
+  </data>
+  <data name="Common_Filter" xml:space="preserve">
+    <value>筛选</value>
+  </data>
+  <data name="Common_Clear" xml:space="preserve">
+    <value>清除</value>
+  </data>
+  <data name="Common_Close" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="Common_Apply" xml:space="preserve">
+    <value>应用</value>
+  </data>
+  <data name="Common_Reset" xml:space="preserve">
+    <value>重置</value>
+  </data>
+  <data name="Menu_TodoListView" xml:space="preserve">
+    <value>常规视图</value>
+  </data>
+  <data name="Menu_CalendarView" xml:space="preserve">
+    <value>日历视图</value>
+  </data>
+  <data name="Menu_ScheduledTasks" xml:space="preserve">
+    <value>计划任务</value>
+  </data>
+  <data name="Menu_History" xml:space="preserve">
+    <value>历史记录</value>
+  </data>
+  <data name="Menu_Settings" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="Menu_Help" xml:space="preserve">
+    <value>帮助</value>
+  </data>
+  <data name="Settings_Appearance" xml:space="preserve">
+    <value>外观设置</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>语言设置</value>
+  </data>
+  <data name="Settings_Theme_Old" xml:space="preserve">
+    <value>主题设置 (旧版)</value>
+  </data>
+  <data name="Settings_Backup" xml:space="preserve">
+    <value>备份管理</value>
+  </data>
+  <data name="Settings_ResetConfig" xml:space="preserve">
+    <value>重置配置</value>
+  </data>
+  <data name="Settings_ResetData" xml:space="preserve">
+    <value>重置数据</value>
+  </data>
+  <data name="Search_Placeholder" xml:space="preserve">
+    <value>搜索待办... (Ctrl+F)</value>
+  </data>
+  <data name="Filter_Button" xml:space="preserve">
+    <value>筛选</value>
+  </data>
+  <data name="AdvancedSearch_Button" xml:space="preserve">
+    <value>高级搜索</value>
+  </data>
+  <data name="Message_SaveSuccess" xml:space="preserve">
+    <value>保存成功</value>
+  </data>
+  <data name="Message_SaveFailed" xml:space="preserve">
+    <value>保存失败</value>
+  </data>
+  <data name="Message_Info" xml:space="preserve">
+    <value>提示</value>
+  </data>
+  <data name="Message_Error" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="Message_LanguageSaved" xml:space="preserve">
+    <value>语言设置已保存。重启应用后生效。</value>
+  </data>
+  <data name="Message_SettingsResetSuccess" xml:space="preserve">
+    <value>设置已重置为默认值</value>
+  </data>
+  <data name="Message_OpenSettingsFailed" xml:space="preserve">
+    <value>无法打开设置窗口</value>
+  </data>
+  <data name="Message_OpenLanguageSettingsFailed" xml:space="preserve">
+    <value>无法打开语言设置</value>
+  </data>
+  <data name="Backup_Title" xml:space="preserve">
+    <value>备份管理</value>
+  </data>
+  <data name="Backup_CreateBackup" xml:space="preserve">
+    <value>创建备份</value>
+  </data>
+  <data name="Backup_ImportBackup" xml:space="preserve">
+    <value>导入备份</value>
+  </data>
+  <data name="Backup_OpenFolder" xml:space="preserve">
+    <value>打开文件夹</value>
+  </data>
+  <data name="Backup_Refresh" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="Backup_Type" xml:space="preserve">
+    <value>类型</value>
+  </data>
+  <data name="Backup_FileName" xml:space="preserve">
+    <value>文件名</value>
+  </data>
+  <data name="Backup_Created" xml:space="preserve">
+    <value>创建时间</value>
+  </data>
+  <data name="Backup_Size" xml:space="preserve">
+    <value>大小</value>
+  </data>
+  <data name="Backup_Version" xml:space="preserve">
+    <value>版本</value>
+  </data>
+  <data name="Backup_Actions" xml:space="preserve">
+    <value>操作</value>
+  </data>
+  <data name="Backup_Restore" xml:space="preserve">
+    <value>恢复</value>
+  </data>
+  <data name="Backup_Export" xml:space="preserve">
+    <value>导出</value>
+  </data>
+  <data name="Backup_TotalBackups" xml:space="preserve">
+    <value>备份总数:</value>
+  </data>
+  <data name="Backup_TotalSize" xml:space="preserve">
+    <value>总大小:</value>
+  </data>
+  <data name="Language_AutoDetect" xml:space="preserve">
+    <value>自动检测系统语言</value>
+  </data>
+  <data name="Language_RestartRequired" xml:space="preserve">
+    <value>语言更改将在重启应用后生效</value>
+  </data>
+  <data name="Language_Information" xml:space="preserve">
+    <value>语言信息</value>
+  </data>
+  <data name="Language_SupportedLanguages" xml:space="preserve">
+    <value>支持的语言:</value>
+  </data>
+  <data name="Language_ChineseSimplified" xml:space="preserve">
+    <value>中文（简体）</value>
+  </data>
+  <data name="Language_English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Language_MoreComingSoon" xml:space="preserve">
+    <value>更多语言即将推出</value>
+  </data>
+  <data name="Tags_Title" xml:space="preserve">
+    <value>标签</value>
+  </data>
+  <data name="Tags_NewTag" xml:space="preserve">
+    <value>新建标签</value>
+  </data>
+  <data name="Tags_ManageTags" xml:space="preserve">
+    <value>管理标签</value>
+  </data>
+  <data name="Tags_FilterByTag" xml:space="preserve">
+    <value>按此标签筛选</value>
+  </data>
+  <data name="Tags_Used" xml:space="preserve">
+    <value>使用次数:</value>
+  </data>
+  <data name="Tags_ClearFilter" xml:space="preserve">
+    <value>清除筛选</value>
+  </data>
+  <data name="Tags_TotalTags" xml:space="preserve">
+    <value>共 {0} 个标签</value>
+  </data>
+  <data name="Shortcut_Title" xml:space="preserve">
+    <value>快捷键设置</value>
+  </data>
+  <data name="Shortcut_Description" xml:space="preserve">
+    <value>自定义快捷键以匹配您的工作流程。点击快捷键进行更改。</value>
+  </data>
+  <data name="Shortcut_Edit" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="Shortcut_ResetToDefaults" xml:space="preserve">
+    <value>重置为默认值</value>
+  </data>
+  <data name="Appearance_Title" xml:space="preserve">
+    <value>外观设置</value>
+  </data>
+  <data name="Appearance_OverlayTransparency" xml:space="preserve">
+    <value>覆盖层透明度</value>
+  </data>
+  <data name="Appearance_QuickPresets" xml:space="preserve">
+    <value>快速预设:</value>
+  </data>
+  <data name="Appearance_Theme" xml:space="preserve">
+    <value>主题</value>
+  </data>
+  <data name="Appearance_AccentColor" xml:space="preserve">
+    <value>强调色</value>
+  </data>
+  <data name="Appearance_Animations" xml:space="preserve">
+    <value>动画效果</value>
+  </data>
+  <data name="Appearance_EnableAnimations" xml:space="preserve">
+    <value>启用动画</value>
+  </data>
+  <data name="Theme_Light" xml:space="preserve">
+    <value>浅色</value>
+  </data>
+  <data name="Theme_Dark" xml:space="preserve">
+    <value>深色</value>
+  </data>
+  <data name="Common_Browse" xml:space="preserve">
+    <value>浏览</value>
+  </data>
+  <data name="Common_Yes" xml:space="preserve">
+    <value>是</value>
+  </data>
+  <data name="Common_No" xml:space="preserve">
+    <value>否</value>
+  </data>
+  <data name="Appearance_ThemeSettings" xml:space="preserve">
+    <value>主题设置</value>
+  </data>
+  <data name="Appearance_ThemeLabel" xml:space="preserve">
+    <value>主题:</value>
+  </data>
+  <data name="Appearance_LightTheme" xml:space="preserve">
+    <value>浅色主题</value>
+  </data>
+  <data name="Appearance_DarkTheme" xml:space="preserve">
+    <value>深色主题</value>
+  </data>
+  <data name="Appearance_ThemeNote" xml:space="preserve">
+    <value>注意：深色主题支持尚在实验阶段，某些区域可能存在视觉问题。</value>
+  </data>
+  <data name="Appearance_AnimationSettings" xml:space="preserve">
+    <value>动画设置</value>
+  </data>
+  <data name="Appearance_AnimationDescription" xml:space="preserve">
+    <value>动画使界面感觉更具响应性和现代感。如果您喜欢即时过渡或有性能问题，请禁用。</value>
+  </data>
+  <data name="Appearance_TransparencyTip" xml:space="preserve">
+    <value>提示：在覆盖层上使用 Ctrl+滚轮快速调整透明度</value>
+  </data>
+  <data name="Appearance_BehaviorSettings" xml:space="preserve">
+    <value>行为设置</value>
+  </data>
+  <data name="Behavior_RememberCollapseState" xml:space="preserve">
+    <value>记住折叠/展开状态</value>
+  </data>
+  <data name="Behavior_AutoExpandOnSearch" xml:space="preserve">
+    <value>搜索时自动展开</value>
+  </data>
+  <data name="Behavior_ShowCompletedTodos" xml:space="preserve">
+    <value>显示已完成的待办</value>
+  </data>
+  <data name="Behavior_EnableDesktopNotifications" xml:space="preserve">
+    <value>启用桌面通知</value>
+  </data>
+  <data name="Behavior_EnableSoundReminders" xml:space="preserve">
+    <value>启用声音提醒</value>
+  </data>
+  <data name="Appearance_Preview" xml:space="preserve">
+    <value>预览</value>
+  </data>
+  <data name="Appearance_TodoPreview" xml:space="preserve">
+    <value>待办预览</value>
+  </data>
+  <data name="Appearance_HighPriorityTask" xml:space="preserve">
+    <value>☑ 高优先级任务</value>
+  </data>
+  <data name="Appearance_MediumPriorityTask" xml:space="preserve">
+    <value>☑ 中优先级任务</value>
+  </data>
+  <data name="Appearance_LowPriorityTask" xml:space="preserve">
+    <value>☑ 低优先级任务</value>
+  </data>
+  <data name="Common_ResetToDefaults" xml:space="preserve">
+    <value>重置为默认值</value>
+  </data>
+  <data name="ScheduledTasks_Title" xml:space="preserve">
+    <value>计划任务</value>
+  </data>
+  <data name="ScheduledTasks_AddTask" xml:space="preserve">
+    <value>添加任务</value>
+  </data>
+  <data name="ScheduledTasks_Next" xml:space="preserve">
+    <value>下次:</value>
+  </data>
+  <data name="History_Title" xml:space="preserve">
+    <value>历史记录</value>
+  </data>
+  <data name="History_Filter" xml:space="preserve">
+    <value>筛选</value>
+  </data>
+  <data name="History_StartDate" xml:space="preserve">
+    <value>开始日期:</value>
+  </data>
+  <data name="History_EndDate" xml:space="preserve">
+    <value>结束日期:</value>
+  </data>
+  <data name="History_Priority" xml:space="preserve">
+    <value>优先级</value>
+  </data>
+  <data name="History_Content" xml:space="preserve">
+    <value>内容</value>
+  </data>
+  <data name="History_Description" xml:space="preserve">
+    <value>描述</value>
+  </data>
+  <data name="History_CompletedTime" xml:space="preserve">
+    <value>完成时间</value>
+  </data>
+  <data name="History_Actions" xml:space="preserve">
+    <value>操作</value>
+  </data>
+  <data name="History_Restore" xml:space="preserve">
+    <value>恢复</value>
+  </data>
+  <data name="Common_Confirm" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="Todo_Title" xml:space="preserve">
+    <value>标题</value>
+  </data>
+  <data name="Todo_Content" xml:space="preserve">
+    <value>内容</value>
+  </data>
+  <data name="Todo_Description" xml:space="preserve">
+    <value>描述</value>
+  </data>
+  <data name="Todo_Priority" xml:space="preserve">
+    <value>优先级</value>
+  </data>
+  <data name="Todo_DueDate" xml:space="preserve">
+    <value>截止日期</value>
+  </data>
+  <data name="Todo_Status" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="Todo_Tags" xml:space="preserve">
+    <value>标签</value>
+  </data>
+  <data name="Priority_Low" xml:space="preserve">
+    <value>低</value>
+  </data>
+  <data name="Priority_Medium" xml:space="preserve">
+    <value>中</value>
+  </data>
+  <data name="Priority_High" xml:space="preserve">
+    <value>高</value>
+  </data>
+</root>

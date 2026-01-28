@@ -1,6 +1,5 @@
-using System;
-using System.Windows;
 using SceneTodo.ViewModels;
+using System.Windows;
 
 namespace SceneTodo.Views
 {
@@ -41,7 +40,7 @@ namespace SceneTodo.Views
             if (_viewModel == null || ThemeComboBox.SelectedIndex < 0) return;
 
             string newTheme = ThemeComboBox.SelectedIndex == 1 ? "Dark" : "Light";
-            
+
             if (_viewModel.AppSettings.Appearance.Theme != newTheme)
             {
                 _viewModel.AppSettings.Appearance.Theme = newTheme;
@@ -115,10 +114,10 @@ namespace SceneTodo.Views
             if (result == MessageBoxResult.Yes && _viewModel != null)
             {
                 _viewModel.ResetAllSettings();
-                
+
                 // Update UI
                 ThemeComboBox.SelectedIndex = 0;
-                
+
                 HandyControl.Controls.Growl.Success("Settings reset to defaults");
             }
         }
@@ -133,7 +132,7 @@ namespace SceneTodo.Views
                 _viewModel.AppSettings.Save();
                 HandyControl.Controls.Growl.Success("Settings saved successfully");
             }
-            
+
             DialogResult = true;
             Close();
         }

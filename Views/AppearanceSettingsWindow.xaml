@@ -4,41 +4,43 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:hc="https://handyorg.github.io/handycontrol"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-    Title="Appearance Settings"
+    xmlns:services="clr-namespace:SceneTodo.Services"
+    Title="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Appearance_Title]}"
     Width="500"
     Height="600"
     Background="{DynamicResource RegionBrush}"
     WindowStartupLocation="CenterOwner"
     ResizeMode="NoResize">
-    
-    <hc:Window.Resources>
-        <Style x:Key="SectionHeaderStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="16" />
-            <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Margin" Value="0,0,0,12" />
-        </Style>
-    </hc:Window.Resources>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="20">
-            
-            <!-- Overlay Transparency Section -->
-            <TextBlock Text="Overlay Transparency" Style="{StaticResource SectionHeaderStyle}"/>
-            
-            <Border Background="{DynamicResource SecondaryRegionBrush}"
+	<hc:Window.Resources>
+		<Style x:Key="SectionHeaderStyle" TargetType="TextBlock">
+			<Setter Property="FontSize" Value="16" />
+			<Setter Property="FontWeight" Value="Bold" />
+			<Setter Property="Margin" Value="0,0,0,12" />
+		</Style>
+	</hc:Window.Resources>
+
+	<ScrollViewer VerticalScrollBarVisibility="Auto">
+		<StackPanel Margin="20">
+
+			<!-- Overlay Transparency Section -->
+			<TextBlock Text="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Appearance_OverlayTransparency]}"
+                      Style="{StaticResource SectionHeaderStyle}"/>
+
+			<Border Background="{DynamicResource SecondaryRegionBrush}"
                     BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
                     CornerRadius="4"
                     Padding="16"
                     Margin="0,0,0,24">
-                <StackPanel>
-                    <Grid Margin="0,0,0,12">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        
-                        <Slider Grid.Column="0"
+				<StackPanel>
+					<Grid Margin="0,0,0,12">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="Auto"/>
+						</Grid.ColumnDefinitions>
+
+						<Slider Grid.Column="0"
                                 x:Name="TransparencySlider"
                                 Minimum="10"
                                 Maximum="100"
@@ -46,126 +48,134 @@
                                 IsSnapToTickEnabled="True"
                                 Value="{Binding OverlayTransparency, Mode=TwoWay}"
                                 Margin="0,0,12,0"/>
-                        
-                        <TextBlock Grid.Column="1"
+
+						<TextBlock Grid.Column="1"
                                   Text="{Binding OverlayTransparency, StringFormat={}{0:F0}%}"
                                   FontSize="14"
                                   FontWeight="Bold"
                                   VerticalAlignment="Center"
                                   MinWidth="50"
                                   TextAlignment="Right"/>
-                    </Grid>
-                    
-                    <!-- Quick Presets -->
-                    <TextBlock Text="Quick Presets:" Margin="0,0,0,8" FontSize="12" Foreground="{DynamicResource ThirdTextBrush}"/>
-                    <WrapPanel>
-                        <Button Content="25%" 
-                               Command="{Binding SetTransparencyCommand}" 
+					</Grid>
+
+					<!-- Quick Presets -->
+					<TextBlock Text="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Appearance_QuickPresets]}"
+                              Margin="0,0,0,8"
+                              FontSize="12"
+                              Foreground="{DynamicResource ThirdTextBrush}"/>
+					<WrapPanel>
+						<Button Content="25%"
+                               Command="{Binding SetTransparencyCommand}"
                                CommandParameter="25"
                                Style="{StaticResource ButtonDefault}"
                                Margin="0,0,8,0"/>
-                        <Button Content="50%" 
-                               Command="{Binding SetTransparencyCommand}" 
+						<Button Content="50%"
+                               Command="{Binding SetTransparencyCommand}"
                                CommandParameter="50"
                                Style="{StaticResource ButtonDefault}"
                                Margin="0,0,8,0"/>
-                        <Button Content="75%" 
-                               Command="{Binding SetTransparencyCommand}" 
+						<Button Content="75%"
+                               Command="{Binding SetTransparencyCommand}"
                                CommandParameter="75"
                                Style="{StaticResource ButtonDefault}"
                                Margin="0,0,8,0"/>
-                        <Button Content="100%" 
-                               Command="{Binding SetTransparencyCommand}" 
+						<Button Content="100%"
+                               Command="{Binding SetTransparencyCommand}"
                                CommandParameter="100"
                                Style="{StaticResource ButtonDefault}"/>
-                    </WrapPanel>
-                    
-                    <TextBlock Text="Tip: Use Ctrl+Scroll wheel on overlay to adjust transparency quickly"
+					</WrapPanel>
+
+					<TextBlock Text="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Appearance_TransparencyTip]}"
                               FontSize="11"
                               Foreground="{DynamicResource ThirdTextBrush}"
                               TextWrapping="Wrap"
                               Margin="0,12,0,0"/>
-                </StackPanel>
-            </Border>
+				</StackPanel>
+			</Border>
 
-            <!-- Animation Settings Section -->
-            <TextBlock Text="Animation Settings" Style="{StaticResource SectionHeaderStyle}"/>
-            
-            <Border Background="{DynamicResource SecondaryRegionBrush}"
+			<!-- Animation Settings Section -->
+			<TextBlock Text="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Appearance_AnimationSettings]}"
+                      Style="{StaticResource SectionHeaderStyle}"/>
+
+			<Border Background="{DynamicResource SecondaryRegionBrush}"
                     BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
                     CornerRadius="4"
                     Padding="16"
                     Margin="0,0,0,24">
-                <StackPanel>
-                    <CheckBox Content="Enable animations"
+				<StackPanel>
+					<CheckBox Content="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Appearance_EnableAnimations]}"
                              IsChecked="{Binding EnableAnimations, Mode=TwoWay}"
                              Margin="0,0,0,8"/>
-                    
-                    <TextBlock Text="Animations make the interface feel more responsive and modern. Disable if you prefer instant transitions or have performance issues."
+
+					<TextBlock Text="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Appearance_AnimationDescription]}"
                               FontSize="11"
                               Foreground="{DynamicResource ThirdTextBrush}"
                               TextWrapping="Wrap"/>
-                </StackPanel>
-            </Border>
+				</StackPanel>
+			</Border>
 
-            <!-- Theme Settings Section -->
-            <TextBlock Text="Theme Settings" Style="{StaticResource SectionHeaderStyle}"/>
-            
-            <Border Background="{DynamicResource SecondaryRegionBrush}"
+			<!-- Theme Settings Section -->
+			<TextBlock Text="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Appearance_ThemeSettings]}"
+                      Style="{StaticResource SectionHeaderStyle}"/>
+
+			<Border Background="{DynamicResource SecondaryRegionBrush}"
                     BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
                     CornerRadius="4"
                     Padding="16"
                     Margin="0,0,0,24">
-                <StackPanel>
-                    <TextBlock Text="Theme:" Margin="0,0,0,8"/>
-                    <ComboBox x:Name="ThemeComboBox"
+				<StackPanel>
+					<TextBlock Text="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Appearance_ThemeLabel]}"
+                              Margin="0,0,0,8"/>
+					<ComboBox x:Name="ThemeComboBox"
                              SelectedIndex="0"
                              SelectionChanged="ThemeComboBox_SelectionChanged"
                              Margin="0,0,0,12">
-                        <ComboBoxItem Content="Light Theme"/>
-                        <ComboBoxItem Content="Dark Theme"/>
-                    </ComboBox>
-                    
-                    <TextBlock Text="Note: Dark theme support is experimental and may have visual issues in some areas."
+						<ComboBoxItem Content="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Appearance_LightTheme]}"/>
+						<ComboBoxItem Content="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Appearance_DarkTheme]}"/>
+					</ComboBox>
+
+					<TextBlock Text="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Appearance_ThemeNote]}"
                               FontSize="11"
                               Foreground="{DynamicResource ThirdTextBrush}"
                               TextWrapping="Wrap"/>
-                </StackPanel>
-            </Border>
+				</StackPanel>
+			</Border>
 
-            <!-- Behavior Settings Section -->
-            <TextBlock Text="Behavior Settings" Style="{StaticResource SectionHeaderStyle}"/>
-            
-            <Border Background="{DynamicResource SecondaryRegionBrush}"
+			<!-- Behavior Settings Section -->
+			<TextBlock Text="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Appearance_BehaviorSettings]}"
+                      Style="{StaticResource SectionHeaderStyle}"/>
+
+			<Border Background="{DynamicResource SecondaryRegionBrush}"
                     BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
                     CornerRadius="4"
                     Padding="16"
                     Margin="0,0,0,24">
-                <StackPanel>
-                    <CheckBox Content="Remember collapse/expand state"
+				<StackPanel>
+					<CheckBox Content="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Behavior_RememberCollapseState]}"
                              IsChecked="{Binding AppSettings.Behavior.RememberCollapseState, Mode=TwoWay}"
                              Margin="0,0,0,8"/>
-                    <CheckBox Content="Auto expand on search"
+					<CheckBox Content="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Behavior_AutoExpandOnSearch]}"
                              IsChecked="{Binding AppSettings.Behavior.AutoExpandOnSearch, Mode=TwoWay}"
                              Margin="0,0,0,8"/>
-                    <CheckBox Content="Show completed todos"
+					<CheckBox Content="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Behavior_ShowCompletedTodos]}"
                              IsChecked="{Binding AppSettings.Behavior.ShowCompletedTodos, Mode=TwoWay}"
                              Margin="0,0,0,8"/>
-                    <CheckBox Content="Enable desktop notifications"
+					<CheckBox Content="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Behavior_EnableDesktopNotifications]}"
                              IsChecked="{Binding AppSettings.Behavior.EnableDesktopNotifications, Mode=TwoWay}"
                              Margin="0,0,0,8"/>
-                    <CheckBox Content="Enable sound reminders"
+					<CheckBox Content="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Behavior_EnableSoundReminders]}"
                              IsChecked="{Binding AppSettings.Behavior.EnableSoundReminders, Mode=TwoWay}"/>
-                </StackPanel>
-            </Border>
+				</StackPanel>
+			</Border>
 
-            <!-- Preview Section -->
-            <TextBlock Text="Preview" Style="{StaticResource SectionHeaderStyle}"/>
-            
-            <Border x:Name="PreviewBorder"
+			<!-- Preview Section -->
+			<TextBlock Text="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Appearance_Preview]}"
+                      Style="{StaticResource SectionHeaderStyle}"/>
+
+			<Border x:Name="PreviewBorder"
                     Height="120"
                     Background="LightGray"
                     BorderBrush="#CCCCCC"
@@ -173,35 +183,37 @@
                     CornerRadius="10"
                     Opacity="{Binding ElementName=TransparencySlider, Path=Value, Converter={StaticResource PercentToOpacityConverter}}"
                     Margin="0,0,0,24">
-                <DockPanel>
-                    <Label Content="Todo Preview" 
+				<DockPanel>
+					<Label Content="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Appearance_TodoPreview]}"
                           HorizontalAlignment="Left"
                           DockPanel.Dock="Top"
                           Margin="8"/>
-                    <StackPanel VerticalAlignment="Center" Margin="16">
-                        <TextBlock Text="? High priority task" Margin="0,0,0,8"/>
-                        <TextBlock Text="? Medium priority task" Margin="0,0,0,8"/>
-                        <TextBlock Text="? Low priority task"/>
-                    </StackPanel>
-                </DockPanel>
-            </Border>
+					<StackPanel VerticalAlignment="Center" Margin="16">
+						<TextBlock Text="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Appearance_HighPriorityTask]}"
+                                  Margin="0,0,0,8"/>
+						<TextBlock Text="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Appearance_MediumPriorityTask]}"
+                                  Margin="0,0,0,8"/>
+						<TextBlock Text="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Appearance_LowPriorityTask]}"/>
+					</StackPanel>
+				</DockPanel>
+			</Border>
 
-            <!-- Action Buttons -->
-            <StackPanel Orientation="Horizontal" 
+			<!-- Action Buttons -->
+			<StackPanel Orientation="Horizontal"
                        HorizontalAlignment="Right">
-                <Button Content="Reset to Defaults"
+				<Button Content="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Common_ResetToDefaults]}"
                        Click="ResetButton_Click"
                        Style="{StaticResource ButtonDefault}"
                        Margin="0,0,12,0"/>
-                <Button Content="Save"
+				<Button Content="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Common_Save]}"
                        Click="SaveButton_Click"
                        Style="{StaticResource ButtonPrimary}"
                        Margin="0,0,12,0"/>
-                <Button Content="Cancel"
+				<Button Content="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Common_Cancel]}"
                        Click="CancelButton_Click"
                        Style="{StaticResource ButtonDefault}"/>
-            </StackPanel>
-            
-        </StackPanel>
-    </ScrollViewer>
+			</StackPanel>
+
+		</StackPanel>
+	</ScrollViewer>
 </hc:Window>

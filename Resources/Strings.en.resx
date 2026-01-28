@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" msdata:Ordinal="5" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="App_Title" xml:space="preserve">
+    <value>SceneTodo</value>
+  </data>
+  <data name="Common_OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Common_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Common_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Common_Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Common_Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Common_Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Common_Filter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="Common_Clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="Common_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Common_Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="Common_Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="Menu_TodoListView" xml:space="preserve">
+    <value>Todo List View</value>
+  </data>
+  <data name="Menu_CalendarView" xml:space="preserve">
+    <value>Calendar View</value>
+  </data>
+  <data name="Menu_ScheduledTasks" xml:space="preserve">
+    <value>Scheduled Tasks</value>
+  </data>
+  <data name="Menu_History" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="Menu_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Menu_Help" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="Settings_Appearance" xml:space="preserve">
+    <value>Appearance Settings</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Language Settings</value>
+  </data>
+  <data name="Settings_Theme_Old" xml:space="preserve">
+    <value>Theme Settings (Legacy)</value>
+  </data>
+  <data name="Settings_Backup" xml:space="preserve">
+    <value>Backup Management</value>
+  </data>
+  <data name="Settings_ResetConfig" xml:space="preserve">
+    <value>Reset Configuration</value>
+  </data>
+  <data name="Settings_ResetData" xml:space="preserve">
+    <value>Reset Data</value>
+  </data>
+  <data name="Search_Placeholder" xml:space="preserve">
+    <value>Search todos... (Ctrl+F)</value>
+  </data>
+  <data name="Filter_Button" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="AdvancedSearch_Button" xml:space="preserve">
+    <value>Advanced Search</value>
+  </data>
+  <data name="Message_SaveSuccess" xml:space="preserve">
+    <value>Saved Successfully</value>
+  </data>
+  <data name="Message_SaveFailed" xml:space="preserve">
+    <value>Failed to Save</value>
+  </data>
+  <data name="Message_Info" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="Message_Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Message_LanguageSaved" xml:space="preserve">
+    <value>Language settings saved. Restart the application to apply changes.</value>
+  </data>
+  <data name="Message_SettingsResetSuccess" xml:space="preserve">
+    <value>Settings reset to defaults</value>
+  </data>
+  <data name="Message_OpenSettingsFailed" xml:space="preserve">
+    <value>Failed to open settings window</value>
+  </data>
+  <data name="Message_OpenLanguageSettingsFailed" xml:space="preserve">
+    <value>Failed to open language settings</value>
+  </data>
+  <data name="Backup_Title" xml:space="preserve">
+    <value>Backup Management</value>
+  </data>
+  <data name="Backup_CreateBackup" xml:space="preserve">
+    <value>Create Backup</value>
+  </data>
+  <data name="Backup_ImportBackup" xml:space="preserve">
+    <value>Import Backup</value>
+  </data>
+  <data name="Backup_OpenFolder" xml:space="preserve">
+    <value>Open Folder</value>
+  </data>
+  <data name="Backup_Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Backup_Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Backup_FileName" xml:space="preserve">
+    <value>File Name</value>
+  </data>
+  <data name="Backup_Created" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="Backup_Size" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="Backup_Version" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="Backup_Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="Backup_Restore" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="Backup_Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="Backup_TotalBackups" xml:space="preserve">
+    <value>Total Backups:</value>
+  </data>
+  <data name="Backup_TotalSize" xml:space="preserve">
+    <value>Total Size:</value>
+  </data>
+  <data name="Language_AutoDetect" xml:space="preserve">
+    <value>Auto Detect System Language</value>
+  </data>
+  <data name="Language_RestartRequired" xml:space="preserve">
+    <value>Language change will take effect after restarting the application</value>
+  </data>
+  <data name="Language_Information" xml:space="preserve">
+    <value>Language Information</value>
+  </data>
+  <data name="Language_SupportedLanguages" xml:space="preserve">
+    <value>Supported Languages:</value>
+  </data>
+  <data name="Language_ChineseSimplified" xml:space="preserve">
+    <value>Chinese (Simplified)</value>
+  </data>
+  <data name="Language_English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Language_MoreComingSoon" xml:space="preserve">
+    <value>More languages coming soon</value>
+  </data>
+  <data name="Tags_Title" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="Tags_NewTag" xml:space="preserve">
+    <value>New Tag</value>
+  </data>
+  <data name="Tags_ManageTags" xml:space="preserve">
+    <value>Manage Tags</value>
+  </data>
+  <data name="Tags_FilterByTag" xml:space="preserve">
+    <value>Filter by this tag</value>
+  </data>
+  <data name="Tags_Used" xml:space="preserve">
+    <value>Used:</value>
+  </data>
+  <data name="Tags_ClearFilter" xml:space="preserve">
+    <value>Clear Filter</value>
+  </data>
+  <data name="Tags_TotalTags" xml:space="preserve">
+    <value>{0} tags total</value>
+  </data>
+  <data name="Shortcut_Title" xml:space="preserve">
+    <value>Keyboard Shortcuts</value>
+  </data>
+  <data name="Shortcut_Description" xml:space="preserve">
+    <value>Customize keyboard shortcuts to match your workflow. Click on a shortcut to change it.</value>
+  </data>
+  <data name="Shortcut_Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Shortcut_ResetToDefaults" xml:space="preserve">
+    <value>Reset to Defaults</value>
+  </data>
+  <data name="Appearance_Title" xml:space="preserve">
+    <value>Appearance Settings</value>
+  </data>
+  <data name="Appearance_OverlayTransparency" xml:space="preserve">
+    <value>Overlay Transparency</value>
+  </data>
+  <data name="Appearance_QuickPresets" xml:space="preserve">
+    <value>Quick Presets:</value>
+  </data>
+  <data name="Appearance_Theme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="Appearance_AccentColor" xml:space="preserve">
+    <value>Accent Color</value>
+  </data>
+  <data name="Appearance_Animations" xml:space="preserve">
+    <value>Animations</value>
+  </data>
+  <data name="Appearance_EnableAnimations" xml:space="preserve">
+    <value>Enable Animations</value>
+  </data>
+  <data name="Theme_Light" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="Theme_Dark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="Common_Browse" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="Common_Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Common_No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Appearance_ThemeSettings" xml:space="preserve">
+    <value>Theme Settings</value>
+  </data>
+  <data name="Appearance_ThemeLabel" xml:space="preserve">
+    <value>Theme:</value>
+  </data>
+  <data name="Appearance_LightTheme" xml:space="preserve">
+    <value>Light Theme</value>
+  </data>
+  <data name="Appearance_DarkTheme" xml:space="preserve">
+    <value>Dark Theme</value>
+  </data>
+  <data name="Appearance_ThemeNote" xml:space="preserve">
+    <value>Note: Dark theme support is experimental and may have visual issues in some areas.</value>
+  </data>
+  <data name="Appearance_AnimationSettings" xml:space="preserve">
+    <value>Animation Settings</value>
+  </data>
+  <data name="Appearance_AnimationDescription" xml:space="preserve">
+    <value>Animations make the interface feel more responsive and modern. Disable if you prefer instant transitions or have performance issues.</value>
+  </data>
+  <data name="Appearance_TransparencyTip" xml:space="preserve">
+    <value>Tip: Use Ctrl+Scroll wheel on overlay to adjust transparency quickly</value>
+  </data>
+  <data name="Appearance_BehaviorSettings" xml:space="preserve">
+    <value>Behavior Settings</value>
+  </data>
+  <data name="Behavior_RememberCollapseState" xml:space="preserve">
+    <value>Remember collapse/expand state</value>
+  </data>
+  <data name="Behavior_AutoExpandOnSearch" xml:space="preserve">
+    <value>Auto expand on search</value>
+  </data>
+  <data name="Behavior_ShowCompletedTodos" xml:space="preserve">
+    <value>Show completed todos</value>
+  </data>
+  <data name="Behavior_EnableDesktopNotifications" xml:space="preserve">
+    <value>Enable desktop notifications</value>
+  </data>
+  <data name="Behavior_EnableSoundReminders" xml:space="preserve">
+    <value>Enable sound reminders</value>
+  </data>
+  <data name="Appearance_Preview" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="Appearance_TodoPreview" xml:space="preserve">
+    <value>Todo Preview</value>
+  </data>
+  <data name="Appearance_HighPriorityTask" xml:space="preserve">
+    <value>☑ High priority task</value>
+  </data>
+  <data name="Appearance_MediumPriorityTask" xml:space="preserve">
+    <value>☑ Medium priority task</value>
+  </data>
+  <data name="Appearance_LowPriorityTask" xml:space="preserve">
+    <value>☑ Low priority task</value>
+  </data>
+  <data name="Common_ResetToDefaults" xml:space="preserve">
+    <value>Reset to Defaults</value>
+  </data>
+  <data name="ScheduledTasks_Title" xml:space="preserve">
+    <value>Scheduled Tasks</value>
+  </data>
+  <data name="ScheduledTasks_AddTask" xml:space="preserve">
+    <value>Add Task</value>
+  </data>
+  <data name="ScheduledTasks_Next" xml:space="preserve">
+    <value>Next:</value>
+  </data>
+  <data name="History_Title" xml:space="preserve">
+    <value>History Records</value>
+  </data>
+  <data name="History_Filter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="History_StartDate" xml:space="preserve">
+    <value>Start Date:</value>
+  </data>
+  <data name="History_EndDate" xml:space="preserve">
+    <value>End Date:</value>
+  </data>
+  <data name="History_Priority" xml:space="preserve">
+    <value>Priority</value>
+  </data>
+  <data name="History_Content" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="History_Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="History_CompletedTime" xml:space="preserve">
+    <value>Completed Time</value>
+  </data>
+  <data name="History_Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="History_Restore" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="Common_Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Todo_Title" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="Todo_Content" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="Todo_Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Todo_Priority" xml:space="preserve">
+    <value>Priority</value>
+  </data>
+  <data name="Todo_DueDate" xml:space="preserve">
+    <value>Due Date</value>
+  </data>
+  <data name="Todo_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Todo_Tags" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="Priority_Low" xml:space="preserve">
+    <value>Low</value>
+  </data>
+  <data name="Priority_Medium" xml:space="preserve">
+    <value>Medium</value>
+  </data>
+  <data name="Priority_High" xml:space="preserve">
+    <value>High</value>
+  </data>
+</root>

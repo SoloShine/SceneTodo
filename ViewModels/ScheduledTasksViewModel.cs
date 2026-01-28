@@ -1,9 +1,8 @@
-using System;
+using SceneTodo.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
-using SceneTodo.Models;
 using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace SceneTodo.ViewModels
@@ -36,7 +35,7 @@ namespace SceneTodo.ViewModels
         public ScheduledTasksViewModel()
         {
             tasks = new ObservableCollection<AutoTask>();
-            
+
             AddTaskCommand = new RelayCommand(AddTask);
             EditTaskCommand = new RelayCommand(EditTask);
             DeleteTaskCommand = new RelayCommand(DeleteTask);
@@ -65,10 +64,10 @@ namespace SceneTodo.ViewModels
             {
                 var task = editWindow.TaskData;
                 task.UpdateNextExecuteTime();
-                
+
                 Tasks.Add(task);
                 SaveTaskAsync(task);
-                
+
                 if (task.IsEnabled)
                 {
                     ScheduleTaskAsync(task);
@@ -85,13 +84,13 @@ namespace SceneTodo.ViewModels
             {
                 var updatedTask = editWindow.TaskData;
                 updatedTask.UpdateNextExecuteTime();
-                
+
                 var index = Tasks.IndexOf(task);
                 if (index >= 0)
                 {
                     Tasks[index] = updatedTask;
                     SaveTaskAsync(updatedTask);
-                    
+
                     // Unschedule old task and schedule new one if enabled
                     UnscheduleTaskAsync(task.Id);
                     if (updatedTask.IsEnabled)
@@ -115,7 +114,7 @@ namespace SceneTodo.ViewModels
             if (result == MessageBoxResult.Yes)
             {
                 Tasks.Remove(task);
-                
+
                 await UnscheduleTaskAsync(task.Id);
                 await App.AutoTaskRepository.DeleteAsync(task.Id);
             }
@@ -128,7 +127,7 @@ namespace SceneTodo.ViewModels
             task.IsEnabled = !task.IsEnabled;
             task.UpdatedAt = DateTime.Now;
             task.UpdateNextExecuteTime();
-            
+
             await App.AutoTaskRepository.UpdateAsync(task);
 
             if (task.IsEnabled)
@@ -152,7 +151,7 @@ namespace SceneTodo.ViewModels
                     task.Id = Guid.NewGuid().ToString();
                     task.CreatedAt = DateTime.Now;
                 }
-                
+
                 task.UpdatedAt = DateTime.Now;
                 await App.AutoTaskRepository.AddAsync(task);
             }

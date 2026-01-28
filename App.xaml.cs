@@ -1,15 +1,13 @@
-﻿using System.Configuration;
-using System.Data;
-using System.IO;
-using System.Windows;
-using System.Windows.Controls;
-using Microsoft.EntityFrameworkCore;
+﻿using SceneTodo.Models;
 using SceneTodo.Services;
 using SceneTodo.Services.Database;
 using SceneTodo.Services.Database.Repositories;
 using SceneTodo.Services.Scheduler;
 using SceneTodo.Utils;
 using SceneTodo.ViewModels;
+using System.Data;
+using System.IO;
+using System.Windows;
 
 namespace SceneTodo;
 
@@ -33,7 +31,7 @@ public partial class App : Application
 
     // EF Core 上下文
     public static TodoDbContext DbContext { get; private set; }
-    
+
     // 仓储实例
     //public static GroupRepository GroupRepository { get; private set; }
     public static TodoItemRepository TodoItemRepository { get; private set; }
@@ -50,6 +48,9 @@ public partial class App : Application
 
         // 初始化数据库服务
         await InitializeDatabaseAsync();
+
+        // 初始化语言设置
+        InitializeLanguage();
 
         // 初始化调度服务
         SchedulerService = new TodoItemSchedulerService();
@@ -82,20 +83,20 @@ public partial class App : Application
         var dataDir = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "SceneTodo");
-            
+
         if (!Directory.Exists(dataDir))
         {
             Directory.CreateDirectory(dataDir);
         }
-        
+
         // 数据库路径
         var dbPath = Path.Combine(dataDir, "todo.db");
-        
+
         // 初始化 DbContext
         var connectionString = $"Data Source={dbPath}";
         var factory = new TodoDbContextFactory(connectionString);
         DbContext = factory.CreateDbContext();
-        
+
         // 初始化仓储
         //GroupRepository = new GroupRepository(DbContext);
         TodoItemRepository = new TodoItemRepository(DbContext);
@@ -108,6 +109,34 @@ public partial class App : Application
         await DatabaseInitializer.InitializeAsync();
     }
 
+    /// <summary>
+    /// 初始化语言设置
+    /// </summary>
+    private static void InitializeLanguage()
+    {
+        try
+        {
+            var settings = AppSettings.Load();
+
+            if (settings.Language.AutoDetectLanguage)
+            {
+                LocalizationService.Instance.AutoDetectLanguage();
+            }
+            else
+            {
+                LocalizationService.Instance.ChangeLanguage(settings.Language.CurrentLanguage);
+            }
+
+            System.Diagnostics.Debug.WriteLine($"Language initialized: {LocalizationService.Instance.CurrentCulture.Name}");
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Failed to initialize language: {ex.Message}");
+            // 使用默认语言（中文）
+            LocalizationService.Instance.ChangeLanguage(SupportedLanguage.ChineseSimplified);
+        }
+    }
+
     private static async Task LoadAndStartScheduledTasksAsync()
     {
         try
@@ -118,7 +147,7 @@ public partial class App : Application
                 task.UpdateNextExecuteTime();
                 await SchedulerService.ScheduleAutoTask(task);
             }
-            
+
             System.Diagnostics.Debug.WriteLine($"Loaded and scheduled {tasks.Count(t => t.IsEnabled)} tasks");
         }
         catch (Exception ex)
@@ -137,7 +166,7 @@ public partial class App : Application
 
         // 释放 DbContext
         DbContext?.Dispose();
-        
+
         // 清理托盘图标
         TrayIconManager.Cleanup();
 

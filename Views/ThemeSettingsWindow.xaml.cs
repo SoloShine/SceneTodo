@@ -1,10 +1,9 @@
-﻿using System;
+﻿using SceneTodo.Models;
+using SceneTodo.Utils;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using SceneTodo.Models;
-using SceneTodo.Utils;
 using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace SceneTodo.Views
@@ -95,7 +94,8 @@ namespace SceneTodo.Views
         {
             string initialColor = customThemeColorRadioButton?.Tag as string ?? model.ThemeColor;
 
-            ColorPickerHelper.ShowColorPicker(initialColor, hexColor => {
+            ColorPickerHelper.ShowColorPicker(initialColor, hexColor =>
+            {
                 // 更新模型中的主题颜色
                 model.ThemeColor = hexColor;
 
@@ -114,7 +114,8 @@ namespace SceneTodo.Views
         {
             string initialColor = customColorRadioButton?.Tag as string ?? model.OverlayBackground;
 
-            ColorPickerHelper.ShowColorPicker(initialColor, hexColor => {
+            ColorPickerHelper.ShowColorPicker(initialColor, hexColor =>
+            {
                 // 更新模型中的悬浮窗背景颜色
                 model.OverlayBackground = hexColor;
 

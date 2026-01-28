@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using System;
 using System.IO;
 
 namespace SceneTodo.Services.Database
@@ -20,7 +19,7 @@ namespace SceneTodo.Services.Database
             var dataDir = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "SceneTodo");
-                
+
             var dbPath = Path.Combine(dataDir, "todo.db");
             connectionString = $"Data Source={dbPath}";
         }
@@ -28,7 +27,7 @@ namespace SceneTodo.Services.Database
         /// <summary>
         /// 带连接字符串的构造函数，用于运行时创建上下文
         /// </summary>
-         public TodoDbContextFactory(string connectionString)
+        public TodoDbContextFactory(string connectionString)
         {
             this.connectionString = connectionString;
         }

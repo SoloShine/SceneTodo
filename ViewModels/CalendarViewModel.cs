@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
+using SceneTodo.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows.Input;
-using SceneTodo.Models;
 
 namespace SceneTodo.ViewModels
 {
@@ -50,9 +47,9 @@ namespace SceneTodo.ViewModels
         /// <summary>
         /// 星期标题
         /// </summary>
-        public List<string> WeekDays { get; } = new List<string> 
-        { 
-            "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" 
+        public List<string> WeekDays { get; } = new List<string>
+        {
+            "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
         };
 
         /// <summary>
@@ -225,7 +222,7 @@ namespace SceneTodo.ViewModels
         private void SelectDate(object? parameter)
         {
             DateTime date;
-            
+
             if (parameter is DateTime dateTime)
             {
                 date = dateTime;
@@ -242,7 +239,7 @@ namespace SceneTodo.ViewModels
             selectedDate = date;
             LoadSelectedDateTodos();
             OnPropertyChanged(nameof(SelectedDateText));
-            
+
             // 如果有待办项，打开 Popup
             if (SelectedDateTodos.Count > 0)
             {

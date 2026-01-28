@@ -1,8 +1,6 @@
-using System;
+using SceneTodo.Models;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
-using SceneTodo.Models;
 
 namespace SceneTodo.ViewModels
 {

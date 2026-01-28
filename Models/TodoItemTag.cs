@@ -1,5 +1,3 @@
-using System;
-
 namespace SceneTodo.Models
 {
     /// <summary>
@@ -8,17 +6,17 @@ namespace SceneTodo.Models
     public class TodoItemTag
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
-        
+
         /// <summary>
         /// 待办项ID
         /// </summary>
         public string TodoItemId { get; set; } = string.Empty;
-        
+
         /// <summary>
         /// 标签ID
         /// </summary>
         public string TagId { get; set; } = string.Empty;
-        
+
         /// <summary>
         /// 创建时间
         /// </summary>

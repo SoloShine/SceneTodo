@@ -9,12 +9,12 @@ public enum CompletionStatus
     /// 全部
     /// </summary>
     All,
-    
+
     /// <summary>
     /// 已完成
     /// </summary>
     Completed,
-    
+
     /// <summary>
     /// 未完成
     /// </summary>

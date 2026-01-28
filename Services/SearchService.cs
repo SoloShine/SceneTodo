@@ -1,8 +1,8 @@
-using System.Diagnostics;
-using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using SceneTodo.Models;
 using SceneTodo.Services.Database;
+using System.Diagnostics;
+using System.Text.Json;
 
 namespace SceneTodo.Services;
 
@@ -58,12 +58,12 @@ public class SearchService
 
         // 应用标签筛选 (需要在内存中执行，因为 TagsJson 是 JSON 字段)
         List<TodoItem> items;
-        
+
         if (filter.TagIds != null && filter.TagIds.Count > 0)
         {
             // 先获取所有数据
             var allItems = await query.ToListAsync();
-            
+
             // 在内存中筛选标签
             items = allItems.Where(t =>
             {

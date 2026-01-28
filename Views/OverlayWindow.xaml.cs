@@ -1,8 +1,8 @@
+using SceneTodo.Models;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using SceneTodo.Models;
 
 namespace SceneTodo.Views
 {
@@ -67,10 +67,10 @@ namespace SceneTodo.Views
             _dragStartPosition = e.GetPosition(null);
             _initialLeft = this.Left;
             _initialTop = this.Top;
-            
+
             this.MouseMove += Window_MouseMove;
             this.MouseLeftButtonUp += Window_MouseLeftButtonUp;
-            
+
             DragMove();
         }
 
@@ -89,7 +89,7 @@ namespace SceneTodo.Views
                 _isDragging = false;
                 this.MouseMove -= Window_MouseMove;
                 this.MouseLeftButtonUp -= Window_MouseLeftButtonUp;
-                
+
                 SaveNewOffset();
             }
         }

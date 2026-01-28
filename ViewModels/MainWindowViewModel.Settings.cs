@@ -1,8 +1,8 @@
-using System;
+using SceneTodo.Models;
+using SceneTodo.Services;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using SceneTodo.Models;
 
 namespace SceneTodo.ViewModels
 {
@@ -74,6 +74,7 @@ namespace SceneTodo.ViewModels
         public ICommand SetTransparencyCommand { get; private set; }
         public ICommand ToggleAnimationsCommand { get; private set; }
         public ICommand OpenAppearanceSettingsCommand { get; private set; }
+        public ICommand OpenLanguageSettingsCommand { get; private set; }
 
         #endregion
 
@@ -102,6 +103,8 @@ namespace SceneTodo.ViewModels
             });
 
             OpenAppearanceSettingsCommand = new RelayCommand(_ => OpenAppearanceSettings());
+
+            OpenLanguageSettingsCommand = new RelayCommand(_ => OpenLanguageSettings());
         }
 
         /// <summary>
@@ -267,6 +270,41 @@ namespace SceneTodo.ViewModels
         }
 
         /// <summary>
+        /// Open language settings window
+        /// </summary>
+        private void OpenLanguageSettings()
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine("Opening language settings window...");
+
+                var languageWindow = new Views.LanguageSettingsWindow(AppSettings)
+                {
+                    Owner = Application.Current.MainWindow
+                };
+
+                System.Diagnostics.Debug.WriteLine("Language settings window created successfully");
+
+                if (languageWindow.ShowDialog() == true)
+                {
+                    // Language settings saved, may need restart
+                    HandyControl.Controls.Growl.Info(LocalizationService.Instance["Message_LanguageSaved"]);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Failed to open language settings: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Stack trace: {ex.StackTrace}");
+
+                MessageBox.Show(
+                    $"{LocalizationService.Instance["Message_OpenLanguageSettingsFailed"]}\n\n{ex.Message}\n\n{ex.StackTrace}",
+                    LocalizationService.Instance["Message_Error"],
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+        }
+
+        /// <summary>
         /// Reset all settings to defaults
         /// </summary>
         public void ResetAllSettings()
@@ -279,11 +317,11 @@ namespace SceneTodo.ViewModels
                 OnPropertyChanged(nameof(EnableAnimations));
                 ApplyAppearanceSettings();
                 ApplyOverlayTransparency();
-                HandyControl.Controls.Growl.Success("Settings reset to defaults");
+                HandyControl.Controls.Growl.Success(LocalizationService.Instance["Message_SettingsResetSuccess"]);
             }
             catch (Exception ex)
             {
-                HandyControl.Controls.MessageBox.Error($"Failed to reset settings: {ex.Message}", "Error");
+                HandyControl.Controls.MessageBox.Error($"{LocalizationService.Instance["Message_SaveFailed"]}: {ex.Message}", LocalizationService.Instance["Message_Error"]);
             }
         }
 

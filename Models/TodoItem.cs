@@ -1,4 +1,3 @@
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace SceneTodo.Models
@@ -245,41 +244,41 @@ namespace SceneTodo.Models
         /// <summary>
         /// 开始时间
         /// </summary>
-        public DateTime? StartTime 
-        { 
-            get => startTime; 
-            set 
-            { 
-                startTime = value; 
-                OnPropertyChanged(nameof(StartTime)); 
-            } 
+        public DateTime? StartTime
+        {
+            get => startTime;
+            set
+            {
+                startTime = value;
+                OnPropertyChanged(nameof(StartTime));
+            }
         }
 
         private DateTime? reminderTime = null;
         /// <summary>
         /// 提醒时间
         /// </summary>
-        public DateTime? ReminderTime 
-        { 
-            get => reminderTime; 
-            set 
-            { 
-                reminderTime = value; 
-                OnPropertyChanged(nameof(ReminderTime)); 
-            } 
+        public DateTime? ReminderTime
+        {
+            get => reminderTime;
+            set
+            {
+                reminderTime = value;
+                OnPropertyChanged(nameof(ReminderTime));
+            }
         }
         private DateTime? endTime = null;
         /// <summary>
         /// 结束时间
         /// </summary>
-        public DateTime? EndTime 
-        { 
-            get => endTime; 
-            set 
-            { 
-                endTime = value; 
-                OnPropertyChanged(nameof(EndTime)); 
-            } 
+        public DateTime? EndTime
+        {
+            get => endTime;
+            set
+            {
+                endTime = value;
+                OnPropertyChanged(nameof(EndTime));
+            }
         }
 
         private DateTime? dueDate = null;

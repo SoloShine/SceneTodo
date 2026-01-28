@@ -1,14 +1,7 @@
 using Microsoft.Win32;
-using Quartz;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
-using System.Windows;
 using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace SceneTodo.Models
@@ -42,7 +35,7 @@ namespace SceneTodo.Models
             OverlayOffsetX = item.OverlayOffsetX;
             OverlayOffsetY = item.OverlayOffsetY;
         }
-        
+
         private ObservableCollection<TodoItemModel> subItems = [];
         /// <summary>
         /// 子待办项集合
@@ -101,7 +94,7 @@ namespace SceneTodo.Models
                     {
                         var tagIds = JsonSerializer.Deserialize<List<string>>(TagsJson) ?? new List<string>();
                         tags = new ObservableCollection<Tag>();
-                        
+
                         // 从数据库加载标签实体
                         foreach (var tagId in tagIds)
                         {

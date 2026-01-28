@@ -1,4 +1,3 @@
-using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
@@ -14,7 +13,7 @@ namespace SceneTodo.Converters
         {
             if (value is int count && count > 0)
                 return Visibility.Visible;
-            
+
             return Visibility.Collapsed;
         }
 

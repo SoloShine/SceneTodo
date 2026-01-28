@@ -1,8 +1,7 @@
-﻿using System.Windows;
-using SceneTodo.Models;
+﻿using SceneTodo.Models;
 using SceneTodo.Utils;
 using SceneTodo.ViewModels;
-using SceneTodo.Views;
+using System.Windows;
 using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace SceneTodo

@@ -1,10 +1,9 @@
 ﻿using HandyControl.Controls;
 using HandyControl.Data;
-using System;
+using SceneTodo.Views;
 using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using SceneTodo.Views;
 
 namespace SceneTodo.Utils
 {

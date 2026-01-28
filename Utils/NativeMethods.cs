@@ -1,5 +1,3 @@
-
-using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -9,7 +7,7 @@ namespace SceneTodo.Utils
     {
         [DllImport("user32.dll")]
         public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
-        
+
         [DllImport("user32.dll")]
         public static extern bool IsWindow(IntPtr hWnd);
 
@@ -17,7 +15,7 @@ namespace SceneTodo.Utils
         public static extern bool SetForegroundWindow(IntPtr hWnd);
 
         [DllImport("user32.dll")]
-        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, 
+        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter,
             int X, int Y, int cx, int cy, uint uFlags);
 
         [DllImport("user32.dll")]
@@ -36,7 +34,7 @@ namespace SceneTodo.Utils
         public const uint SWP_NOMOVE = 0x0002;
         public const uint SWP_SHOWWINDOW = 0x0040;
 
-        
+
         [DllImport("user32.dll")]
         public static extern bool EnumWindows(EnumWindowsProc enumProc, IntPtr lParam);
 

@@ -1,13 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
 using Microsoft.Win32;
 using SceneTodo.Models;
 using SceneTodo.Services;
+using System.Diagnostics;
+using System.IO;
+using System.Windows;
 using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace SceneTodo.Views
@@ -63,7 +59,7 @@ namespace SceneTodo.Views
                 });
 
                 var backupPath = await _backupService.CreateBackupAsync(BackupType.Manual, progress);
-                
+
                 MessageBox.Success($"Backup created successfully!\n\nFile: {Path.GetFileName(backupPath)}", "Success");
                 RefreshBackupList();
             }

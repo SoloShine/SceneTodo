@@ -1,10 +1,7 @@
-using System;
+using SceneTodo.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using SceneTodo.Models;
 
 namespace SceneTodo.ViewModels
 {

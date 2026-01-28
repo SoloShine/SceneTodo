@@ -1,10 +1,8 @@
-using System;
+using SceneTodo.Models;
+using SceneTodo.Views;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using SceneTodo.Models;
-using SceneTodo.Views;
 using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace SceneTodo.ViewModels
@@ -61,7 +59,7 @@ namespace SceneTodo.ViewModels
         private void EditTodoItem(object? parameter)
         {
             if (parameter is not TodoItemModel todo) return;
-            
+
             var editWindow = new EditTodoItemWindow(todo);
             if (editWindow.ShowDialog() == true)
             {

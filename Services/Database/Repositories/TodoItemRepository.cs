@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SceneTodo.Models;
 
@@ -12,12 +9,12 @@ namespace SceneTodo.Services.Database.Repositories
     public class TodoItemRepository
     {
         private readonly TodoDbContext dbContext;
-        
+
         public TodoItemRepository(TodoDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
-        
+
         /// <summary>
         /// 获取所有待办事项
         /// </summary>
@@ -25,7 +22,7 @@ namespace SceneTodo.Services.Database.Repositories
         {
             return await dbContext.TodoItems.ToListAsync();
         }
-        
+
         /// <summary>
         /// 根据ID获取待办事项
         /// </summary>
@@ -46,7 +43,7 @@ namespace SceneTodo.Services.Database.Repositories
                 .Where(t => t.AppPath == appPath)
                 .ToListAsync();
         }
-        
+
         /// <summary>
         /// 根据父ID获取子待办事项
         /// </summary>
@@ -56,7 +53,7 @@ namespace SceneTodo.Services.Database.Repositories
                 .Where(t => t.ParentId == parentId)
                 .ToListAsync();
         }
-        
+
         /// <summary>
         /// 添加待办事项
         /// </summary>
@@ -65,7 +62,7 @@ namespace SceneTodo.Services.Database.Repositories
             dbContext.TodoItems.Add(todoItem);
             return await dbContext.SaveChangesAsync();
         }
-        
+
         /// <summary>
         /// 更新待办事项
         /// </summary>
@@ -79,7 +76,7 @@ namespace SceneTodo.Services.Database.Repositories
 
             return await dbContext.SaveChangesAsync();
         }
-        
+
         /// <summary>
         /// 删除待办事项
         /// </summary>
@@ -93,7 +90,7 @@ namespace SceneTodo.Services.Database.Repositories
             }
             return 0;
         }
-        
+
         /// <summary>
         /// 更新待办事项的完成状态
         /// </summary>

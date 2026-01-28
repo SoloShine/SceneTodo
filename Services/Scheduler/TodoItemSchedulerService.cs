@@ -1,11 +1,9 @@
 using Quartz;
 using Quartz.Impl;
-using System.Collections.Specialized;
 using SceneTodo.Models;
-using System;
-using System.Threading.Tasks;
-using System.Diagnostics;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace SceneTodo.Services.Scheduler

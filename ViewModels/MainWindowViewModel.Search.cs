@@ -1,10 +1,5 @@
-using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 using SceneTodo.Models;
 using SceneTodo.Services;
-using SceneTodo.Services.Database;
 
 namespace SceneTodo.ViewModels
 {
@@ -104,9 +99,9 @@ namespace SceneTodo.ViewModels
             SearchText = string.Empty;
             CurrentFilter = new SearchFilter();
             SearchResults.Clear();
-            
+
             HandyControl.Controls.Growl.Info("已重置所有筛选条件");
-            
+
             // 执行空搜索以显示所有项
             await ExecuteSearchAsync();
         }
@@ -196,8 +191,8 @@ namespace SceneTodo.ViewModels
             {
                 InitializeSearchServices();
             }
-            
-            return _searchHistoryManager?.GetSuggestions(input) 
+
+            return _searchHistoryManager?.GetSuggestions(input)
                 ?? new System.Collections.Generic.List<string>();
         }
 

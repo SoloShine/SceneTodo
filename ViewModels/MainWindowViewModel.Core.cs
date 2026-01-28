@@ -1,18 +1,11 @@
-using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Threading;
 using SceneTodo.Models;
 using SceneTodo.Services.Scheduler;
 using SceneTodo.Views;
-using MessageBox = HandyControl.Controls.MessageBox;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace SceneTodo.ViewModels
 {
@@ -179,7 +172,7 @@ namespace SceneTodo.ViewModels
         public ICommand ShowCalendarViewCommand { get; }
         public ICommand ShowScheduledTasksCommand { get; }
         public ICommand BackupManagementCommand { get; }
-        
+
         // ËÑË÷ºÍÉ¸Ñ¡ÃüÁî
         public ICommand SearchCommand { get; }
         public ICommand ToggleFilterPanelCommand { get; }
@@ -228,7 +221,7 @@ namespace SceneTodo.ViewModels
             ShowCalendarViewCommand = new RelayCommand(ShowCalendarView);
             ShowScheduledTasksCommand = new RelayCommand(ShowScheduledTasks);
             BackupManagementCommand = new RelayCommand(OpenBackupManagement);
-            
+
             // ËÑË÷ºÍÉ¸Ñ¡ÃüÁî
             SearchCommand = new RelayCommand(async _ => await ExecuteSearchAsync());
             ToggleFilterPanelCommand = new RelayCommand(_ => ToggleFilterPanel());

@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using System.Windows.Media;
-using SceneTodo.Services.Database.Repositories;
 
 namespace SceneTodo.Models
 {
@@ -129,10 +123,12 @@ namespace SceneTodo.Models
         #region 方法
 
         private static readonly string ConfigPath = "app_associations.json";
-        private static readonly JsonSerializerOptions CachedJsonSerializerOptions = new() {
+        private static readonly JsonSerializerOptions CachedJsonSerializerOptions = new()
+        {
             //PropertyNameCaseInsensitive = true,
             //ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve,
-            WriteIndented = true };
+            WriteIndented = true
+        };
         /// <summary>
         /// 当待办项集合发生变化时，触发保存配置到文件
         /// </summary>

@@ -1,10 +1,8 @@
-using System;
-using System.Linq;
+using SceneTodo.Models;
+using SceneTodo.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using SceneTodo.Models;
-using SceneTodo.ViewModels;
 
 namespace SceneTodo.Views
 {
@@ -21,7 +19,7 @@ namespace SceneTodo.Views
             InitializeComponent();
 
             _viewModel = DataContext as MainWindowViewModel;
-            
+
             if (_viewModel != null)
             {
                 // Create a working copy of shortcuts
@@ -76,11 +74,11 @@ namespace SceneTodo.Views
             if (result == MessageBoxResult.Yes)
             {
                 _workingCopy.ResetToDefaults();
-                
+
                 // Refresh the display
                 ShortcutsItemsControl.ItemsSource = null;
                 ShortcutsItemsControl.ItemsSource = _workingCopy.Shortcuts;
-                
+
                 HandyControl.Controls.Growl.Success("Shortcuts reset to defaults");
             }
         }
@@ -236,7 +234,7 @@ namespace SceneTodo.Views
 
             // Get the key and modifiers
             var key = e.Key == Key.System ? e.SystemKey : e.Key;
-            
+
             // Ignore modifier keys alone
             if (key == Key.LeftCtrl || key == Key.RightCtrl ||
                 key == Key.LeftAlt || key == Key.RightAlt ||

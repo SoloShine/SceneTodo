@@ -1,11 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SceneTodo.Models;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace SceneTodo.Services.Database
 {
@@ -15,12 +11,12 @@ namespace SceneTodo.Services.Database
     public class DatabaseInitializer
     {
         private readonly TodoDbContext dbContext;
-        
+
         public DatabaseInitializer(TodoDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
-        
+
         /// <summary>
         /// 初始化数据库
         /// </summary>
@@ -30,10 +26,10 @@ namespace SceneTodo.Services.Database
             {
                 // 确保数据库已创建
                 await dbContext.Database.EnsureCreatedAsync();
-                
+
                 // 检查数据库架构是否需要迁移
                 bool needsMigration = await CheckIfMigrationNeededAsync();
-                
+
                 if (needsMigration)
                 {
                     System.Diagnostics.Debug.WriteLine("检测到数据库架构需要更新，开始迁移...");
@@ -72,7 +68,7 @@ namespace SceneTodo.Services.Database
                     // 检查 TodoItems 表的列
                     using var command = connection.CreateCommand();
                     command.CommandText = "PRAGMA table_info(TodoItems)";
-                    
+
                     var columns = new HashSet<string>();
                     using var reader = await command.ExecuteReaderAsync();
                     while (await reader.ReadAsync())
@@ -104,7 +100,7 @@ namespace SceneTodo.Services.Database
                     // 检查 Tags 表是否存在
                     command.CommandText = "SELECT name FROM sqlite_master WHERE type='table' AND name='Tags'";
                     var tagsTableExists = await command.ExecuteScalarAsync();
-                    
+
                     if (tagsTableExists == null)
                     {
                         System.Diagnostics.Debug.WriteLine("缺少 Tags 表");
@@ -114,7 +110,7 @@ namespace SceneTodo.Services.Database
                     // 检查 TodoItemTags 表是否存在
                     command.CommandText = "SELECT name FROM sqlite_master WHERE type='table' AND name='TodoItemTags'";
                     var todoItemTagsTableExists = await command.ExecuteScalarAsync();
-                    
+
                     if (todoItemTagsTableExists == null)
                     {
                         System.Diagnostics.Debug.WriteLine("缺少 TodoItemTags 表");
@@ -142,7 +138,7 @@ namespace SceneTodo.Services.Database
         private async Task MigrateDatabaseAsync()
         {
             System.Diagnostics.Debug.WriteLine("开始数据库迁移...");
-            
+
             var backupPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "SceneTodo",
@@ -190,14 +186,14 @@ namespace SceneTodo.Services.Database
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"数据库迁移失败: {ex.Message}");
-                
+
                 // 如果迁移失败，尝试从备份文件恢复
                 if (File.Exists(backupPath))
                 {
                     System.Diagnostics.Debug.WriteLine($"备份文件已保存: {backupPath}");
                     System.Diagnostics.Debug.WriteLine("您可以手动从备份文件恢复数据");
                 }
-                
+
                 throw;
             }
         }
@@ -208,7 +204,7 @@ namespace SceneTodo.Services.Database
         private async Task<List<TodoItemBackup>> BackupDataAsync()
         {
             var backupList = new List<TodoItemBackup>();
-            
+
             try
             {
                 // 使用原始SQL查询来绕过列名验证
@@ -217,9 +213,9 @@ namespace SceneTodo.Services.Database
 
                 using var command = connection.CreateCommand();
                 command.CommandText = "SELECT * FROM TodoItems";
-                
+
                 using var reader = await command.ExecuteReaderAsync();
-                
+
                 while (await reader.ReadAsync())
                 {
                     var backup = new TodoItemBackup
@@ -248,7 +244,7 @@ namespace SceneTodo.Services.Database
                         OverlayOffsetX = GetDoubleValue(reader, "OverlayOffsetX", 0),
                         OverlayOffsetY = GetDoubleValue(reader, "OverlayOffsetY", 0)
                     };
-                    
+
                     backupList.Add(backup);
                 }
 
@@ -354,7 +350,7 @@ namespace SceneTodo.Services.Database
                 var ordinal = reader.GetOrdinal(columnName);
                 if (reader.IsDBNull(ordinal))
                     return null;
-                
+
                 var value = reader[ordinal].ToString();
                 return DateTime.Parse(value);
             }
@@ -417,7 +413,7 @@ namespace SceneTodo.Services.Database
         /// 初始化测试数据
         /// </summary>
         private async Task SeedTestDataAsync()
-        { 
+        {
             // 记事本应用
             var notepadPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "notepad.exe");
             //获取notepad名称
@@ -458,7 +454,7 @@ namespace SceneTodo.Services.Database
                 IsCompleted = false,
                 Description = "普通待办事项示例2"
             };
-            
+
             // 记事本应用待办事项
             var todoItem3 = new TodoItem
             {
@@ -483,9 +479,9 @@ namespace SceneTodo.Services.Database
                 IsCompleted = false,
                 Description = "记事本应用待办事项示例1"
             };
-            
+
             dbContext.TodoItems.AddRange(todoItem1, todoItem1_1, todoItem1_2, todoItem2, todoItem3, todoItem3_1);
-            
+
             // 保存所有更改
             await dbContext.SaveChangesAsync();
         }

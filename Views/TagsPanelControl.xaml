@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:services="clr-namespace:SceneTodo.Services"
              d:DesignHeight="450" d:DesignWidth="200"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -26,14 +27,14 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0"
-                          Text="Tags"
+                          Text="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Tags_Title]}"
                           FontSize="16"
                           FontWeight="Bold"
                           Margin="0,0,0,8"/>
 
                 <StackPanel Grid.Row="1" Orientation="Horizontal">
                     <Button Click="AddTag_Click"
-                            ToolTip="New Tag"
+                            ToolTip="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Tags_NewTag]}"
                             Style="{StaticResource ButtonPrimary}"
                             Padding="6,4"
                             Margin="0,0,4,0">
@@ -41,7 +42,7 @@
                     </Button>
 
                     <Button Click="ManageTags_Click"
-                            ToolTip="Manage Tags"
+                            ToolTip="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Tags_ManageTags]}"
                             Style="{StaticResource ButtonDefault}"
                             Padding="6,4"
                             Margin="0,0,4,0">
@@ -49,7 +50,7 @@
                     </Button>
 
                     <Button Click="RefreshTags_Click"
-                            ToolTip="Refresh"
+                            ToolTip="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Backup_Refresh]}"
                             Style="{StaticResource ButtonDefault}"
                             Padding="6,4">
                         <iconPacks:PackIconMaterialDesign Kind="Refresh" Width="10" Height="10"/>
@@ -70,16 +71,16 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                
+
                 <TextBlock Grid.Column="0"
                           x:Name="FilterStatusText"
                           FontSize="11"
                           Foreground="White"
                           VerticalAlignment="Center"/>
-                
+
                 <Button Grid.Column="1"
                        Click="ClearFilter_Click"
-                       ToolTip="Clear Filter"
+                       ToolTip="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Tags_ClearFilter]}"
                        Style="{StaticResource ButtonDefault}"
                        Padding="4,2"
                        Margin="4,0,0,0">
@@ -138,14 +139,15 @@
                                               FontSize="10"
                                               Foreground="{DynamicResource SecondaryTextBrush}"
                                               VerticalAlignment="Center">
-                                        <Run Text="Used: "/>
+                                        <Run Text="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Tags_Used], Mode=OneWay}"/>
+                                        <Run Text=" "/>
                                         <Run Text="{Binding UsageCount}" FontWeight="Bold"/>
                                     </TextBlock>
 
                                     <StackPanel Grid.Column="1" Orientation="Horizontal">
                                         <Button Click="FilterByTag_Click"
                                                Tag="{Binding}"
-                                               ToolTip="Filter by this tag"
+                                               ToolTip="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Tags_FilterByTag]}"
                                                Style="{StaticResource ButtonPrimary}"
                                                Padding="4,2"
                                                Margin="0,0,2,0">
@@ -154,7 +156,7 @@
 
                                         <Button Click="EditTag_Click"
                                                Tag="{Binding}"
-                                               ToolTip="Edit"
+                                               ToolTip="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Common_Edit]}"
                                                Style="{StaticResource ButtonDefault}"
                                                Padding="4,2"
                                                Margin="0,0,2,0">
@@ -163,7 +165,7 @@
 
                                         <Button Click="DeleteTag_Click"
                                                Tag="{Binding}"
-                                               ToolTip="Delete"
+                                               ToolTip="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Common_Delete]}"
                                                Style="{StaticResource ButtonDanger}"
                                                Padding="4,2">
                                             <iconPacks:PackIconMaterial Kind="DeleteOutline" Width="8" Height="8"/>

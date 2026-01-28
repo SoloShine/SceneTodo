@@ -1,5 +1,3 @@
-
-using System;
 using System.Windows.Input;
 
 namespace SceneTodo.ViewModels

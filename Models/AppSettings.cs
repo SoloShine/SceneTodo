@@ -1,7 +1,6 @@
-using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
-using System.Diagnostics;
 
 namespace SceneTodo.Models
 {
@@ -36,6 +35,11 @@ namespace SceneTodo.Models
         /// Keyboard shortcut settings
         /// </summary>
         public ShortcutSettings Shortcuts { get; set; } = new ShortcutSettings();
+
+        /// <summary>
+        /// Language settings
+        /// </summary>
+        public LanguageSettings Language { get; set; } = new LanguageSettings();
 
         /// <summary>
         /// Save settings to file
