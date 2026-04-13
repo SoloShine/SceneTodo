@@ -2,6 +2,7 @@ using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.Json;
+using System.Diagnostics;
 using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace SceneTodo.Models
@@ -19,7 +20,7 @@ namespace SceneTodo.Models
             Description = item.Description;
             Name = item.Name;
             AppPath = item.AppPath;
-            IsInjected = item.IsInjected;
+            IsInjected = item.IsInjected;  // 使用父类的属性，但修改时同步到数据库
             TodoItemType = item.TodoItemType;
             GreadtedAt = item.GreadtedAt;
             UpdatedAt = item.UpdatedAt;
@@ -123,6 +124,32 @@ namespace SceneTodo.Models
         }
 
         /// <summary>
+        /// 更新注入状态到数据库（用于子待办项同步父节点的注入状态）
+        /// </summary>
+        public async Task UpdateInjectedStateAsync()
+        {
+            try
+            {
+                var parentItem = App.TodoItemRepository?.GetByIdAsync(Id).Result;
+                if (parentItem != null)
+                {
+                    parentItem.IsInjected = IsInjected;
+                    parentItem.UpdatedAt = DateTime.Now;
+                    await App.TodoItemRepository.UpdateAsync(parentItem);
+                    Debug.WriteLine($"子待办同步父节点注入状态: Id={Id}, ParentId={ParentId}, IsInjected={IsInjected}");
+                }
+                else
+                {
+                    Debug.WriteLine($"警告：子待办项无法找到父节点 Id={Id}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"更新注入状态失败: {ex.Message}");
+            }
+        }
+
+        /// <summary>
         /// 选择一个应用，并将其路径设置为选中应用的AppPath。
         /// </summary>
         /// <param name="item"></param>
@@ -175,22 +202,21 @@ namespace SceneTodo.Models
                 if (item.Id == todoItem.Id)
                 {
                     item.IsCompleted = todoItem.IsCompleted;
-                    item.UpdatedAt = DateTime.Now;
-                    item.Description = todoItem.Description;
-                    item.Name = todoItem.Name;
-                    item.AppPath = todoItem.AppPath;
-                    item.Content = todoItem.Content;
-                    item.TodoItemType = todoItem.TodoItemType;
-                    item.DueDate = todoItem.DueDate;
-                    item.Priority = todoItem.Priority;
-                    item.LinkedActionsJson = todoItem.LinkedActionsJson;
-                    item.TagsJson = todoItem.TagsJson;
-                    item.OverlayPosition = todoItem.OverlayPosition;
-                    item.OverlayOffsetX = todoItem.OverlayOffsetX;
-                    item.OverlayOffsetY = todoItem.OverlayOffsetY;
+            item.UpdatedAt = DateTime.Now;
+            item.Name = todoItem.Name;
+            item.AppPath = todoItem.AppPath;
+            item.Content = todoItem.Content;
+            item.TodoItemType = todoItem.TodoItemType;
+            item.DueDate = todoItem.DueDate;
+            item.Priority = todoItem.Priority;
+            item.LinkedActionsJson = todoItem.LinkedActionsJson;
+            item.TagsJson = todoItem.TagsJson;
+            item.OverlayPosition = todoItem.OverlayPosition;
+            item.OverlayOffsetX = todoItem.OverlayOffsetX;
+            item.OverlayOffsetY = todoItem.OverlayOffsetY;
 
-                    return item;
-                }
+            return item;
+        }
                 if (item.SubItems != null && item.SubItems.Count > 0)
                 {
                     var result = SearchChangeNode(item.SubItems, todoItem);

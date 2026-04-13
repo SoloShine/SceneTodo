@@ -62,7 +62,7 @@ namespace SceneTodo.ViewModels
 
             if (!File.Exists(item.AppPath))
             {
-                MessageBox.Show("目标应用程序不存在");
+                MessageBox.Show("��������δ��װ������·����");
                 return;
             }
 
@@ -75,29 +75,26 @@ namespace SceneTodo.ViewModels
 
             if (!NativeMethods.IsWindow(targetWindowHandle))
             {
-                MessageBox.Show("目标窗口不存在");
+                MessageBox.Show("�޷���ȡ��Ч�Ĵ��ھ����");
                 return;
             }
-
-            item.IsInjected = !item.IsInjected;
 
             HandleOverlayWindow(item, targetWindowHandle, NativeMethods.GetForegroundWindow());
 
             void UpdateIsInjected(TodoItemModel todo)
             {
                 todo.IsInjected = item.IsInjected;
-                // 将子项的注入状态也更新
                 if (todo.SubItems != null)
                 {
                     foreach (var subItem in todo.SubItems)
                     {
                         UpdateIsInjected(subItem);
-                        App.TodoItemRepository.UpdateAsync(subItem).ConfigureAwait(false);
+                        App.TodoItemRepository.UpdateAsync(todo).ConfigureAwait(false);  // Fixed: update root item, not subItem
                     }
                 }
-                // 将父项的注入状态也更新todo
+                
+                UpdateIsInjected(todo);
             }
-            UpdateIsInjected(item);
         }
 
         /// <summary>
@@ -112,7 +109,7 @@ namespace SceneTodo.ViewModels
             {
                 if (!overlayWindows.ContainsKey(appKey))
                 {
-                    Debug.WriteLine("应用未注册");
+                    Debug.WriteLine("����������");
                     var app = TodoItemModel.RecTodoItems(Model.TodoItems, appKey);
                     var overlayWindow = new OverlayWindow(app) { Topmost = false };
                     overlayWindow.ApplyOverlaySettings();

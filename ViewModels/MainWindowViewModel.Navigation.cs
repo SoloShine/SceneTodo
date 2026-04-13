@@ -5,13 +5,13 @@ using MessageBox = HandyControl.Controls.MessageBox;
 namespace SceneTodo.ViewModels
 {
     /// <summary>
-    /// Ö÷´°¿Ú ViewModel - µ¼º½ºÍ´°¿Ú¹ÜÀí
-    /// °üº¬£ºÒ³Ãæµ¼º½¡¢´°¿Ú´ò¿ªµÈ·½·¨
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ViewModel - ï¿½ï¿½ï¿½ï¿½ï¿½Í´ï¿½ï¿½Ú¹ï¿½ï¿½ï¿½
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½æµ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ò¿ªµÈ·ï¿½ï¿½ï¿½
     /// </summary>
     public partial class MainWindowViewModel
     {
         /// <summary>
-        /// Ö÷ÌâÉèÖÃ
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         /// </summary>
         private void ThemeSettings(object? parameter)
         {
@@ -20,7 +20,7 @@ namespace SceneTodo.ViewModels
         }
 
         /// <summary>
-        /// ¹ØÓÚ´°¿Ú
+        /// ï¿½ï¿½ï¿½Ú´ï¿½ï¿½ï¿½
         /// </summary>
         private void About(object? parameter)
         {
@@ -29,7 +29,7 @@ namespace SceneTodo.ViewModels
         }
 
         /// <summary>
-        /// ÏÔÊ¾ÀúÊ·¼ÇÂ¼´°¿Ú
+        /// ï¿½ï¿½Ê¾ï¿½ï¿½Ê·ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½
         /// </summary>
         private void ShowHistory(object? parameter)
         {
@@ -38,39 +38,43 @@ namespace SceneTodo.ViewModels
         }
 
         /// <summary>
-        /// ÏÔÊ¾ÀúÊ·¼ÇÂ¼Ò³Ãæ
+        /// ï¿½ï¿½Ê¾ï¿½ï¿½Ê·ï¿½ï¿½Â¼Ò³ï¿½ï¿½
         /// </summary>
         private void ShowHistoryPage(object? parameter)
         {
             CurrentContent = new HistoryUserControl();
+            IsSearchVisible = false;
         }
 
         /// <summary>
-        /// ÏÔÊ¾´ý°ìÁÐ±íÒ³Ãæ
+        /// ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½Ò³ï¿½ï¿½
         /// </summary>
         private void ShowTodoListPage(object? parameter)
         {
             CurrentContent = todoListContent;
+            IsSearchVisible = true;
         }
 
         /// <summary>
-        /// ÏÔÊ¾ÈÕÀúÊÓÍ¼
+        /// ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼
         /// </summary>
         private void ShowCalendarView(object? parameter)
         {
             CurrentContent = new CalendarViewControl();
+            IsSearchVisible = false;
         }
 
         /// <summary>
-        /// ÏÔÊ¾¶¨Ê±ÈÎÎñÒ³Ãæ
+        /// ï¿½ï¿½Ê¾ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
         /// </summary>
         private void ShowScheduledTasks(object? parameter)
         {
             CurrentContent = Application.LoadComponent(new Uri("/SceneTodo;component/Views/ScheduledTasksPage.xaml", UriKind.Relative));
+            IsSearchVisible = false;
         }
 
         /// <summary>
-        /// ´ò¿ª±¸·Ý¹ÜÀí´°¿Ú
+        /// ï¿½ò¿ª±ï¿½ï¿½Ý¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         /// </summary>
         private void OpenBackupManagement(object? parameter)
         {
@@ -84,7 +88,7 @@ namespace SceneTodo.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Error($"´ò¿ª±¸·Ý¹ÜÀí´°¿ÚÊ§°Ü: {ex.Message}", "´íÎó");
+                MessageBox.Error($"ï¿½ò¿ª±ï¿½ï¿½Ý¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½: {ex.Message}", "ï¿½ï¿½ï¿½ï¿½");
             }
         }
     }

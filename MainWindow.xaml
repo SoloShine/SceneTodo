@@ -124,18 +124,17 @@ WindowStartupLocation="CenterScreen">
             <Grid.RowDefinitions>
                 <!-- 搜索栏 -->
                 <RowDefinition Height="Auto"/>
-                <!-- 筛选面板 -->
-                <RowDefinition Height="Auto"/>
                 <!-- 内容区域 -->
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <!-- 搜索栏 -->
-            <Border Grid.Row="0" 
+            <Border Grid.Row="0"
                     Background="{DynamicResource RegionBrush}"
                     BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="0,0,0,1"
-                    Padding="16,8">
+                    Padding="16,8"
+                    Visibility="{Binding IsSearchVisible, Converter={StaticResource Boolean2VisibilityConverter}}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -151,7 +150,8 @@ WindowStartupLocation="CenterScreen">
                                  Margin="0,0,8,0"/>
 
                     <!-- 筛选切换按钮 -->
-                    <Button Grid.Column="1"
+                    <Button x:Name="FilterButton"
+                           Grid.Column="1"
                            Command="{Binding ToggleFilterPanelCommand}"
                            Content="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Filter_Button]}"
                            Style="{StaticResource ButtonDefault}"
@@ -174,13 +174,69 @@ WindowStartupLocation="CenterScreen">
                 </Grid>
             </Border>
 
-            <!-- 筛选面板 -->
-            <views:AdvancedFilterPanel Grid.Row="1"
-                                       DataContext="{Binding}"
-                                       Visibility="{Binding IsFilterPanelVisible, Converter={StaticResource Boolean2VisibilityConverter}}"/>
-
             <!-- 内容 -->
-            <ContentControl Grid.Row="2" Content="{Binding CurrentContent}" />
+            <ContentControl Grid.Row="1" Content="{Binding CurrentContent}" />
+
+            <!-- 筛选面板 Popup -->
+            <Popup IsOpen="{Binding IsFilterPanelVisible}"
+                   Placement="Bottom"
+                   PlacementTarget="{Binding ElementName=FilterButton}"
+                   StaysOpen="False"
+                   AllowsTransparency="True"
+                   PopupAnimation="Fade"
+                   HorizontalOffset="-10"
+                   VerticalOffset="10">
+                <Border Background="{DynamicResource RegionBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4"
+                        Padding="0"
+                        Width="400"
+                        MaxHeight="600">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- 标题栏 -->
+                        <Border Grid.Row="0"
+                                Background="{DynamicResource SecondaryRegionBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="0,0,0,1"
+                                Padding="12,8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0"
+                                          Text="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[AdvancedFilter_Title]}"
+                                          FontSize="14"
+                                          FontWeight="SemiBold"
+                                          VerticalAlignment="Center"/>
+
+                                <Button Grid.Column="1"
+                                       Command="{Binding ToggleFilterPanelCommand}"
+                                       Width="24"
+                                       Height="24"
+                                       Padding="0"
+                                       Style="{StaticResource ButtonIcon}"
+                                       ToolTip="{Binding Source={x:Static services:LocalizationService.Instance}, Path=[Common_Close]}">
+                                    <iconPacks:PackIconMaterialDesign Kind="Close" Width="14" Height="14"/>
+                                </Button>
+                            </Grid>
+                        </Border>
+
+                        <!-- 筛选面板内容 -->
+                        <ScrollViewer Grid.Row="1"
+                                    VerticalScrollBarVisibility="Auto">
+                            <views:AdvancedFilterPanel DataContext="{Binding}"/>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+            </Popup>
         </Grid>
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>

@@ -26,10 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Include="Doc\05-开发文档\TagsPanelControl-国际化版本.md" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Resources\Strings.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

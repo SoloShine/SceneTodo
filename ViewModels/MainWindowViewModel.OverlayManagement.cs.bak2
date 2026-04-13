@@ -1,0 +1,3 @@
+# Backup before final fix attempt
+EOF
+tail -n +84 ViewModels/MainWindowViewModel.OverlayManagement.cs.bak2 >> ViewModels/MainWindowViewModel.OverlayManagement.cs
